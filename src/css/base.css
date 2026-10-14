@@ -10,7 +10,7 @@
   --clr-border: #E5E7EB;         
 
 
-  --font-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-base: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --radius-sm: 8px;
   --radius-md: 16px;             
   --radius-full: 9999px;         
