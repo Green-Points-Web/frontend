@@ -1,0 +1,55 @@
+<section id="modal-registration" class="modal-backdrop">
+    
+    <div class="modal-container">
+
+        <button type="button" id="close-modal-btn" class="close-btn" aria-label="Cerrar">&times;</button>
+        
+        <div class="modal-header">
+            <h2>Añade tu nueva eco-acción</h2>
+            <p class="modal-subtitle">Selecciona la actividad sostenible de hoy</p>
+        </div>
+
+        <form id="action-form">
+
+            <div class="form-group">
+                <label for="action-type-select">Eco-Acción</label>
+                <select id="action-type-select" name="action_type_id" required>
+                    <option value="" disabled selected>Selecciona una eco-acción...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="action-date">Fecha</label>
+                <input type="date" id="action-date" name="action-date" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="action-description">Descripción / Comentarios</label>
+                <textarea
+                id="action-description"
+                name="description"
+                rows="3"
+                maxlength="255"
+                placeholder="Cuéntanos brevemente los detalles (p. ej. trayecto compartido con compañeros)..."
+                ></textarea>
+            </div>
+
+            <div class="impact-box">
+                <span class="impact-label">Impacto estimado:</span>
+                <span id="impact-value" class="impact-value">+0 pts · 0 kg CO2</span>
+            </div>
+
+            <div id="form-feedback" class="feedbck-message" hidden></div>
+
+            <div class="modal-actions">
+                <button type="button" id="cancel-btn" class="btn-secondary">Cancelar</button>
+                <button type="submit" id="submit-btn" class="btn-primary">Guardar eco-acción</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="form.js"></script>
