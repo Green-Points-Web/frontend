@@ -97,3 +97,18 @@ const actualizarBarraKpi = (data) => {
     <div class="history-stat"><span class="bold">${data.totalCo2} kg</span> CO₂ evitados</div>
   `;
 };
+
+const filterHistory = () => {
+  const searchTerm = document.getElementById('search-input').value.toLowerCase();
+  const category = document.getElementById('category-filter').value;
+  const rows = document.querySelectorAll('.history-row');
+
+  rows.forEach(row => {
+    const rowName = (row.getAttribute('data-name') || '').toLowerCase();
+    const rowCat = row.getAttribute('data-category');
+    const matchesSearch = rowName.includes(searchTerm);
+    const matchesCategory = (category === 'all' || rowCat === category);
+
+    row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
+  });
+};
