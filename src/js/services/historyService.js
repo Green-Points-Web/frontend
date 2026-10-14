@@ -85,3 +85,15 @@ const renderHistoryTable = (data) => {
   });
 };
 
+const actualizarBarraKpi = (data) => {
+  const kpiBar = document.querySelector('.history-kpi-bar');
+  if (!kpiBar || !data) return;
+
+  kpiBar.innerHTML = `
+    <div class="history-stat"><span class="bold">${data.totalAcciones}</span> acciones</div>
+    <div class="history-divider"></div>
+    <div class="history-stat"><span class="bold">${data.totalPuntos}</span> puntos</div>
+    <div class="history-divider"></div>
+    <div class="history-stat"><span class="bold">${data.totalCo2} kg</span> CO₂ evitados</div>
+  `;
+};
