@@ -1,163 +1,131 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="GreenPoints: registra tus acciones sostenibles, consigue puntos y consulta tu impacto ambiental."
-    />
-    <title>GreenPoints</title>
-    <link rel="stylesheet" href="src/css/base.css" />
-    <link rel="stylesheet" href="src/css/layout.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <h1 class="site-title">GreenPoints</h1>
-      <nav class="main-nav" aria-label="Navegación principal">
-        <ul class="main-nav__list">
-          <li><a class="main-nav__link" href="#dashboard">Resumen</a></li>
-          <li>
-            <a class="main-nav__link" href="#registro">Registrar acción</a>
-          </li>
-          <li><a class="main-nav__link" href="#historial">Historial</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <main class="site-main">
-      <p id="app-error" class="app-error" role="alert" hidden></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="GreenPoints: registra tus acciones sostenibles, consigue puntos y consulta tu impacto ambiental." />
+  <title>GreenPoints</title>
+  <link rel="stylesheet" href="src/css/base.css" />
+  <link rel="stylesheet" href="src/css/layout.css" />
+</head>
 
-      <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
-        <h2 id="dashboard-title" class="panel__title">Resumen</h2>
+<body>
+  <header class="site-header">
+    <h1 class="site-title">GreenPoints</h1>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <ul class="main-nav__list">
+        <li><a class="main-nav__link" href="#dashboard">Resumen</a></li>
+        <li>
+          <a class="main-nav__link" href="#registro">Registrar acción</a>
+        </li>
+        <li><a class="main-nav__link" href="#historial">Historial</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <dl class="stats-grid">
-          <div class="stat-card">
-            <dt class="stat-card__label">Puntos acumulados</dt>
-            <dd class="stat-card__value" id="stat-points">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Nivel actual</dt>
-            <dd class="stat-card__value" id="stat-level">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Acciones realizadas</dt>
-            <dd class="stat-card__value" id="stat-actions">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Impacto estimado (kg CO₂)</dt>
-            <dd class="stat-card__value" id="stat-co2">—</dd>
-          </div>
-        </dl>
+  <main class="site-main">
+    <p id="app-error" class="app-error" role="alert" hidden></p>
 
-        <div class="level-progress">
-          <p id="level-progress-text" class="level-progress__text">
-            Progreso hacia el siguiente nivel
-          </p>
-          <progress
-            id="level-progress-bar"
-            class="level-progress__bar"
-            value="0"
-            max="100"
-            aria-labelledby="level-progress-text"
-          ></progress>
+    <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
+      <h2 id="dashboard-title" class="panel__title">Resumen</h2>
+
+      <dl class="stats-grid">
+        <div class="stat-card">
+          <dt class="stat-card__label">Puntos acumulados</dt>
+          <dd class="stat-card__value" id="stat-points">—</dd>
         </div>
-      </section>
+        <div class="stat-card">
+          <dt class="stat-card__label">Nivel actual</dt>
+          <dd class="stat-card__value" id="stat-level">—</dd>
+        </div>
+        <div class="stat-card">
+          <dt class="stat-card__label">Acciones realizadas</dt>
+          <dd class="stat-card__value" id="stat-actions">—</dd>
+        </div>
+        <div class="stat-card">
+          <dt class="stat-card__label">Impacto estimado (kg CO₂)</dt>
+          <dd class="stat-card__value" id="stat-co2">—</dd>
+        </div>
+      </dl>
 
-      <section id="registro" class="panel" aria-labelledby="registro-title">
-        <h2 id="registro-title" class="panel__title">
-          Registrar una acción sostenible
-        </h2>
-
-        <form id="action-form" class="action-form">
-          <div class="form-field">
-            <label class="form-field__label" for="action-type"
-              >Tipo de acción</label
-            >
-            <select
-              class="form-field__control"
-              id="action-type"
-              name="action_type_id"
-              required
-            >
-              <option value="" selected disabled>Selecciona una acción</option>
-            </select>
-            <p id="action-preview" class="form-field__hint" aria-live="polite">
-              Elige una acción para ver sus puntos y su impacto.
-            </p>
-          </div>
-
-          <div class="form-field">
-            <label class="form-field__label" for="action-date">Fecha</label>
-            <input
-              class="form-field__control"
-              type="date"
-              id="action-date"
-              name="date"
-              required
-            />
-          </div>
-
-          <div class="form-field">
-            <label class="form-field__label" for="action-description"
-              >Descripción o comentario</label
-            >
-            <textarea
-              class="form-field__control"
-              id="action-description"
-              name="description"
-              rows="3"
-              maxlength="255"
-              placeholder="Cuéntanos qué has hecho (opcional)"
-            ></textarea>
-          </div>
-
-          <button class="btn btn--primary" type="submit">
-            Registrar acción
-          </button>
-          <p
-            id="form-message"
-            class="form-message"
-            role="status"
-            aria-live="polite"
-          ></p>
-        </form>
-      </section>
-
-      
-      <section id="historial" class="panel" aria-labelledby="historial-title">
-        <h2 id="historial-title" class="panel__title">Historial</h2>
-
-        <p id="history-empty" class="empty-state">
-          Todavía no has registrado ninguna acción.
+      <div class="level-progress">
+        <p id="level-progress-text" class="level-progress__text">
+          Progreso hacia el siguiente nivel
         </p>
+        <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100"
+          aria-labelledby="level-progress-text"></progress>
+      </div>
+    </section>
 
-        <div id="history-table-wrapper" class="table-wrapper" hidden>
-          <table class="history-table">
-            <caption class="visually-hidden">
-              Acciones sostenibles registradas
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Acción</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Puntos</th>
-                <th scope="col">Impacto (kg CO₂)</th>
-              </tr>
-            </thead>
-            <tbody id="history-body"></tbody>
-          </table>
+    <section id="registro" class="panel" aria-labelledby="registro-title">
+      <h2 id="registro-title" class="panel__title">
+        Registrar una acción sostenible
+      </h2>
+
+      <form id="action-form" class="action-form">
+        <div class="form-field">
+          <label class="form-field__label" for="action-type">Tipo de acción</label>
+          <select class="form-field__control" id="action-type" name="action_type_id" required>
+            <option value="" selected disabled>Selecciona una acción</option>
+          </select>
+          <p id="action-preview" class="form-field__hint" aria-live="polite">
+            Elige una acción para ver sus puntos y su impacto.
+          </p>
         </div>
-      </section>
-    </main>
+
+        <div class="form-field">
+          <label class="form-field__label" for="action-date">Fecha</label>
+          <input class="form-field__control" type="date" id="action-date" name="date" required />
+        </div>
+
+        <div class="form-field">
+          <label class="form-field__label" for="action-description">Descripción o comentario</label>
+          <textarea class="form-field__control" id="action-description" name="description" rows="3" maxlength="255"
+            placeholder="Cuéntanos qué has hecho (opcional)"></textarea>
+        </div>
+
+        <button class="btn btn--primary" type="submit">
+          Registrar acción
+        </button>
+        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+
+    <section id="historial" class="panel" aria-labelledby="historial-title">
+      <h2 id="historial-title" class="panel__title">Historial</h2>
+
+      <p id="history-empty" class="empty-state">
+        Todavía no has registrado ninguna acción.
+      </p>
+
+      <div id="history-table-wrapper" class="table-wrapper" hidden>
+        <table class="history-table">
+          <caption class="visually-hidden">
+            Acciones sostenibles registradas
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Acción</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Puntos</th>
+              <th scope="col">Impacto (kg CO₂)</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
     <footer class="site-footer">
       <p>GreenPoints · GreenCorp</p>
     </footer>
 
-  <script type="module" src="./src/js/main.js"></script>
-  <script type="module" src="./src/js/components/dashboard.js"></script>
+   <script type="module" src="./src/js/components/dashboard.js"></script>
   </body>
 </html>
