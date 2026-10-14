@@ -22,6 +22,7 @@
       <div class="history-divider"></div>
       <div class="history-stat"><span class="bold">15 kg</span> CO₂ ahorrados</div>
     </div>
+
     <div class="filter-bar">
       <div class="search-box-wrapper">
         <div class="search-icon">
@@ -32,35 +33,33 @@
         </div>
         <input class="search-input" id="search-input" onkeyup="filterHistory()" placeholder="Buscar en tus acciones..."
           type="text">
+
+        <select class="select-filter" id="category-filter" onchange="filterHistory()">
+          <option value="all">Todas las categorías</option>
+          <option value="Movilidad">Movilidad</option>
+          <option value="Naturaleza">Naturaleza</option>
+          <option value="Participación">Participación</option>
+          <option value="Reciclaje">Reciclaje</option>
+        </select>
       </div>
     </div>
-    <select class="select-filter" id="category-filter" onchange="filterHistory()">
-      <option value="all">Todas las categorías</option>
-      <option value="Movilidad">Movilidad</option>
-      <option value="Naturaleza">Naturaleza</option>
-      <option value="Participación">Participación</option>
-      <option value="Reciclaje">Reciclaje</option>
-    </select>
-  </div>
 
-  <div class="card table-card">
-        <div class="table-responsive">
-          <table class="history-table">
-            <thead>
-              <tr>
-                <th class="th-left">ACCIÓN</th>
-                <th class="th-general">FECHA</th>
-                <th class="th-general">CATEGORÍA</th>
-                <th class="th-general">IMPACTO</th>
-                <th class="th-general">PUNTOS</th>
-              </tr>
-            </thead>
-            <tbody id="history-table-body"></tbody>
-          </table>
-        </div>
-  </div>
+    <div class="card table-card">
+      <div class="table-responsive">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th class="th-left">ACCIÓN</th>
+              <th class="th-general">FECHA</th>
+              <th class="th-general">CATEGORÍA</th>
+              <th class="th-general">IMPACTO</th>
+              <th class="th-general">PUNTOS</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body"></tbody>
+        </table>
+      </div>
+    </div>
   </section>
 </main>
 <script src="history.js"></script>
-
-              
