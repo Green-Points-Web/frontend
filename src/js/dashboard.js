@@ -1,6 +1,7 @@
 
 import { getDashboardSummary } from "./services/dashboardService.js";
 import { renderDashboard } from "./components/dashboardComponent.js";
+import { initRegistrationModal } from "./components/registrationModal.js";
 
 const loadDashboard = async () => {
     try {
@@ -12,3 +13,4 @@ const loadDashboard = async () => {
 };
 
 loadDashboard();
+initRegistrationModal();

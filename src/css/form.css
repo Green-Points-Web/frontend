@@ -7,7 +7,7 @@
     width: 100vw;
     height: 100vh;
     background-color:grey;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -22,6 +22,10 @@
     box-shadow: 0 10px 25px black;
     position: relative;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.modal-backdrop.is-open {
+    display: flex;
 }
 
 /* BUTTON */
