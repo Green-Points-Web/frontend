@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="src/css/base.css" />
     <link rel="stylesheet" href="src/css/layout.css" />
     <link rel="stylesheet" href="src/css/form.css" />
+    <link rel="stylesheet" href="src/css/history.css" />
   </head>
   <body>
     <header class="site-header">
@@ -15,10 +16,45 @@
       <nav class="main-nav" aria-label="Navegación principal">
         <ul class="main-nav__list">
           <li><a class="main-nav__link" href="#dashboard">Resumen</a></li>
-          <li><a class="main-nav__link" href="#registro">Registrar acción</a></li>
-          <li><a class="main-nav__link" href="#historial">Historial</a></li>
+          <li><a class="main-nav__link" href="#registro">Acciones</a></li>
+          <li><a class="main-nav__link" href="src/components/history-section.html">Historial</a></li>
         </ul>
       </nav>
+      <button type="button" id="open-modal-btn" class="btn btn--primary">Registro de acción</button>
+      <section id="modal-registration" class="modal-backdrop">
+      <div class="modal-container">
+        <button type="button" id="close-modal-btn" class="close-btn" aria-label="Cerrar">&times;</button>
+        <div class="modal-header">
+          <h2>Registro de acción</h2>
+          <p class="modal-subtitle">Selecciona la actividad sostenible de hoy</p>
+        </div>
+        <form id="modal-action-form">
+          <div class="form-group">
+            <label for="modal-action-type-select">Registro de acción</label>
+            <select id="modal-action-type-select" name="action_type_id" required>
+              <option value="" disabled selected>Selecciona una eco-acción...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="modal-action-date">Fecha</label>
+            <input type="date" id="modal-action-date" name="action_date" required />
+          </div>
+          <div class="form-group">
+            <label for="modal-action-description">Descripción / Comentarios</label>
+            <textarea id="modal-action-description" name="description" rows="3" maxlength="255" placeholder="Cuéntanos brevemente los detalles..."></textarea>
+          </div>
+          <div class="impact-box">
+            <span class="impact-label">Impacto estimado:</span>
+            <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
+          </div>
+          <div id="form-feedback" class="feedback-message" hidden></div>
+          <div class="modal-actions">
+            <button type="button" id="cancel-btn" class="btn-secondary">Cancelar</button>
+            <button type="submit" id="submit-btn" class="btn-primary">Guardar eco-acción</button>
+          </div>
+        </form>
+      </div>
+    </section>
     </header>
 
     <main class="site-main">
@@ -49,94 +85,14 @@
           <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100" aria-labelledby="level-progress-text"></progress>
         </div>
       </section>
-
-      <section id="registro" class="panel hidden" aria-labelledby="registro-title">
-        <h2 id="registro-title" class="panel__title">Registrar una acción sostenible</h2>
-        <form id="action-form" class="action-form">
-          <div class="form-field">
-            <label class="form-field__label" for="action-type">Tipo de acción</label>
-            <select class="form-field__control" id="action-type" name="action_type_id" required>
-              <option value="" selected disabled>Selecciona una acción</option>
-            </select>
-            <p id="action-preview" class="form-field__hint" aria-live="polite">Elige una acción para ver sus puntos y su impacto.</p>
-          </div>
-          <div class="form-field">
-            <label class="form-field__label" for="action-date">Fecha</label>
-            <input class="form-field__control" type="date" id="action-date" name="date" required />
-          </div>
-          <div class="form-field">
-            <label class="form-field__label" for="action-description">Descripción o comentario</label>
-            <textarea class="form-field__control" id="action-description" name="description" rows="3" maxlength="255" placeholder="Cuéntanos qué has hecho (opcional)"></textarea>
-          </div>
-          <button class="btn btn--primary" type="submit">Registrar acción</button>
-          <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
-        </form>
-      </section>
-
-      <section id="historial" class="panel hidden" aria-labelledby="historial-title">
-        <h2 id="historial-title" class="panel__title">Historial</h2>
-        <p id="history-empty" class="empty-state">Todavía no has registrado ninguna acción.</p>
-        <div id="history-table-wrapper" class="table-wrapper" hidden>
-          <table class="history-table">
-            <caption class="visually-hidden">Acciones sostenibles registradas</caption>
-            <thead>
-              <tr>
-                <th scope="col">Fecha</th>
-                <th scope="col">Acción</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Puntos</th>
-                <th scope="col">Impacto (kg CO₂)</th>
-              </tr>
-            </thead>
-            <tbody id="history-body"></tbody>
-          </table>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
       <p>GreenPoints · GreenCorp</p>
     </footer>
 
-    <!-- Disparador -->
-    <button type="button" id="open-modal-btn" class="btn btn--primary">Añadir eco-acción</button>
 
-    <!-- Modal -->
-    <section id="modal-registration" class="modal-backdrop">
-      <div class="modal-container">
-        <button type="button" id="close-modal-btn" class="close-btn" aria-label="Cerrar">&times;</button>
-        <div class="modal-header">
-          <h2>Añade tu nueva eco-acción</h2>
-          <p class="modal-subtitle">Selecciona la actividad sostenible de hoy</p>
-        </div>
-        <form id="modal-action-form">
-          <div class="form-group">
-            <label for="modal-action-type-select">Eco-Acción</label>
-            <select id="modal-action-type-select" name="action_type_id" required>
-              <option value="" disabled selected>Selecciona una eco-acción...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="modal-action-date">Fecha</label>
-            <input type="date" id="modal-action-date" name="action_date" required />
-          </div>
-          <div class="form-group">
-            <label for="modal-action-description">Descripción / Comentarios</label>
-            <textarea id="modal-action-description" name="description" rows="3" maxlength="255" placeholder="Cuéntanos brevemente los detalles..."></textarea>
-          </div>
-          <div class="impact-box">
-            <span class="impact-label">Impacto estimado:</span>
-            <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
-          </div>
-          <div id="form-feedback" class="feedback-message" hidden></div>
-          <div class="modal-actions">
-            <button type="button" id="cancel-btn" class="btn-secondary">Cancelar</button>
-            <button type="submit" id="submit-btn" class="btn-primary">Guardar eco-acción</button>
-          </div>
-        </form>
-      </div>
-    </section>
+    
 <script type="module" src="./src/js/main.js"></script>
 <script type="module" src="./src/js/dashboard.js"></script>
   </body>
