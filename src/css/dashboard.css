@@ -71,12 +71,27 @@
 
 /* Responsive Layout */
 
-@media (max-width: 900px) {
+/* Tablets and smaller screens */
+@media (max-width: 1024px) {
     .dashboard-metrics {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .dashboard-section {
+        padding: 1.25rem;
+    }
+
+    .metric-card {
+        min-width: 0;
+    }
+
+    .metric-value {
+        overflow-wrap: anywhere;
     }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
     .dashboard-section {
         padding: 1rem;
