@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const catalogData = await response.json();
         console.log("Success! Catalog loaded:", catalogData);
 
-        const actionSelect = document.querySelector('select');
+        const actionSelect = document.querySelector('#action-type');
         
         if (actionSelect && catalogData.length > 0) {
             actionSelect.innerHTML = '<option value="">Selecciona una acción</option>';
@@ -48,4 +48,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+
+        async function loadHistory() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/history');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const historyData = await response.json();
+            const historyBody = document.querySelector('#history-body');
+
+            if (!historyBody) {
+                return;
+            }
+
+            historyBody.replaceChildren();
+
+            historyData.forEach(action => {
+                const row = document.createElement('tr');
+
+                const values = [
+                    action.action_date,
+                    `Acción #${action.action_type_id}`,
+                    action.category,
+                    action.description,
+                    action.points_earned,
+                    action.co2_saved
+                ];
+
+                values.forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value ?? '—';
+                    row.appendChild(cell);
+                });
+
+                historyBody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error('Error al cargar el historial:', error);
+        }
+    }
+
+    loadHistory();
 });
