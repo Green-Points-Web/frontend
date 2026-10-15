@@ -1,4 +1,6 @@
-
+.hidden {
+    display: none !important;
+}
 :root {
 
   --clr-bg: #F4F7F5;             

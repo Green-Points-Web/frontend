@@ -1,6 +1,43 @@
 <!doctype html>
 <html lang="es">
 
+        <div class="level-progress">
+          <p id="level-progress-text" class="level-progress__text">
+            Progreso hacia el siguiente nivel
+          </p>
+          <progress
+            id="level-progress-bar"
+            class="level-progress__bar"
+            value="0"
+            max="100"
+            aria-labelledby="level-progress-text"
+          ></progress>
+        </div>
+      </section>
+
+      <section id="registro" class="panel hidden" aria-labelledby="registro-title">
+        <h2 id="registro-title" class="panel__title">
+          Registrar una acción sostenible
+        </h2>
+
+        <form id="action-form" class="action-form">
+          <div class="form-field">
+            <label class="form-field__label" for="action-type"
+              >Tipo de acción</label
+            >
+            <select
+              class="form-field__control"
+              id="action-type"
+              name="action_type_id"
+              required
+            >
+              <option value="" selected disabled>Selecciona una acción</option>
+            </select>
+            <p id="action-preview" class="form-field__hint" aria-live="polite">
+              Elige una acción para ver sus puntos y su impacto.
+            </p>
+          </div>
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,6 +48,7 @@
   <link rel="stylesheet" href="src/css/layout.css" />
   <link rel="stylesheet" href="src/css/form.css">
 </head>
+
 
 <body>
   <header class="site-header">
@@ -31,6 +69,9 @@
 
     <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
       <h2 id="dashboard-title" class="panel__title">Resumen</h2>
+
+      <section id="historial" class="panel hidden" aria-labelledby="historial-title">
+        <h2 id="historial-title" class="panel__title">Historial</h2>
 
       <dl class="stats-grid">
         <div class="stat-card">
