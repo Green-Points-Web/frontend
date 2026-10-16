@@ -59,33 +59,42 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const historyData = await response.json();
             const historyBody = document.querySelector('#history-body');
+            const historyEmpty = document.querySelector('#history-empty');
+            const tableWrapper = document.querySelector('#history-table-wrapper');
 
-            if (!historyBody) {
-                return;
-            }
+            if (!historyBody) return;
 
             historyBody.replaceChildren();
 
-            historyData.forEach(action => {
-                const row = document.createElement('tr');
+            // Si hay datos, ocultamos el texto vacío y mostramos la tabla
+            if (historyData && historyData.length > 0) {
+                if (historyEmpty) historyEmpty.hidden = true;
+                if (tableWrapper) tableWrapper.hidden = false;
 
-                const values = [
-                    action.action_date,
-                    `Acción #${action.action_type_id}`,
-                    action.category,
-                    action.description,
-                    action.points_earned,
-                    action.co2_saved
-                ];
+                historyData.forEach(action => {
+                    const row = document.createElement('tr');
+                    const values = [
+                        action.action_date,
+                        `Acción #${action.action_type_id}`,
+                        action.category,
+                        action.description,
+                        action.points_earned,
+                        action.co2_saved
+                    ];
 
-                values.forEach(value => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value ?? '—';
-                    row.appendChild(cell);
+                    values.forEach(value => {
+                        const cell = document.createElement('td');
+                        cell.textContent = value ?? '—';
+                        row.appendChild(cell);
+                    });
+
+                    historyBody.appendChild(row);
                 });
-
-                historyBody.appendChild(row);
-            });
+            } else {
+                // Si no hay datos, nos aseguramos de mostrar el mensaje de vacío
+                if (historyEmpty) historyEmpty.hidden = false;
+                if (tableWrapper) tableWrapper.hidden = true;
+            }
 
         } catch (error) {
             console.error('Error al cargar el historial:', error);

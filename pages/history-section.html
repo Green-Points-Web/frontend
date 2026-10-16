@@ -7,37 +7,31 @@
   <meta name="description"
     content="GreenPoints: registra tus acciones sostenibles, consigue puntos y consulta tu impacto ambiental." />
   <title>GreenPoints</title>
-  <link rel="stylesheet" href="../src/css/base.css" />
-  <link rel="stylesheet" href="../src/css/history.css" />
+  <link rel="stylesheet" href="/src/css/base.css" />
+  <link rel="stylesheet" href="/src/css/history.css" />
 </head>
 <body>
   <header class="site-header">
     <h1 class="site-title">GreenPoints</h1>
     <nav class="main-nav" aria-label="Navegación principal">
-      <ul class="main-nav__list">
-        <li><a class="main-nav__link" href="../index.html">Resumen</a></li>
-        <li><a class="main-nav__link" href="/components/catalog-section.html">Acciones</a></li>
-        <li><a class="main-nav__link" href="/components/history-section.html">Historial</a></li>
-      </ul>
+    <ul class="main-nav__list">
+          <li><a class="main-nav__link" href="../index.html">Resumen</a></li>
+          <li><a class="main-nav__link" href="/pages/catalog-section.html">Acciones</a></li>
+          <li><a class="main-nav__link" href="/pages/history-section.html">Historial</a></li>
+        </ul>
     </nav>
     <button type="button" id="open-modal-btn" class="btn btn--primary">Registro de acción</button>
   </header>
   <main class="main-container">
     <section class="view-section">
-      <header class="section-header">
+      <div class="section-header">
         <div>
           <span class="card-super-title">TU RECORRIDO</span>
           <h1 class="main-heading">Historial de acciones</h1>
           <p class="main-subtitle">Consulta todas las acciones sostenibles que has realizado.</p>
         </div>
-        <div>
-          <button class="btn-primary" type="button">
-            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
-            </svg>
-            <span>Registrar acción</span>
-          </button>
-        </div>
+        
+      </div>
       </header>
       <div class="history-kpi-bar">
         <div class="history-stat"><span class="bold">7</span> acciones</div>
@@ -86,13 +80,10 @@
       </div>
     </section>
   </main>
-  <script type="module" src="../src/js/main.js"></script>
-  <script type="module" src="../src/js/dashboard.js"></script>
-  <script type="module" src="../src/js/components/historyComponent.js"></script>
-  <script type="module" src="../src/js/components/dashboardComponent.js"></script>
-  <script type="module" src="../src/js/components/registrationModal.js"></script>
-  <script type="module" src="../src/js/services/historyService.js"></script>
-  <script type="module" src="../src/js/services/dashboardService.js"></script>
-  <script type="module" src="../src/js/services/actionService.js"></script>
+  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="../js/dashboard.js"></script>
+  <script type="module" src="../js/components/historyComponent.js"></script>
+  <script type="module" src="../js/components/registrationModal.js"></script>
+  <script type="module" src="../js/services/historyService.js"></script>
 </body>
 </html>
