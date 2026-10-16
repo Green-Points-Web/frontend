@@ -32,7 +32,7 @@ body {
 }
 
 /* ---------------------------------------------------
-   HEADER Y NAVEGACIÓN
+   HEADER & NAVEGATION BAR (NAVBAR)
    --------------------------------------------------- */
 .site-header {
   display: flex;
@@ -68,7 +68,7 @@ body {
 }
 
 /* ---------------------------------------------------
-   CONTENEDOR PRINCIPAL
+   MAIN CONTAINER
    --------------------------------------------------- */
 .site-main {
   max-width: 1200px;
@@ -84,7 +84,7 @@ body {
 }
 
 /* ---------------------------------------------------
-   ESTILOS DEL PROTOTIPO PARA EL RESUMEN
+   PROTOTYPE STYLES FOR THE SUMMARY
    --------------------------------------------------- */
 .dashboard-header { margin-bottom: 2rem; }
 .badge-super { font-size: 0.75rem; font-weight: bold; color: var(--clr-primary); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -139,7 +139,7 @@ body {
 .action-meta .arrow { color: #9ca3af; font-size: 1.25rem; }
 
 /* ---------------------------------------------------
-   ESTILOS GLOBALES DE BOTONES Y FORMULARIOS
+   GLOBAL BUTTONS & FORMULARY STYLES
    --------------------------------------------------- */
 .btn {
   display: inline-flex;
