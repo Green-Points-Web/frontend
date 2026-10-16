@@ -1,12 +1,10 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-let historyLoading = false;
-
-document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById("history-table-body")) {
-        initializeHistory();
-    }
-});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeHistory);
+} else {
+  initializeHistory();
+}
 
 async function initializeHistory() {
     const tableBody = document.getElementById("history-table-body");
