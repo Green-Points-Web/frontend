@@ -1,114 +1,357 @@
-document.addEventListener("DOMContentLoaded", () => {
-  inicializarHistorial();
-});
+const API_BASE_URL = "http://127.0.0.1:8000";
 
-const inicializarHistorial = async () => {
-  try {
-    const [historialRes, puntosRes] = await Promise.all([
-      fetch('historial.json'),
-      fetch('puntos.json')
-    ]);
+document.addEventListener("DOMContentLoaded", initializeHistory);
 
-    if (!historialRes.ok) {
-      throw new Error("No se pudo obtener el historial del backend.");
+async function initializeHistory() {
+    try {
+        const [historyResponse, dashboardResponse, catalogResponse] =
+            await Promise.all([
+                fetch(`${API_BASE_URL}/history`),
+                fetch(`${API_BASE_URL}/dashboard`),
+                fetch(`${API_BASE_URL}/catalog`)
+            ]);
+
+        if (!historyResponse.ok) {
+            throw new Error("Could not load the action history.");
+        }
+
+        if (!dashboardResponse.ok) {
+            throw new Error("Could not load dashboard statistics.");
+        }
+
+        const historyData = await historyResponse.json();
+        const dashboardData = await dashboardResponse.json();
+
+        const catalogData = catalogResponse.ok
+            ? await catalogResponse.json()
+            : [];
+
+        const actionNames = new Map(
+            catalogData.map(action => [action.id, action.name])
+        );
+
+        renderHistoryTable(historyData, actionNames);
+        updateKpiBar(dashboardData);
+
+        initializeHistoryFilters();
+
+    } catch (error) {
+        console.error("Error loading history:", error);
+        showHistoryError();
+    }
+}
+
+function normalizeCategory(category = "") {
+    const normalized = category
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
+    const categories = {
+        mobility: "Movilidad",
+        movilidad: "Movilidad",
+        nature: "Naturaleza",
+        naturaleza: "Naturaleza",
+        recycling: "Reciclaje",
+        reciclaje: "Reciclaje",
+        participation: "Participación",
+        participacion: "Participación"
+    };
+
+    return categories[normalized] || category;
+}
+
+function getActionIcon(actionName, category) {
+    const name = (actionName || "").toLowerCase();
+
+    if (/bike|bici|bicycle|bicicleta/.test(name)) {
+        return {
+            background: "#EFE8F8",
+            color: "#7A4DB8",
+            path: "M12 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 16l4-8h4l3 8m-7-8-2-3m6 3h3"
+        };
     }
 
-    const historialData = await historialRes.json();
-    renderHistoryTable(historialData);
-
-
-    if (puntosRes.ok) {
-      const puntosData = await puntosRes.json();
-      actualizarBarraKpi(puntosData);
+    if (/bus|transport|transporte|carpool|coche|car\b|walk|caminar/.test(name)) {
+        return {
+            background: "#EFE8F8",
+            color: "#7A4DB8",
+            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2M7 8h.01M17 8h.01M5 16h14"
+        };
     }
 
-  } catch (error) {
-    console.error("Error al conectar con el backend:", error);
-  }
-};
-
-const renderHistoryTable = (data) => {
-  const tbody = document.getElementById('history-table-body');
-  if (!tbody) return;
-  
-  tbody.innerHTML = "";
-
-  data.forEach(item => {
-    let iconBg = "#FAEDE5";
-    let iconColor = "#D9773B";
-    let svgPath = '<path d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" stroke-linecap="round" stroke-linejoin="round"></path>';
-
-    if (item.categoria === 'Naturaleza') {
-      iconBg = "#E5F5E9";
-      iconColor = "#2C8A4C";
-      svgPath = '<path d="M12 21v-5m0 0a6 6 0 0 1-6-6c0-2.5 1.5-4.5 3.5-5.5a5 5 0 0 1 8.5 2c1.5.5 2.5 2 2.5 3.5a6 6 0 0 1-6 6Z" stroke-linecap="round" stroke-linejoin="round"></path>';
-    } else if (item.categoria === 'Movilidad') {
-      iconBg = "#EFE8F8";
-      iconColor = "#7A4DB8";
-      svgPath = '<path d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h7.5m-9 0H4.5A2.25 2.25 0 0 1 2.25 16.5v-3.75m16.5 6a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.5a2.25 2.25 0 0 0 2.25-2.25v-3.75m-18-2.25 1.83-4.271A2.25 2.25 0 0 1 6.155 5.25h11.69a2.25 2.25 0 0 1 2.075 1.379l1.83 4.271M3 10.5h18" stroke-linecap="round" stroke-linejoin="round"></path>';
-    } else if (item.categoria === 'Reciclaje') {
-      iconBg = "#E2F4F2";
-      iconColor = "#2C8D85";
-      svgPath = '<path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" stroke-linecap="round" stroke-linejoin="round"></path>';
+    if (/recycl|recicl/.test(name)) {
+        return {
+            background: "#E2F4F2",
+            color: "#2C8D85",
+            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2M5 10l-2 2 2 2m14-4 2 2-2 2"
+        };
     }
 
-    const tr = document.createElement('tr');
-    tr.className = "history-row";
-    tr.setAttribute('data-category', item.categoria);
-    tr.setAttribute('data-name', `${item.accion} ${item.descripcion}`.toLowerCase());
+    if (/tree|arbol|árbol|plant|planta|nature|naturaleza/.test(name)) {
+        return {
+            background: "#E5F5E9",
+            color: "#2C8A4C",
+            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
+        };
+    }
 
-    tr.innerHTML = `
-      <td class="td-left">
-        <div style="display: flex; align-items: center; gap: 0.875rem;">
-          <div class="row-icon-box" style="background-color: ${iconBg}; color: ${iconColor};">
-            <svg class="icon-md" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">${svgPath}</svg>
-          </div>
-          <div>
-            <div class="row-main-title">${item.accion}</div>
-            <div class="row-sub-desc">${item.descripcion}</div>
-          </div>
-        </div>
-      </td>
-      <td class="td-general">${item.fecha}</td>
-      <td class="td-general">
-        <span class="category-tag-table">${item.categoria}</span>
-      </td>
-      <td class="td-general">
-        <div style="display: flex; align-items: center; gap: 0.375rem;">
-          <svg class="icon-sm text-green-accent" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21V3m0 0c2.485 0 4.5 4.03 4.5 9S14.485 21 12 21m0-18C9.515 3 7.5 7.03 7.5 12s2.015 9 4.5 9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-          <span>${item.impacto}</span>
-        </div>
-      </td>
-      <td class="td-right">${item.puntos}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-};
+    if (/volunteer|voluntari|particip/.test(name)) {
+        return {
+            background: "#FAEDE5",
+            color: "#D9773B",
+            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m2 3a4 4 0 0 1 2 3v2"
+        };
+    }
 
-const actualizarBarraKpi = (data) => {
-  const kpiBar = document.querySelector('.history-kpi-bar');
-  if (!kpiBar || !data) return;
+    const normalizedCategory = normalizeCategory(category);
 
-  kpiBar.innerHTML = `
-    <div class="history-stat"><span class="bold">${data.totalAcciones}</span> acciones</div>
-    <div class="history-divider"></div>
-    <div class="history-stat"><span class="bold">${data.totalPuntos}</span> puntos</div>
-    <div class="history-divider"></div>
-    <div class="history-stat"><span class="bold">${data.totalCo2} kg</span> CO₂ evitados</div>
-  `;
-};
+    const categoryIcons = {
+        Movilidad: {
+            background: "#EFE8F8",
+            color: "#7A4DB8",
+            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2"
+        },
+        Naturaleza: {
+            background: "#E5F5E9",
+            color: "#2C8A4C",
+            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
+        },
+        Reciclaje: {
+            background: "#E2F4F2",
+            color: "#2C8D85",
+            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2"
+        },
+        Participación: {
+            background: "#FAEDE5",
+            color: "#D9773B",
+            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+        }
+    };
 
-const filterHistory = () => {
-  const searchTerm = document.getElementById('search-input').value.toLowerCase();
-  const category = document.getElementById('category-filter').value;
-  const rows = document.querySelectorAll('.history-row');
+    return categoryIcons[normalizedCategory] || {
+        background: "#FAEDE5",
+        color: "#D9773B",
+        path: "M12 3v18m-9-9h18"
+    };
+}
 
-  rows.forEach(row => {
-    const rowName = (row.getAttribute('data-name') || '').toLowerCase();
-    const rowCat = row.getAttribute('data-category');
-    const matchesSearch = rowName.includes(searchTerm);
-    const matchesCategory = (category === 'all' || rowCat === category);
+function renderHistoryTable(historyData, actionNames = new Map()) {
+    const tableBody = document.getElementById("history-table-body");
 
-    row.style.display = (matchesSearch && matchesCategory) ? '' : 'none';
-  });
-};
+    if (!tableBody) {
+        console.warn("History table body was not found.");
+        return;
+    }
+
+    tableBody.replaceChildren();
+
+    if (!Array.isArray(historyData) || historyData.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 5;
+        cell.className = "history-empty";
+        cell.textContent = "Todavía no hay acciones registradas.";
+
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+
+    historyData.forEach(item => {
+        const actionName =
+            actionNames.get(item.action_type_id) ||
+            `Acción #${item.action_type_id}`;
+
+        const category = normalizeCategory(item.category);
+        const description = item.description || "Acción sostenible";
+        const icon = getActionIcon(actionName, category);
+
+        const row = document.createElement("tr");
+        row.className = "history-row";
+        row.dataset.category = category;
+        row.dataset.name = `${actionName} ${description}`.toLowerCase();
+
+        const actionCell = document.createElement("td");
+        actionCell.className = "td-left";
+
+        const actionWrapper = document.createElement("div");
+        actionWrapper.className = "history-action-wrapper";
+
+        const iconBox = document.createElement("div");
+        iconBox.className = "row-icon-box";
+        iconBox.style.backgroundColor = icon.background;
+        iconBox.style.color = icon.color;
+
+        const svg = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
+        );
+
+        svg.setAttribute("class", "icon-md");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "1.8");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+
+        const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+        );
+
+        path.setAttribute("d", icon.path);
+        svg.appendChild(path);
+        iconBox.appendChild(svg);
+
+        const textWrapper = document.createElement("div");
+
+        const title = document.createElement("div");
+        title.className = "row-main-title";
+        title.textContent = actionName;
+
+        const subtitle = document.createElement("div");
+        subtitle.className = "row-sub-desc";
+        subtitle.textContent = description;
+
+        textWrapper.append(title, subtitle);
+        actionWrapper.append(iconBox, textWrapper);
+        actionCell.appendChild(actionWrapper);
+
+        const dateCell = document.createElement("td");
+        dateCell.className = "td-general";
+        dateCell.textContent = formatDate(item.action_date);
+
+        const categoryCell = document.createElement("td");
+        categoryCell.className = "td-general";
+
+        const categoryTag = document.createElement("span");
+        categoryTag.className = "category-tag-table";
+        categoryTag.textContent = category;
+        categoryCell.appendChild(categoryTag);
+
+        const impactCell = document.createElement("td");
+        impactCell.className = "td-general";
+        impactCell.textContent = `${Number(item.co2_saved || 0)} kg`;
+
+        const pointsCell = document.createElement("td");
+        pointsCell.className = "td-right";
+        pointsCell.textContent = String(item.points_earned ?? 0);
+
+        row.append(
+            actionCell,
+            dateCell,
+            categoryCell,
+            impactCell,
+            pointsCell
+        );
+
+        tableBody.appendChild(row);
+    });
+
+    filterHistory();
+}
+
+function formatDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(`${value}T00:00:00`);
+
+    if (Number.isNaN(date.getTime())) {
+        return value;
+    }
+
+    return date.toLocaleDateString("es-ES");
+}
+
+function updateKpiBar(data) {
+    const kpiBar = document.querySelector(".history-kpi-bar");
+
+    if (!kpiBar || !data) return;
+
+    const values = [
+        [data.total_actions ?? 0, "acciones"],
+        [data.total_points ?? 0, "puntos"],
+        [`${data.total_co2_impact_kg ?? 0} kg`, "CO₂ evitados"]
+    ];
+
+    kpiBar.replaceChildren();
+
+    values.forEach(([value, label], index) => {
+        if (index > 0) {
+            const divider = document.createElement("div");
+            divider.className = "history-divider";
+            kpiBar.appendChild(divider);
+        }
+
+        const stat = document.createElement("div");
+        stat.className = "history-stat";
+
+        const number = document.createElement("span");
+        number.className = "bold";
+        number.textContent = String(value);
+
+        stat.append(number, document.createTextNode(` ${label}`));
+        kpiBar.appendChild(stat);
+    });
+}
+
+function initializeHistoryFilters() {
+    const searchInput = document.getElementById("search-input");
+    const categoryFilter = document.getElementById("category-filter");
+
+    if (searchInput) {
+        searchInput.addEventListener("input", filterHistory);
+    }
+
+    if (categoryFilter) {
+        categoryFilter.addEventListener("change", filterHistory);
+    }
+}
+
+function filterHistory() {
+    const searchInput = document.getElementById("search-input");
+    const categoryFilter = document.getElementById("category-filter");
+
+    const searchTerm = (searchInput?.value || "").toLowerCase().trim();
+    const selectedCategory = categoryFilter?.value || "all";
+
+    document.querySelectorAll(".history-row").forEach(row => {
+        const rowName = row.dataset.name || "";
+        const rowCategory = row.dataset.category || "";
+
+        const matchesSearch = rowName.includes(searchTerm);
+        const matchesCategory =
+            selectedCategory === "all" ||
+            normalizeCategory(selectedCategory) === rowCategory;
+
+        row.style.display =
+            matchesSearch && matchesCategory ? "" : "none";
+    });
+}
+
+function showHistoryError() {
+    const tableBody = document.getElementById("history-table-body");
+
+    if (!tableBody) return;
+
+    tableBody.replaceChildren();
+
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+
+    cell.colSpan = 5;
+    cell.className = "history-empty";
+    cell.textContent =
+        "No se pudo cargar el historial. Comprueba que el backend está activo e inténtalo de nuevo.";
+
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+}
+
+window.filterHistory = filterHistory;
+window.renderHistoryTable = renderHistoryTable;
+window.updateKpiBar = updateKpiBar;
