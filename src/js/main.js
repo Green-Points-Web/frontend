@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(async () => {
                 await updateDashboardStats();
                 if (window.location.hash === '#historial') {
-                 await loadHistory();
-              }
+                    loadHistory();
+                }
             }, 500);
         });
     }
@@ -125,8 +125,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (hash === '#historial') {
-              await loadHistory();
-          }
+                loadHistory(); 
+            }
 
         } catch (error) {
             console.error("Error al cargar la vista:", error);
@@ -153,13 +153,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPage(initialHash);
     await updateDashboardStats();
 
-async function loadHistory() {
-    if (typeof window.initializeHistory !== "function") {
-        console.error("El servicio del historial no está cargado.");
-        return;
+    async function loadHistory() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/history');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const historyData = await response.json();
+            const historyBody = document.querySelector('#history-table-body');
+
+            if (!historyBody) return;
+            historyBody.replaceChildren();
+
+            if (historyData && historyData.length > 0) {
+                historyData.forEach(action => {
+                    const row = document.createElement('tr');
+                    const values = [
+                        action.description || `Acción #${action.action_type_id}`,
+                        action.action_date,
+                        action.category || 'General',
+                        `${action.co2_saved ?? 0} kg CO₂`,
+                        `+${action.points_earned ?? 0} pts`
+                    ];
+
+                    values.forEach(value => {
+                        const cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    historyBody.appendChild(row);
+                });
+            }
+        } catch (error) {
+            console.error('Error al cargar el historial:', error);
+        }
     }
-
-    await window.initializeHistory();
-}
-
 });

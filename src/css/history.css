@@ -5,11 +5,11 @@
 }
 
 .view-section {
-  max-width: 90rem;
+  max-width: 72rem;
   width: 100%;
-  box-sizing: border-box;
-  margin: 2rem auto 0;
+  margin: 0 auto;
   padding: 0 1.5rem;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -316,4 +316,3 @@
 .history-table tbody tr {
   color: #2C3831;
 }
-
