@@ -18,30 +18,69 @@
     <div>
       <span class="card-super-title">TU RECORRIDO</span>
       <h1 class="main-heading">Historial de acciones</h1>
-      <p class="main-subtitle">Consulta todas las acciones sostenibles que has realizado.</p>
+      <p class="main-subtitle">
+        Consulta todas las acciones sostenibles que has realizado.
+      </p>
     </div>
   </header>
 
-  <div class="history-kpi-bar">
-    <div class="history-stat"><span class="bold">7</span> acciones</div>
-    <div class="history-divider"></div>
-    <div class="history-stat"><span class="bold">210</span> puntos</div>
-    <div class="history-divider"></div>
-    <div class="history-stat"><span class="bold">15 kg</span> CO₂ ahorrados</div>
+  <div class="history-kpi-bar" aria-label="Resumen de tu actividad">
+    <div class="history-stat">
+      <span class="history-stat-value" id="history-total-actions">—</span>
+      <span>acciones</span>
+    </div>
+
+    <div class="history-divider" aria-hidden="true"></div>
+
+    <div class="history-stat">
+      <span class="history-stat-value" id="history-total-points">—</span>
+      <span>puntos</span>
+    </div>
+
+    <div class="history-divider" aria-hidden="true"></div>
+
+    <div class="history-stat">
+      <span class="history-stat-value" id="history-total-co2">—</span>
+      <span>CO₂ ahorrados</span>
+    </div>
   </div>
 
   <div class="filter-bar">
     <div class="search-box-wrapper">
-      <div class="search-icon">
-        <svg class="icon-sm text-slate" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            stroke-linecap="round" stroke-linejoin="round"></path>
+      <label class="search-icon" for="search-input" aria-label="Buscar acciones">
+        <svg
+          class="icon-sm"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m16 16 4 4" stroke-linecap="round"></path>
         </svg>
-      </div>
-      <input class="search-input" id="search-input" onkeyup="filterHistory()"
-        placeholder="Buscar en tus acciones..." type="text">
+      </label>
 
-      <select class="select-filter" id="category-filter" onchange="filterHistory()">
+      <input
+        class="search-input"
+        id="search-input"
+        type="search"
+        placeholder="Buscar en tus acciones..."
+        oninput="filterHistory()"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="category-filter-wrapper">
+      <label class="visually-hidden" for="category-filter">
+        Filtrar por categoría
+      </label>
+
+      <select
+        class="select-filter"
+        id="category-filter"
+        onchange="filterHistory()"
+      >
         <option value="all">Todas las categorías</option>
         <option value="Movilidad">Movilidad</option>
         <option value="Naturaleza">Naturaleza</option>
@@ -56,23 +95,22 @@
       <table class="history-table">
         <thead>
           <tr>
-            <th class="th-left">ACCIÓN</th>
-            <th class="th-general">FECHA</th>
-            <th class="th-general">CATEGORÍA</th>
-            <th class="th-general">IMPACTO</th>
-            <th class="th-general">PUNTOS</th>
+            <th class="th-left" scope="col">ACCIÓN</th>
+            <th class="th-general" scope="col">FECHA</th>
+            <th class="th-general" scope="col">CATEGORÍA</th>
+            <th class="th-general" scope="col">IMPACTO</th>
+            <th class="th-right" scope="col">PUNTOS</th>
           </tr>
         </thead>
-        <tbody id="history-table-body"></tbody>
+
+        <tbody id="history-table-body">
+          <tr>
+            <td class="history-loading" colspan="5">
+              Cargando tu historial...
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
 </section>
-  </main>
-  <script type="module" src="../js/main.js"></script>
-  <script type="module" src="../js/dashboard.js"></script>
-  <script type="module" src="../js/components/historyComponent.js"></script>
-  <script type="module" src="../js/components/registrationModal.js"></script>
-  <script type="module" src="../js/services/historyService.js"></script>
-</body>
-</html>
