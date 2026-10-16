@@ -3,94 +3,254 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="GreenPoints: registra tus acciones sostenibles, consigue puntos y consulta tu impacto ambiental." />
+    <meta
+      name="description"
+      content="GreenPoints: registra tus acciones sostenibles, consigue puntos y consulta tu impacto ambiental."
+    />
     <title>GreenPoints</title>
-    <link rel="stylesheet" href="src/css/base.css" />
-    <link rel="stylesheet" href="src/css/catalog.css" />
-    <link rel="stylesheet" href="src/css/registration.css" />
-    <link rel="stylesheet" href="src/css/history.css" />
+    <link rel="stylesheet" href="./src/css/base.css" />
+    <link rel="stylesheet" href="./src/css/catalog.css" />
+    <link rel="stylesheet" href="./src/css/registration.css" />
+    <link rel="stylesheet" href="./src/css/history.css" />
   </head>
   <body>
     <header class="site-header">
       <h1 class="site-title">GreenPoints</h1>
       <nav class="main-nav" aria-label="Navegación principal">
         <ul class="main-nav__list">
-          <li><a class="main-nav__link" href="../index.html">Resumen</a></li>
-          <li><a class="main-nav__link" href="/pages/catalog-section.html">Acciones</a></li>
-          <li><a class="main-nav__link" href="/pages/history-section.html">Historial</a></li>
+          <li><a class="main-nav__link" href="#dashboard">Resumen</a></li>
+          <li><a class="main-nav__link" href="#acciones">Acciones</a></li>
+          <li><a class="main-nav__link" href="#historial">Historial</a></li>
         </ul>
       </nav>
-      <button type="button" id="open-modal-btn" class="btn btn--primary">Registro de acción</button>
+      <button type="button" id="open-modal-btn" class="btn btn--primary">
+        Registro de acción
+      </button>
       <section id="modal-registration" class="modal-backdrop">
-      <div class="modal-container">
-        <button type="button" id="close-modal-btn" class="close-btn" aria-label="Cerrar">&times;</button>
-        <div class="modal-header">
-          <h2>Registro de acción</h2>
-          <p class="modal-subtitle">Selecciona la actividad sostenible de hoy</p>
+        <div class="modal-container">
+          <button
+            type="button"
+            id="close-modal-btn"
+            class="close-btn"
+            aria-label="Cerrar"
+          >
+            &times;
+          </button>
+          <div class="modal-header">
+            <h2>Registro de acción</h2>
+            <p class="modal-subtitle">
+              Selecciona la actividad sostenible de hoy
+            </p>
+          </div>
+<form id="modal-action-form">
+                <div class="form-group">
+              <label for="modal-action-type-select">Registro de acción</label>
+              <select
+                id="modal-action-type-select"
+                name="action_type_id"
+                required
+              >
+                <option value="" disabled selected>
+                  Selecciona una eco-acción...
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="modal-action-date">Fecha</label>
+              <input
+                type="date"
+                id="modal-action-date"
+                name="action_date"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="modal-action-description"
+                >Descripción / Comentarios</label
+              >
+              <textarea
+                id="modal-action-description"
+                name="description"
+                rows="3"
+                maxlength="255"
+                placeholder="Cuéntanos brevemente los detalles..."
+              ></textarea>
+            </div>
+            <div class="impact-box">
+              <span class="impact-label">Impacto estimado:</span>
+              <span id="modal-impact-value" class="impact-value"
+                >+0 pts · 0 kg CO₂</span
+              >
+            </div>
+            <div id="form-feedback" class="feedback-message" hidden></div>
+            <div class="modal-actions">
+              <button type="button" id="cancel-btn" class="btn-secondary">
+                Cancelar
+              </button>
+              <button type="submit" id="submit-btn" class="btn-primary">
+                Guardar eco-acción
+              </button>
+            </div>
+          </form>
         </div>
-        <form id="modal-action-form">
-          <div class="form-group">
-            <label for="modal-action-type-select">Registro de acción</label>
-            <select id="modal-action-type-select" name="action_type_id" required>
-              <option value="" disabled selected>Selecciona una eco-acción...</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="modal-action-date">Fecha</label>
-            <input type="date" id="modal-action-date" name="action_date" required />
-          </div>
-          <div class="form-group">
-            <label for="modal-action-description">Descripción / Comentarios</label>
-            <textarea id="modal-action-description" name="description" rows="3" maxlength="255" placeholder="Cuéntanos brevemente los detalles..."></textarea>
-          </div>
-          <div class="impact-box">
-            <span class="impact-label">Impacto estimado:</span>
-            <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
-          </div>
-          <div id="form-feedback" class="feedback-message" hidden></div>
-          <div class="modal-actions">
-            <button type="button" id="cancel-btn" class="btn-secondary">Cancelar</button>
-            <button type="submit" id="submit-btn" class="btn-primary">Guardar eco-acción</button>
-          </div>
-        </form>
-      </div>
-    </section>
+      </section>
     </header>
 
     <main class="site-main">
       <p id="app-error" class="app-error" role="alert" hidden></p>
 
-      <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
-        <h2 id="dashboard-title" class="panel__title">Resumen</h2>
-        <dl class="stats-grid">
-          <div class="stat-card">
-            <dt class="stat-card__label">Puntos acumulados</dt>
-            <dd class="stat-card__value" id="stat-points">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Nivel actual</dt>
-            <dd class="stat-card__value" id="stat-level">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Acciones realizadas</dt>
-            <dd class="stat-card__value" id="stat-actions">—</dd>
-          </div>
-          <div class="stat-card">
-            <dt class="stat-card__label">Impacto estimado (kg CO₂)</dt>
-            <dd class="stat-card__value" id="stat-co2">—</dd>
-          </div>
-        </dl>
-        <div class="level-progress">
-          <p id="level-progress-text" class="level-progress__text">Progreso hacia el siguiente nivel</p>
-          <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100" aria-labelledby="level-progress-text"></progress>
+     <section id="dashboard" class="panel" aria-labelledby="dashboard-title">
+  <!-- Encabezado (Sin usuario de momento) -->
+  <div class="dashboard-header">
+    <span class="badge-super">★ TU IMPACTO IMPORTA</span>
+    <h2 id="dashboard-title">Resumen de actividad</h2>
+    <p class="subtitle">Cada pequeña acción suma. Sigue avanzando hacia un futuro más sostenible.</p>
+  </div>
+
+<!-- Grid de 4 Estadísticas (Con los IDs restaurados) -->
+  <div class="stats-grid prototype-grid">
+    <div class="stat-card card-dark">
+      <dt>Puntos acumulados</dt>
+      <dd id="stat-points">0</dd>
+      <span class="stat-sub">+100 esta semana</span>
+    </div>
+    <div class="stat-card">
+      <dt>Nivel actual</dt>
+      <dd id="stat-level">Seed</dd>
+      <span class="stat-sub">90 pts para Tree</span>
+    </div>
+    <div class="stat-card">
+      <dt>Impacto estimado</dt>
+      <dd><span id="stat-co2">0.00</span> <small>kg</small></dd>
+      <span class="stat-sub">de CO₂ evitados</span>
+    </div>
+    <div class="stat-card">
+      <dt>Acciones realizadas</dt>
+      <dd>⏱ <span id="stat-actions">0</span></dd>
+      <span class="stat-sub">Pequeños grandes cambios</span>
+    </div>
+  </div>
+
+  <!-- Sección central: Progreso y Gráfico -->
+  <div class="dashboard-middle">
+    <!-- Tarjeta de Progreso -->
+    <div class="card progress-card">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">TU PROGRESO</span>
+          <h3>Camino a Tree</h3>
         </div>
-      </section>
+        <span class="badge-level">🌱 Nivel Sprout</span>
+      </div>
+      <div class="progress-labels">
+        <span>210 pts</span>
+        <span>300 pts</span>
+      </div>
+      <progress id="level-progress-bar" class="level-progress__bar" value="210" max="300"></progress>
+      <div class="progress-labels-bottom">
+        <span>Sprout</span>
+        <span>Tree</span>
+      </div>
+      <div class="progress-alert">
+        <strong>💡 ¡Lo estás haciendo genial!</strong> Te faltan 90 puntos para alcanzar el nivel Tree.
+      </div>
+    </div>
+
+    <!-- Tarjeta de Evolución -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">ÚLTIMOS 7 DÍAS</span>
+          <h3>Tu evolución</h3>
+        </div>
+        <a href="#historial" class="link-action">Ver historial &rarr;</a>
+      </div>
+      <div class="mock-chart">
+        <div class="bar" style="height: 40%;"></div>
+        <div class="bar" style="height: 60%;"></div>
+        <div class="bar" style="height: 50%;"></div>
+        <div class="bar" style="height: 70%;"></div>
+        <div class="bar" style="height: 60%;"></div>
+        <div class="bar active" style="height: 100%;"></div>
+        <div class="bar" style="height: 80%;"></div>
+      </div>
+      <div class="chart-labels">
+        <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span class="active">S</span><span>D</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Últimas Acciones -->
+  <div class="recent-actions">
+    <div class="card-header">
+      <div>
+        <span class="eyebrow">ACTIVIDAD RECIENTE</span>
+        <h3>Tus últimas acciones</h3>
+      </div>
+      <a href="#historial" class="btn-outline">Ver todas &rarr;</a>
+    </div>
+
+    <div class="actions-list">
+      <!-- Acción 1 -->
+      <div class="action-item">
+        <div class="action-info">
+          <div class="action-icon participation">🤝</div>
+          <div>
+            <h4>Voluntariado ambiental</h4>
+            <p>Limpieza del parque junto al equipo</p>
+          </div>
+        </div>
+        <div class="action-meta">
+          <span class="date">🕒 8 Oct</span>
+          <span class="co2">🌱 15 kg CO₂</span>
+          <span class="points">+100 pts</span>
+          <span class="arrow">&rsaquo;</span>
+        </div>
+      </div>
+
+      <!-- Acción 2 -->
+      <div class="action-item">
+        <div class="action-info">
+          <div class="action-icon nature">🌳</div>
+          <div>
+            <h4>Plantar un árbol</h4>
+            <p>Jornada de reforestación de GreenCorp</p>
+          </div>
+        </div>
+        <div class="action-meta">
+          <span class="date">🕒 6 Oct</span>
+          <span class="co2">🌱 10 kg CO₂</span>
+          <span class="points">+50 pts</span>
+          <span class="arrow">&rsaquo;</span>
+        </div>
+      </div>
+
+      <!-- Acción 3 -->
+      <div class="action-item">
+        <div class="action-info">
+          <div class="action-icon mobility">🚗</div>
+          <div>
+            <h4>Compartir coche</h4>
+            <p>Trayecto compartido con dos compañeros</p>
+          </div>
+        </div>
+        <div class="action-meta">
+          <span class="date">🕒 5 Oct</span>
+          <span class="co2">🌱 1.5 kg CO₂</span>
+          <span class="points">+20 pts</span>
+          <span class="arrow">&rsaquo;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
     </main>
 
-
-    
-<script type="module" src="./src/js/main.js"></script>
-<script type="module" src="./src/js/dashboard.js"></script>
-<script type="module" src="./src/js/components/registrationModal.js"></script>
+    <script type="module" src="./src/js/main.js"></script>
+    <script type="module" src="./src/js/dashboard.js"></script>
+    <script
+      type="module"
+      src="./src/js/components/registrationModal.js"
+    ></script>
   </body>
 </html>

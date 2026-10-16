@@ -1,105 +1,191 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("App initialized. Attempting to connect to the backend...");
-
-    try {
-        const response = await fetch('http://127.0.0.1:8000/catalog');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const catalogData = await response.json();
-        console.log("Success! Catalog loaded:", catalogData);
-
-        const actionSelect = document.querySelector('#action-type');
-        
-        if (actionSelect && catalogData.length > 0) {
-            actionSelect.innerHTML = '<option value="">Selecciona una acción</option>';
-            
-            for (const action of catalogData) {
-                const option = document.createElement('option');
-                option.value = action.id;
-                option.textContent = `${action.name} (+${action.points} pts, -${action.co2_kg}kg CO2)`;
-                actionSelect.appendChild(option);
-            }
-        }
-    } catch (error) {
-        console.error("Error connecting to the backend:", error);
+    const mainContainer = document.querySelector('.site-main');
+    const dashboardSection = document.querySelector('#dashboard');
+    const menuLinks = document.querySelectorAll('nav a');
+    
+    let dynamicContent = document.querySelector('#dynamic-content');
+    if (!dynamicContent && mainContainer) {
+        dynamicContent = document.createElement('div');
+        dynamicContent.id = 'dynamic-content';
+        mainContainer.appendChild(dynamicContent);
     }
 
-    const menuLinks = document.querySelectorAll('nav a'); 
-    const sections = document.querySelectorAll('main > section');
+    const routes = {
+        '#acciones': 'catalog-section', 
+        '#historial': 'history-section'
+    };
+
+    // Función para actualizar las estadísticas del Resumen consultando al backend
+    async function updateDashboardStats() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/history');
+            if (!response.ok) return;
+            const historyData = await response.json();
+
+            if (historyData && Array.isArray(historyData)) {
+                const totalActions = historyData.length;
+                const totalPoints = historyData.reduce((acc, curr) => acc + (curr.points_earned || 0), 0);
+                const totalCo2 = historyData.reduce((acc, curr) => acc + (curr.co2_saved || 0), 0);
+
+                const pointsEl = document.querySelector('#stat-points');
+                const actionsEl = document.querySelector('#stat-actions');
+                const co2El = document.querySelector('#stat-co2');
+
+                if (pointsEl) pointsEl.textContent = totalPoints;
+                if (actionsEl) actionsEl.textContent = totalActions;
+                if (co2El) co2El.textContent = totalCo2.toFixed(2);
+            }
+        } catch (error) {
+            console.error('Error al actualizar estadísticas:', error);
+        }
+    }
+
+    // NUEVO: Vigilar también el envío del formulario manual (botón de arriba)
+    const modalForm = document.querySelector('#modal-action-form');
+    if (modalForm) {
+        modalForm.addEventListener('submit', () => {
+            setTimeout(async () => {
+                await updateDashboardStats();
+                if (window.location.hash === '#historial') {
+                    loadHistory();
+                }
+            }, 500);
+        });
+    }
+
+    async function loadPage(hash) {
+        if (hash === '#dashboard' || hash === '') {
+            if (dashboardSection) dashboardSection.hidden = false;
+            if (dynamicContent) dynamicContent.innerHTML = ''; 
+            await updateDashboardStats();
+            return;
+        }
+
+        const fileName = routes[hash];
+        if (!fileName) return;
+
+        try {
+            const response = await fetch(`./pages/${fileName}.html`);
+            if (!response.ok) throw new Error('Archivo no encontrado');
+            
+            const html = await response.text();
+            
+            if (dashboardSection) dashboardSection.hidden = true;
+            if (dynamicContent) {
+                dynamicContent.hidden = false;
+                dynamicContent.innerHTML = html;
+
+                // --- REGISTRO DIRECTO DESDE EL CATÁLOGO ---
+                if (hash === '#acciones') {
+                    const registerButtons = dynamicContent.querySelectorAll('.btn-register');
+                    const actionSelect = document.querySelector('#modal-action-type-select');
+                    const dateInput = document.querySelector('#modal-action-date');
+                    const descInput = document.querySelector('#modal-action-description');
+                    const submitBtn = document.querySelector('#submit-btn'); 
+                    
+                    registerButtons.forEach(button => {
+                        button.addEventListener('click', async (e) => {
+                            const card = e.target.closest('.action-card');
+                            const actionName = card ? card.querySelector('h3').textContent.trim() : 'Acción';
+
+                            if (actionSelect && actionSelect.options.length > 1) {
+                                const optionToSelect = Array.from(actionSelect.options).find(opt => 
+                                    opt.text.toLowerCase().includes(actionName.toLowerCase().split(' ')[0])
+                                );
+                                actionSelect.value = optionToSelect ? optionToSelect.value : actionSelect.options[1].value;
+                                actionSelect.dispatchEvent(new Event('change'));
+                            }
+
+                            if (dateInput) {
+                                dateInput.value = new Date().toISOString().split('T')[0];
+                            }
+                            
+                            if (descInput) {
+                                descInput.value = "Registro automático desde el catálogo: " + actionName;
+                            }
+
+                            if (submitBtn) {
+                                submitBtn.click();
+                                
+                                const originalText = button.innerHTML;
+                                button.innerHTML = "¡Registrado! ✅";
+                                button.style.backgroundColor = "#1b362d";
+                                button.style.color = "white";
+                                
+                                setTimeout(async () => {
+                                    button.innerHTML = originalText;
+                                    button.style.backgroundColor = "";
+                                    button.style.color = "";
+                                    await updateDashboardStats();
+                                }, 1500);
+                            }
+                        });
+                    });
+                }
+            }
+
+            if (hash === '#historial') {
+                loadHistory(); 
+            }
+
+        } catch (error) {
+            console.error("Error al cargar la vista:", error);
+            if (dashboardSection) dashboardSection.hidden = true;
+            if (dynamicContent) {
+                dynamicContent.hidden = false;
+                dynamicContent.innerHTML = '<p>Error al cargar la sección.</p>';
+            }
+        }
+    }
 
     menuLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            const targetId = link.getAttribute('href');
-            
-            if (targetId && targetId.startsWith('#')) {
-                e.preventDefault(); 
-
-                sections.forEach(section => {
-                    section.classList.add('hidden');
-                });
-
-                const targetSection = document.querySelector(targetId);
-                if (targetSection) {
-                    targetSection.classList.remove('hidden');
-                }
+            const hash = link.getAttribute('href');
+            if (hash && hash.startsWith('#')) {
+                e.preventDefault();
+                history.pushState(null, null, hash);
+                loadPage(hash);
             }
         });
     });
 
-        async function loadHistory() {
+    const initialHash = window.location.hash || '#dashboard';
+    loadPage(initialHash);
+    await updateDashboardStats();
+
+    async function loadHistory() {
         try {
             const response = await fetch('http://127.0.0.1:8000/history');
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const historyData = await response.json();
-            const historyBody = document.querySelector('#history-body');
-            const historyEmpty = document.querySelector('#history-empty');
-            const tableWrapper = document.querySelector('#history-table-wrapper');
+            const historyBody = document.querySelector('#history-table-body');
 
             if (!historyBody) return;
-
             historyBody.replaceChildren();
 
-            // Si hay datos, ocultamos el texto vacío y mostramos la tabla
             if (historyData && historyData.length > 0) {
-                if (historyEmpty) historyEmpty.hidden = true;
-                if (tableWrapper) tableWrapper.hidden = false;
-
                 historyData.forEach(action => {
                     const row = document.createElement('tr');
                     const values = [
+                        action.description || `Acción #${action.action_type_id}`,
                         action.action_date,
-                        `Acción #${action.action_type_id}`,
-                        action.category,
-                        action.description,
-                        action.points_earned,
-                        action.co2_saved
+                        action.category || 'General',
+                        `${action.co2_saved ?? 0} kg CO₂`,
+                        `+${action.points_earned ?? 0} pts`
                     ];
 
                     values.forEach(value => {
                         const cell = document.createElement('td');
-                        cell.textContent = value ?? '—';
+                        cell.textContent = value;
                         row.appendChild(cell);
                     });
 
                     historyBody.appendChild(row);
                 });
-            } else {
-                // Si no hay datos, nos aseguramos de mostrar el mensaje de vacío
-                if (historyEmpty) historyEmpty.hidden = false;
-                if (tableWrapper) tableWrapper.hidden = true;
             }
-
         } catch (error) {
             console.error('Error al cargar el historial:', error);
         }
     }
-
-    loadHistory();
 });
