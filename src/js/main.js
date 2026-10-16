@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         '#historial': 'history-section'
     };
 
-    // Función para actualizar las estadísticas del Resumen consultando al backend
+    // Function to update Summary statistics by querying the backend
     async function updateDashboardStats() {
         try {
             const response = await fetch('http://127.0.0.1:8000/history');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // NUEVO: Vigilar también el envío del formulario manual (botón de arriba)
+    // Monitor the manual form submission (top button)
     const modalForm = document.querySelector('#modal-action-form');
     if (modalForm) {
         modalForm.addEventListener('submit', () => {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dynamicContent.hidden = false;
                 dynamicContent.innerHTML = html;
 
-                // --- REGISTRO DIRECTO DESDE EL CATÁLOGO ---
+                // --- Direct registration from the catalog ---
                 if (hash === '#acciones') {
                     const registerButtons = dynamicContent.querySelectorAll('.btn-register');
                     const actionSelect = document.querySelector('#modal-action-type-select');
