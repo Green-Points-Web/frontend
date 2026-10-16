@@ -5,11 +5,11 @@
 }
 
 .view-section {
-  max-width: 72rem;
+  max-width: 90rem;
   width: 100%;
-  margin: 0 auto;
+  box-sizing: border-box;
+  margin: 2rem auto 0;
   padding: 0 1.5rem;
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -253,3 +253,348 @@
   border: 1px solid #D1E5DC;
 }
 
+.history-action-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.row-icon-box .icon-md {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  flex-shrink: 0;
+}
+
+.row-icon-box svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  overflow: visible;
+  stroke: currentColor;
+}
+
+.history-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.history-stat-value {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #1a5b3f;
+  font-variant-numeric: tabular-nums;
+}
+
+.history-kpi-bar {
+  min-height: 4.25rem;
+}
+
+.filter-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.search-box-wrapper {
+  min-width: 0;
+  flex: 1;
+}
+
+.search-icon {
+  color: #718578;
+}
+
+.search-icon .icon-sm {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.search-input {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
+.category-filter-wrapper {
+  flex: 0 0 13rem;
+  min-width: 0;
+}
+
+.select-filter {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.history-table {
+  min-width: 46rem;
+}
+
+.history-table th {
+  white-space: nowrap;
+}
+
+.history-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.history-loading {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: #718578;
+  font-size: 0.875rem;
+}
+
+
+.row-icon-box {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  box-shadow: none;
+}
+
+.row-icon-box svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Accessible labels */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+@media (max-width: 700px) {
+  .view-section {
+    max-width: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 1rem;
+    margin: 1.5rem 0 0;
+    gap: 1.25rem;
+  }
+
+  .main-heading {
+    font-size: 1.65rem;
+  }
+
+  .history-kpi-bar {
+    padding: 1rem;
+    gap: 0.875rem 1rem;
+  }
+
+  .history-divider {
+    display: none;
+  }
+
+  .history-stat {
+    flex: 1 1 40%;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box-wrapper,
+  .category-filter-wrapper {
+    width: 100%;
+    flex: auto;
+  }
+
+  .search-input,
+  .select-filter {
+    min-height: 2.875rem;
+  }
+
+  .table-card {
+    border-radius: 0.875rem;
+  }
+
+  .th-left,
+  .td-left {
+    padding-left: 1rem;
+  }
+}
+/* Make the history page use more screen space */
+
+.history-page,
+.history-container,
+.history-content,
+.history-main {
+    width: 100%;
+    max-width: none;
+}
+
+.history-page,
+.history-container,
+.history-content {
+    box-sizing: border-box;
+}
+
+.history-container,
+.history-content {
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.history-table-container,
+.history-table-wrapper {
+    width: 100%;
+    max-width: none;
+    overflow-x: auto;
+}
+
+.history-table {
+    width: 100%;
+    min-width: 800px;
+}
+/* Make the history page much larger */
+
+.view-section {
+    width: calc(100% - 48px);
+    max-width: 1600px;
+    margin: 32px auto 0;
+    padding: 0 24px;
+    gap: 32px;
+}
+
+/* Larger page heading */
+
+.main-heading {
+    font-size: 2.5rem;
+}
+
+.main-subtitle {
+    font-size: 1.1rem;
+}
+
+/* Larger statistics bar */
+
+.history-kpi-bar {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100px;
+    padding: 24px 32px;
+    gap: 24px 48px;
+    font-size: 1rem;
+}
+
+.history-stat-value {
+    font-size: 1.5rem;
+}
+
+/* Larger search and category filter */
+
+.search-input,
+.select-filter {
+    min-height: 56px;
+    font-size: 1rem;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
+
+/* Larger history table */
+
+.table-card {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.table-responsive {
+    width: 100%;
+}
+
+.history-table {
+    width: 100%;
+    min-width: 900px;
+}
+
+.history-table thead tr {
+    font-size: 0.875rem;
+}
+
+.th-left,
+.th-general,
+.th-right {
+    padding-top: 22px;
+    padding-bottom: 22px;
+}
+
+.td-left,
+.td-general,
+.td-right {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    font-size: 1rem;
+}
+
+.row-icon-box {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 12px;
+    font-size: 1.5rem;
+}
+
+.row-main-title {
+    font-size: 1.05rem;
+}
+
+.row-sub-desc {
+    font-size: 0.875rem;
+}
+
+.category-tag-table {
+    font-size: 0.875rem;
+    padding: 8px 14px;
+}
+
+/* Adapt to smaller screens */
+
+@media (min-width: 1600px) {
+    .view-section {
+        max-width: 1800px;
+    }
+}
+
+@media (max-width: 700px) {
+    .view-section {
+        width: 100%;
+        padding: 0 16px;
+        margin-top: 24px;
+        gap: 24px;
+    }
+
+    .main-heading {
+        font-size: 1.8rem;
+    }
+
+    .history-kpi-bar {
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .td-left,
+    .td-general,
+    .td-right {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}

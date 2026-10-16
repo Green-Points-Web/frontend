@@ -1,8 +1,20 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-document.addEventListener("DOMContentLoaded", initializeHistory);
+let historyLoading = false;
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("history-table-body")) {
+        initializeHistory();
+    }
+});
 
 async function initializeHistory() {
+    const tableBody = document.getElementById("history-table-body");
+
+    if (!tableBody || historyLoading) return;
+
+    historyLoading = true;
+
     try {
         const [historyResponse, dashboardResponse, catalogResponse] =
             await Promise.all([
@@ -12,7 +24,7 @@ async function initializeHistory() {
             ]);
 
         if (!historyResponse.ok) {
-            throw new Error("Could not load the action history.");
+            throw new Error("Could not load action history.");
         }
 
         if (!dashboardResponse.ok) {
@@ -27,25 +39,30 @@ async function initializeHistory() {
             : [];
 
         const actionNames = new Map(
-            catalogData.map(action => [action.id, action.name])
+            catalogData.map(action => [
+                String(action.id),
+                action.name
+            ])
         );
 
         renderHistoryTable(historyData, actionNames);
         updateKpiBar(dashboardData);
-
         initializeHistoryFilters();
 
     } catch (error) {
         console.error("Error loading history:", error);
         showHistoryError();
+    } finally {
+        historyLoading = false;
     }
 }
 
 function normalizeCategory(category = "") {
-    const normalized = category
+    const normalized = String(category)
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase();
+        .toLowerCase()
+        .trim();
 
     const categories = {
         mobility: "Movilidad",
@@ -62,87 +79,116 @@ function normalizeCategory(category = "") {
 }
 
 function getActionIcon(actionName, category) {
-    const name = (actionName || "").toLowerCase();
+    const name = String(actionName || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
 
-    if (/bike|bici|bicycle|bicicleta/.test(name)) {
+    if (/voluntariado|particip/.test(name)) {
         return {
-            background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M12 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 16l4-8h4l3 8m-7-8-2-3m6 3h3"
-        };
-    }
-
-    if (/bus|transport|transporte|carpool|coche|car\b|walk|caminar/.test(name)) {
-        return {
-            background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2M7 8h.01M17 8h.01M5 16h14"
-        };
-    }
-
-    if (/recycl|recicl/.test(name)) {
-        return {
-            background: "#E2F4F2",
-            color: "#2C8D85",
-            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2M5 10l-2 2 2 2m14-4 2 2-2 2"
-        };
-    }
-
-    if (/tree|arbol|árbol|plant|planta|nature|naturaleza/.test(name)) {
-        return {
-            background: "#E5F5E9",
-            color: "#2C8A4C",
-            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
-        };
-    }
-
-    if (/volunteer|voluntari|particip/.test(name)) {
-        return {
+            emoji: "🤝",
             background: "#FAEDE5",
-            color: "#D9773B",
-            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m2 3a4 4 0 0 1 2 3v2"
+            color: "#428062"
         };
     }
 
-    const normalizedCategory = normalizeCategory(category);
+    if (/plantar.*arbol|arbol|tree/.test(name)) {
+        return {
+            emoji: "🌳",
+            background: "#E5F5E9",
+            color: "#2C8A4C"
+        };
+    }
+
+    if (/compartir coche|coche compartido|carpool/.test(name)) {
+        return {
+            emoji: "🚗",
+            background: "#EFE8F8",
+            color: "#7A4DB8"
+        };
+    }
+
+    if (/bicicleta|bici|bike|bicycle/.test(name)) {
+        return {
+            emoji: "🚲",
+            background: "#FAEDE5",
+            color: "#D9773B"
+        };
+    }
+
+    if (/transporte publico|autobus|bus/.test(name)) {
+        return {
+            emoji: "🚌",
+            background: "#E2F1F8",
+            color: "#2C7EA6"
+        };
+    }
+
+    if (/reciclar|reciclaje|recycl/.test(name)) {
+        return {
+            emoji: "♻️",
+            background: "#E2F4F2",
+            color: "#2C8D85"
+        };
+    }
+
+    if (/andando|caminar|a pie|walking/.test(name)) {
+        return {
+            emoji: "🚶",
+            background: "#E8F3E5",
+            color: "#469136"
+        };
+    }
 
     const categoryIcons = {
         Movilidad: {
+            emoji: "🚲",
             background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2"
+            color: "#7A4DB8"
         },
         Naturaleza: {
+            emoji: "🌳",
             background: "#E5F5E9",
-            color: "#2C8A4C",
-            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
+            color: "#2C8A4C"
         },
         Reciclaje: {
+            emoji: "♻️",
             background: "#E2F4F2",
-            color: "#2C8D85",
-            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2"
+            color: "#2C8D85"
         },
-        Participación: {
+        "Participación": {
+            emoji: "🤝",
             background: "#FAEDE5",
-            color: "#D9773B",
-            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+            color: "#428062"
         }
     };
 
-    return categoryIcons[normalizedCategory] || {
-        background: "#FAEDE5",
-        color: "#D9773B",
-        path: "M12 3v18m-9-9h18"
+    return categoryIcons[normalizeCategory(category)] || {
+        emoji: "🌱",
+        background: "#E5F5E9",
+        color: "#2C8A4C"
     };
+}
+
+function getDefaultDescription(actionId) {
+    const descriptions = {
+        "1": "Paseo hasta la oficina",
+        "2": "Desplazamiento en autobús",
+        "3": "Ida y vuelta a la oficina en bici",
+        "4": "Trayecto compartido con dos compañeros",
+        "5": "Separación de residuos de la oficina",
+        "6": "Jornada de reforestación de GreenCorp",
+        "7": "Limpieza del parque junto al equipo"
+    };
+
+    return descriptions[String(actionId)] || "";
 }
 
 function renderHistoryTable(historyData, actionNames = new Map()) {
     const tableBody = document.getElementById("history-table-body");
 
-    if (!tableBody) {
-        console.warn("History table body was not found.");
-        return;
-    }
+    if (!tableBody) return;
 
     tableBody.replaceChildren();
 
@@ -160,18 +206,29 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     }
 
     historyData.forEach(item => {
+        const actionId = String(item.action_type_id);
+
         const actionName =
-            actionNames.get(item.action_type_id) ||
+            actionNames.get(actionId) ||
             `Acción #${item.action_type_id}`;
 
         const category = normalizeCategory(item.category);
-        const description = item.description || "Acción sostenible";
+        const rawDescription = item.description;
+
+        const description =
+            typeof rawDescription === "string" &&
+            rawDescription.trim() !== "" &&
+            rawDescription.trim().toLowerCase() !== "string"
+                ? rawDescription.trim()
+                : getDefaultDescription(actionId);
+
         const icon = getActionIcon(actionName, category);
 
         const row = document.createElement("tr");
         row.className = "history-row";
         row.dataset.category = category;
-        row.dataset.name = `${actionName} ${description}`.toLowerCase();
+        row.dataset.name =
+            `${actionName} ${description}`.toLowerCase();
 
         const actionCell = document.createElement("td");
         actionCell.className = "td-left";
@@ -183,29 +240,14 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         iconBox.className = "row-icon-box";
         iconBox.style.backgroundColor = icon.background;
         iconBox.style.color = icon.color;
+        iconBox.style.display = "flex";
+        iconBox.style.alignItems = "center";
+        iconBox.style.justifyContent = "center";
+        iconBox.style.flexShrink = "0";
+        iconBox.style.fontSize = "1.25rem";
 
-        const svg = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-        );
-
-        svg.setAttribute("class", "icon-md");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "1.8");
-        svg.setAttribute("stroke-linecap", "round");
-        svg.setAttribute("stroke-linejoin", "round");
-        svg.setAttribute("aria-hidden", "true");
-
-        const path = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-        );
-
-        path.setAttribute("d", icon.path);
-        svg.appendChild(path);
-        iconBox.appendChild(svg);
+        iconBox.textContent = icon.emoji;
+        iconBox.setAttribute("aria-hidden", "true");
 
         const textWrapper = document.createElement("div");
 
@@ -216,6 +258,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         const subtitle = document.createElement("div");
         subtitle.className = "row-sub-desc";
         subtitle.textContent = description;
+        subtitle.hidden = !description;
 
         textWrapper.append(title, subtitle);
         actionWrapper.append(iconBox, textWrapper);
@@ -231,15 +274,21 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         const categoryTag = document.createElement("span");
         categoryTag.className = "category-tag-table";
         categoryTag.textContent = category;
+
         categoryCell.appendChild(categoryTag);
 
         const impactCell = document.createElement("td");
         impactCell.className = "td-general";
-        impactCell.textContent = `${Number(item.co2_saved || 0)} kg`;
+
+        const co2Saved = Number(item.co2_saved ?? 0);
+
+        impactCell.textContent = `${co2Saved.toLocaleString("es-ES", {
+            maximumFractionDigits: 2
+        })} kg`;
 
         const pointsCell = document.createElement("td");
         pointsCell.className = "td-right";
-        pointsCell.textContent = String(item.points_earned ?? 0);
+        pointsCell.textContent = `+${item.points_earned ?? 0}`;
 
         row.append(
             actionCell,
@@ -268,55 +317,58 @@ function formatDate(value) {
 }
 
 function updateKpiBar(data) {
-    const kpiBar = document.querySelector(".history-kpi-bar");
+    if (!data) return;
 
-    if (!kpiBar || !data) return;
+    const actionElement =
+        document.getElementById("history-total-actions");
 
-    const values = [
-        [data.total_actions ?? 0, "acciones"],
-        [data.total_points ?? 0, "puntos"],
-        [`${data.total_co2_impact_kg ?? 0} kg`, "CO₂ evitados"]
-    ];
+    const pointsElement =
+        document.getElementById("history-total-points");
 
-    kpiBar.replaceChildren();
+    const co2Element =
+        document.getElementById("history-total-co2");
 
-    values.forEach(([value, label], index) => {
-        if (index > 0) {
-            const divider = document.createElement("div");
-            divider.className = "history-divider";
-            kpiBar.appendChild(divider);
-        }
+    if (actionElement) {
+        actionElement.textContent = String(data.total_actions ?? 0);
+    }
 
-        const stat = document.createElement("div");
-        stat.className = "history-stat";
+    if (pointsElement) {
+        pointsElement.textContent = String(data.total_points ?? 0);
+    }
 
-        const number = document.createElement("span");
-        number.className = "bold";
-        number.textContent = String(value);
+    if (co2Element) {
+        const co2 = Number(data.total_co2_impact_kg ?? 0);
 
-        stat.append(number, document.createTextNode(` ${label}`));
-        kpiBar.appendChild(stat);
-    });
+        co2Element.textContent = `${co2.toLocaleString("es-ES", {
+            maximumFractionDigits: 2
+        })} kg`;
+    }
 }
 
 function initializeHistoryFilters() {
     const searchInput = document.getElementById("search-input");
-    const categoryFilter = document.getElementById("category-filter");
+    const categoryFilter =
+        document.getElementById("category-filter");
 
-    if (searchInput) {
+    if (searchInput && !searchInput.dataset.historyListener) {
         searchInput.addEventListener("input", filterHistory);
+        searchInput.dataset.historyListener = "true";
     }
 
-    if (categoryFilter) {
+    if (categoryFilter && !categoryFilter.dataset.historyListener) {
         categoryFilter.addEventListener("change", filterHistory);
+        categoryFilter.dataset.historyListener = "true";
     }
 }
 
 function filterHistory() {
     const searchInput = document.getElementById("search-input");
-    const categoryFilter = document.getElementById("category-filter");
+    const categoryFilter =
+        document.getElementById("category-filter");
 
-    const searchTerm = (searchInput?.value || "").toLowerCase().trim();
+    const searchTerm =
+        (searchInput?.value || "").toLowerCase().trim();
+
     const selectedCategory = categoryFilter?.value || "all";
 
     document.querySelectorAll(".history-row").forEach(row => {
@@ -324,6 +376,7 @@ function filterHistory() {
         const rowCategory = row.dataset.category || "";
 
         const matchesSearch = rowName.includes(searchTerm);
+
         const matchesCategory =
             selectedCategory === "all" ||
             normalizeCategory(selectedCategory) === rowCategory;
@@ -355,3 +408,4 @@ function showHistoryError() {
 window.filterHistory = filterHistory;
 window.renderHistoryTable = renderHistoryTable;
 window.updateKpiBar = updateKpiBar;
+window.initializeHistory = initializeHistory;
