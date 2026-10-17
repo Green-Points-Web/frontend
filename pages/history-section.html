@@ -15,7 +15,6 @@
   <main class="main-container">
     <section class="view-section">
       
-      <!-- Cabecera de la sección -->
       <header class="section-header">
         <div>
           <span class="card-super-title">TU RECORRIDO</span>
@@ -24,7 +23,6 @@
         </div>
       </header>
 
-      <!-- Barra de KPIs adaptada a history-kpi-bar -->
       <section class="history-kpi-bar" aria-label="Resumen de impacto">
         <span class="history-stat"><strong id="kpi-actions">0</strong> acciones</span>
         <span class="history-divider" aria-hidden="true"></span>
@@ -33,7 +31,6 @@
         <span class="history-stat"><strong id="kpi-co2">0 kg</strong> CO₂ evitados</span>
       </section>
 
-      <!-- Barra de herramientas adaptada a filter-bar y search-box-wrapper -->
       <section class="filter-bar" aria-label="Búsqueda y filtros">
         <div class="search-box-wrapper">
           <span class="search-icon icon-element" aria-hidden="true"></span>
@@ -51,7 +48,6 @@
         </div>
       </section>
       
-      <!-- Contenedor de la tabla -->
       <div class="card table-card">
         <div class="table-responsive">
           <table class="history-table">
@@ -69,15 +65,15 @@
           </table>
         </div>
 
-        <div class="empty-state" id="empty-state" hidden style="padding: 2.5rem; text-align: center;">
-          <p class="empty-title" style="font-weight: 700; color: #11291E;">No se encontraron acciones</p>
-          <p class="empty-text" style="color: #718578; font-size: 0.875rem;">Prueba con otra búsqueda o selecciona otra categoría.</p>
+        <div class="empty-state" id="empty-state">
+          <p class="empty-title">No se encontraron acciones</p>
+          <p class="empty-text">Prueba con otra búsqueda o selecciona otra categoría.</p>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ========== MODAL ========== -->
+  <!-- MODAL -->
   <div class="modal-overlay" id="modal" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <header class="modal-header">
