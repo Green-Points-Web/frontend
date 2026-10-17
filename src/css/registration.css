@@ -1,4 +1,4 @@
-/* GENERAL OVERVIEW */
+/* General Overview */
 
 .modal-backdrop {
     position: fixed;
@@ -28,7 +28,7 @@
     display: flex;
 }
 
-/* BUTTON */
+/* Button */
 
 .close-btn {
     position: absolute;
@@ -46,7 +46,7 @@
     color: #111827;
 }
 
-/* HEADERS */
+/* Headers */
 
 .modal-header h2 {
     margin: 0 0 6px 0;
@@ -61,7 +61,7 @@
     color: grey;
 }
 
-/* INPUT FIELDS */
+/* Input Fields */
 
 .form-group {
     margin-bottom: 18px;
@@ -91,7 +91,7 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* FOCUS/HOVER STATES */
+/* Focus/Hover States */
 
 .form-group input:hover,
 .form-group select:hover,
@@ -110,7 +110,7 @@
     resize: vertical;
 }
 
-/* GREEN IMPACT BOX */
+/* Green Impact Box */
 
 .impact-box {
     background-color: #f0fdf4;
@@ -135,7 +135,7 @@
     color: green;
 }
 
-/* FEEDBACK MESSAGES */
+/* Feedback Messages */
 
 .feedback-message {
     padding:10px;
@@ -155,7 +155,7 @@
     color: darkred;
 }
 
-/* ACTION BUTTONS */
+/* Action Buttons */
 
 .modal-actions {
     display: flex;

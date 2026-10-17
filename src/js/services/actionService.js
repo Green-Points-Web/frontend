@@ -31,9 +31,8 @@ export async function createAction(actionData) {
     return await response.json();
 }
 
-// --- CÓDIGO DE LOS BOTONES DE LAS TARJETAS ---
-// Nota: Te he arreglado la sintaxis del botón para que no dé error,
-// aunque lo ideal más adelante será mover esto a un archivo de UI.
+// --- Card Button's Code ---
+
 document.querySelectorAll('.btn-register').forEach(btn => {
     btn.addEventListener('click', async () => {
         const card = btn.closest('.action-card');
