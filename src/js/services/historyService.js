@@ -23,7 +23,11 @@ async function initializeHistory() {
         const catalogData = catalogResponse.ok ? await catalogResponse.json() : [];
 
         const actionNames = new Map(
-            catalogData.map(action => [action.id, action.name])
+            catalogData.flatMap(action => [
+                action.id, action.name],
+            [String(action.id), action.name],
+            [Number(action.id), action.name]
+        )
         );
 
         renderHistoryTable(historyData, actionNames);
@@ -58,26 +62,65 @@ function getActionIcon(actionName, category) {
     const normCat = normalizeCategory(category);
 
     if (/bike|bici|bicicleta/.test(name)) {
-        return { background: "#F4EEF8", color: "#8C52BE", path: "M5 18h14M5 14h14M10 9l2-3 2 3M6 9h12" };
+        return {
+            background: "#F4EEF8",
+            color: "#8C52BE", 
+            iconName: "directions_bike"
+        };
     }
     if (/recycl|recicl/.test(name)) {
-        return { background: "#E2F4F2", color: "#2C8D85", path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2" };
+        return { 
+            background: "#E2F4F2", 
+            color: "#2C8D85", 
+            iconName: "recycling"
+        };
     }
     if (/tree|arbol|árbol|plant|planta/.test(name)) {
-        return { background: "#EBF7EE", color: "#358850", path: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" };
+        return { 
+            background: "#EBF7EE",
+            color: "#358850",
+            iconName: "park"
+        };
     }
     if (/volunteer|voluntari|particip/.test(name)) {
-        return { background: "#FDF2EE", color: "#E06D43", path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" };
+        return { 
+            background: "#FDF2EE", 
+            color: "#E06D43", 
+            iconName: "group"
+        };
     }
 
+
     const iconsByCat = {
-        Movilidad: { background: "#F4EEF8", color: "#8C52BE", path: "M5 18h14M5 14h14M10 9l2-3 2 3M6 9h12" },
-        Naturaleza: { background: "#EBF7EE", color: "#358850", path: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" },
-        Reciclaje: { background: "#E2F4F2", color: "#2C8D85", path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2" },
-        Participación: { background: "#FDF2EE", color: "#E06D43", path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" }
+        Movilidad: { 
+            background: "#F4EEF8",
+            color: "#8C52BE",
+            iconName: "directions_bike"
+        },
+
+        Naturaleza: {
+            background: "#EBF7EE",
+            color: "#358850",
+            iconName: "park"
+        },
+
+        Reciclaje: {
+            background: "#E2F4F2",
+            color: "#2C8D85",
+            iconName: "recycling"
+        },
+
+        Participación: {
+            background: "#FDF2EE",
+            color: "#E06D43",
+            iconName: "proup"
+        }
     };
 
-    return iconsByCat[normCat] || { background: "#E8F4EE", color: "#2F6B50", path: "M12 3v18m-9-9h18" };
+    return iconsByCat[normCat] || { 
+        background: "#E8F4EE",
+        color: "#2F6B50",
+        iconName: "eco" };
 }
 
 function renderHistoryTable(historyData, actionNames = new Map()) {
@@ -96,9 +139,9 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     if (emptyState) emptyState.hidden = true;
 
     historyData.forEach(item => {
-        const actionName = actionNames.get(item.action_type_id) || item.name || `Acción #${item.action_type_id}`;
+        const actionName = actionNames.get(item.action_type_id) || item.action_name || item.name || item.title || `Acción #${item.action_type_id || 'general'}`;
         const category = normalizeCategory(item.category || "Movilidad");
-        const description = item.description || "Acción sostenible registrada";
+        const description = item.description || item.note || item.details || "Acción sostenible registrada";
         const icon = getActionIcon(actionName, category);
         const dateStr = formatDate(item.date || item.action_date);
         const co2Val = `${Number(item.co2_saved || item.impact || 0)} kg`;
@@ -116,9 +159,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         tdAction.innerHTML = `
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <div class="row-icon-box" style="background-color: ${icon.background}; color: ${icon.color};">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="${icon.path}"/>
-                    </svg>
+                    <span class="material-symbols-outlined" aria-hidden="true">${icon.iconName}</span>
                 </div>
                 <div>
                     <div class="row-main-title">${actionName}</div>
@@ -152,11 +193,17 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         tdEdit.className = "td-general";
         tdEdit.innerHTML = `
             <button type="button" class="icon-btn btn-edit-item" aria-label="Editar acción" title="Editar">
-                <span class="edit-icon icon-element" aria-hidden="true">✏️</span>
+                <span class="material-symbols outlined icon element" aria-hidden="true">edit</span>
             </button>
         `;
-        tdEdit.querySelector("button").addEventListener("click", () => {
-            openEditModal(item);
+        const editBtn = tdEdit.querySelector("button");
+        editBtn.addEventListener("click", () => {
+            if (typeof openEditModal === "function") {
+                openEditModal(item);
+            } else {
+                console.error("La función openEditModal no está definida en este ámbito.");
+            }
+            
         });
 
         row.append(tdAction, tdDate, tdCategory, tdImpact, tdPoints, tdEdit);

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&" />
   <link rel="stylesheet" href="../src/css/base.css" />
   <link rel="stylesheet" href="../src/css/history.css" />
 </head>
@@ -35,13 +36,14 @@
 
       <section class="filter-bar" aria-label="Búsqueda y filtros">
         <div class="search-box-wrapper">
-          <span class="search-icon icon-element" aria-hidden="true"></span>
+          <span class="material-symbols-outlined" aria-hidden="true">search</span>
           <input type="text" id="search-input" class="search-input" placeholder="Buscar en tus acciones..." autocomplete="off">
         </div>
 
         <div class="filter" id="filter">
+          <span class="material-symbols-outlined" aria-hidden="true">filter_list</span>
           <select id="filter-select" class="select-filter" aria-label="Filtrar por categoría">
-            <option value="Todas">Todas</option>
+            <option value="Todas">Todas las categorías</option>
             <option value="Movilidad">Movilidad</option>
             <option value="Naturaleza">Naturaleza</option>
             <option value="Participación">Participación</option>
@@ -55,11 +57,11 @@
           <table class="history-table">
             <thead>
               <tr>
-                <th scope="col" class="th-left">Acción</th>
-                <th scope="col" class="th-general">Fecha</th>
-                <th scope="col" class="th-general">Categoría</th>
-                <th scope="col" class="th-general">Impacto</th>
-                <th scope="col" class="th-right">Puntos</th>
+                <th scope="col" class="th-left">ACCIÓN</th>
+                <th scope="col" class="th-general">FECHA</th>
+                <th scope="col" class="th-general">CATEGORÍA</th>
+                <th scope="col" class="th-general">IMPACTO</th>
+                <th scope="col" class="th-right">PUNTOS</th>
                 <th scope="col" class="th-general"><span class="sr-only">Editar</span></th>
               </tr>
             </thead>
@@ -140,11 +142,18 @@
   <div class="toast" id="toast" role="status" hidden></div>
   
   <script src="/src/js/main.js"></script>
-  <script src="/src/js/dashboard.js"></script>
+  <script src="/src/js/dashboard.js" type="module"></script>
+  <script src="/src/js/components/dashboardComponent.js" type="module"></script>
   <script src="/src/js/components/historyComponent.js"></script>
+  <script src="/src/js/components/registrationModal.js" type="module"></script>
+  <script src="/src/js/components/catalogComponent.js" type="module"></script>
+  <script src="/src/js/services/dashboardService.js" type="module"></script>
   <script src="/src/js/services/historyService.js"></script>
   <script src="/src/js/services/modaleditcontroller.js"></script>
-  <script src="/src/js/components/registrationModal.js"></script>
+  <script src="/src/js/services/actionService.js" type="module"></script>
+  <script src="/src/js/services/catalogService.js" type="module"></script>
+  
+  
   
 </body>
 </html>

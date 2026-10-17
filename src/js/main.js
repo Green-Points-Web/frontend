@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     tdEdit.className = 'td-general';
                     tdEdit.innerHTML = `
                         <button type="button" class="icon-btn btn-edit-item" aria-label="Editar acción" title="Editar">
-                            <span class="edit-icon icon-element" aria-hidden="true">✏️</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">edit</span>
                         </button>
                     `;
                     tdEdit.querySelector("button").addEventListener("click", () => {
