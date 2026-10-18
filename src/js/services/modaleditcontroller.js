@@ -2,10 +2,6 @@ const API_URL = "http://127.0.0.1:8000";
 
 let currentEditingId = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-    setupModalListeners();
-});
-
 function setupModalListeners() {
     const modal = document.getElementById("modal");
     const btnClose = document.getElementById("btn-close");
@@ -33,7 +29,10 @@ function setupModalListeners() {
                     if (response.ok) {
                         showToast("Acción eliminada correctamente");
                         closeModal();
-                        location.reload(); 
+
+                        if (typeof window.initializeHistory === "function") {
+                            await window.initializeHistory();
+                        }
                     } else {
                         alert("No se pudo eliminar la acción.");
                     }
@@ -68,7 +67,10 @@ function setupModalListeners() {
                 if (response.ok) {
                     showToast("¡Cambios guardados con éxito!");
                     closeModal();
-                    location.reload(); 
+
+                    if (typeof window.initializeHistory === "function") {
+                        await window.initializeHistory();
+                    }
                 } else {
                     alert("Error al actualizar la acción en el servidor.");
                 }
@@ -92,21 +94,30 @@ function openEditModal(item) {
     document.getElementById("f-kg").value = item.co2_saved || item.impact || 0;
     document.getElementById("f-points").value = item.points || item.points_earned || 0;
 
-    modal.hidden = false;
+    const modalOverlay = document.getElementById("modal");
+    if (modalOverlay) {
+        modalOverlay.classList.add("is-active");
+    }
 }
 
 function closeModal() {
-    const modal = document.getElementById("modal");
-    if (modal) modal.hidden = true;
-    currentEditingId = null;
+    const modalOverlay = document.getElementById("modal");
+    if (modalOverlay) {
+        modalOverlay.classList.remove("is-active");
+    }
+        currentEditingId = null;
+    
 }
 
-function showToast(message) {
-    const toast = document.getElementById("toast");
-    if (!toast) return;
-    toast.textContent = message;
-    toast.hidden = false;
-    setTimeout(() => {
-        toast.hidden = true;
-    }, 3000);
-}
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.hidden = false;
+        setTimeout(() => {
+            toast.hidden = true;
+        }, 3000);
+    }
+
+    window.setupModalListeners = setupModalListeners;
+    window.openEditModal = openEditModal;

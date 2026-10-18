@@ -341,7 +341,7 @@
 }
 
 .modal-overlay.is-active .modal.is-active {
-  display:flex;
+  display:flex !important;
 }
 
 .modal {

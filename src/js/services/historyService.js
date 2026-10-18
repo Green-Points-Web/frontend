@@ -1,9 +1,5 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-document.addEventListener("DOMContentLoaded", () => {
-    initializeHistory();
-    setupEventListeners();
-});
 
 async function initializeHistory() {
     try {
@@ -24,10 +20,10 @@ async function initializeHistory() {
 
         const actionNames = new Map(
             catalogData.flatMap(action => [
-                action.id, action.name],
-            [String(action.id), action.name],
-            [Number(action.id), action.name]
-        )
+                [action.id, action.name],
+                [String(action.id), action.name],
+                [Number(action.id), action.name]
+            ])
         );
 
         renderHistoryTable(historyData, actionNames);
@@ -36,6 +32,20 @@ async function initializeHistory() {
     } catch (error) {
         console.error("Error al inicializar el historial:", error);
         showHistoryError();
+    }
+}
+
+function showHistoryError() {
+    const tableBody = document.getElementById("table-body");
+    const emptyState = document.getElementById("empty-state");
+
+    if (tableBody) {
+        tableBody.replaceChildren();
+    }
+
+    if (emptyState) {
+        emptyState.hidden = false;
+        emptyState.textContent = "No se pudo cargar el historial.";
     }
 }
 
@@ -64,35 +74,63 @@ function getActionIcon(actionName, category) {
     if (/bike|bici|bicicleta/.test(name)) {
         return {
             background: "#F4EEF8",
-            color: "#8C52BE", 
+            color: "#8C52BE",
             iconName: "directions_bike"
         };
     }
+    if (/walk|pie|caminar|andando/.test(name)) {
+        return {
+            background: "#E8F5E9",
+            color: "#EAEE1A",
+            iconName: "directions_walk"
+        };
+    }
+    if (/carpool|coche|compartir/.test(name)) {
+        return {
+            background: "#E3F2FD",
+            color: "#1565C0",
+            iconName: "directions_car"
+        };
+    }
+    if (/tren|bus|metro|publico|transporte/.test(name)) {
+        return {
+            background: "#F3E5F5",
+            color: "#9A1B5A",
+            iconName: "directions_bus"
+        };
+    }
+    if (/voluntariado|ambiental|voluntario/.test(name)) {
+        return {
+            background: "#EFEBE9",
+            color: "#4E342E",
+            iconName: "volunteer_activism"
+        };
+    }
     if (/recycl|recicl/.test(name)) {
-        return { 
-            background: "#E2F4F2", 
-            color: "#2C8D85", 
+        return {
+            background: "#E2F4F2",
+            color: "#2C8D85",
             iconName: "recycling"
         };
     }
     if (/tree|arbol|árbol|plant|planta/.test(name)) {
-        return { 
+        return {
             background: "#EBF7EE",
             color: "#358850",
             iconName: "park"
         };
     }
     if (/volunteer|voluntari|particip/.test(name)) {
-        return { 
-            background: "#FDF2EE", 
-            color: "#E06D43", 
+        return {
+            background: "#FDF2EE",
+            color: "#E06D43",
             iconName: "group"
         };
     }
 
 
     const iconsByCat = {
-        Movilidad: { 
+        Movilidad: {
             background: "#F4EEF8",
             color: "#8C52BE",
             iconName: "directions_bike"
@@ -105,22 +143,22 @@ function getActionIcon(actionName, category) {
         },
 
         Reciclaje: {
-            background: "#E2F4F2",
-            color: "#2C8D85",
+            background: "#e2eaf4",
+            color: "#2c598d",
             iconName: "recycling"
         },
 
         Participación: {
-            background: "#FDF2EE",
-            color: "#E06D43",
+            background: "#edffe5",
+            color: "#8fe043",
             iconName: "proup"
         }
     };
-
-    return iconsByCat[normCat] || { 
+    return iconsByCat[normCat] || {
         background: "#E8F4EE",
         color: "#2F6B50",
-        iconName: "eco" };
+        iconName: "eco"
+    };
 }
 
 function renderHistoryTable(historyData, actionNames = new Map()) {
@@ -153,7 +191,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         row.dataset.searchable = `${actionName} ${description} ${dateStr} ${category} ${co2Val} ${pointsVal}`.toLowerCase();
         row.dataset.category = category;
 
-        
+
         const tdAction = document.createElement("td");
         tdAction.className = "td-left";
         tdAction.innerHTML = `
@@ -168,27 +206,28 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
             </div>
         `;
 
-        
+
         const tdDate = document.createElement("td");
         tdDate.className = "td-general";
         tdDate.textContent = dateStr;
 
-        
+
         const tdCategory = document.createElement("td");
         tdCategory.className = "td-general";
-        tdCategory.innerHTML = `<span class="category-tag-table">${category}</span>`;
+        const styles = getActionIcon(item.name || item.actionName, item.category);
+        tdCategory.innerHTML = `<span class="category-tag-table" style="background-color: ${styles.background}; color: ${styles.color}; padding: 4px 8px; border-radius: 4px; display: inline-block;">${item.category}</span>`;
 
-        
+
         const tdImpact = document.createElement("td");
         tdImpact.className = "td-general";
         tdImpact.textContent = co2Val;
 
-        
+
         const tdPoints = document.createElement("td");
         tdPoints.className = "td-right";
         tdPoints.textContent = pointsVal;
 
-        
+
         const tdEdit = document.createElement("td");
         tdEdit.className = "td-general";
         tdEdit.innerHTML = `
@@ -198,12 +237,15 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         `;
         const editBtn = tdEdit.querySelector("button");
         editBtn.addEventListener("click", () => {
-            if (typeof openEditModal === "function") {
-                openEditModal(item);
+            console.log("¡Boton clickeado con exito!");
+            console.log("Datos del item actual:", item);
+
+            if (typeof window.openEditModal === "function") {
+                console.log("la función openEditModal existe. LLamandola ahora ... ");
+                window.openEditModal(item);
             } else {
-                console.error("La función openEditModal no está definida en este ámbito.");
+                console.error("No se ha cargado modalcontroller.js");
             }
-            
         });
 
         row.append(tdAction, tdDate, tdCategory, tdImpact, tdPoints, tdEdit);
@@ -270,3 +312,6 @@ function filterHistoryTable() {
         emptyState.hidden = visibleCount > 0;
     }
 }
+
+window.initializeHistory = initializeHistory;
+window.setupHistoryEventListeners = setupEventListeners;
