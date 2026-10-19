@@ -35,8 +35,8 @@ export function initRegistrationModal(onSuccessCallBack) {
         }
     }
 
-    const openModal = () => modal.classList.add('is-open');
-    const closeModal = () => modal.classList.remove('is-open');
+    const openModal = () => modal.classList.add('is-active');
+    const closeModal = () => modal.classList.remove('is-active');
 
     openBtn?.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
