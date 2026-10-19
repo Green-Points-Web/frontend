@@ -1,6 +1,5 @@
 const API_URL = 'http://127.0.0.1:8000';
 
-// Exportamos la función para que otros archivos puedan usarla
 export async function getActionTypes() {
     const response = await fetch(`${API_URL}/catalog`);
 
@@ -11,7 +10,6 @@ export async function getActionTypes() {
     return await response.json();
 }
 
-// Exportamos la función para que registrationModal.js pueda usarla
 export async function createAction(actionData) {
     const response = await fetch(`${API_URL}/actions`, {
         method: 'POST',
@@ -31,9 +29,8 @@ export async function createAction(actionData) {
     return await response.json();
 }
 
-// --- CÓDIGO DE LOS BOTONES DE LAS TARJETAS ---
-// Nota: Te he arreglado la sintaxis del botón para que no dé error,
-// aunque lo ideal más adelante será mover esto a un archivo de UI.
+// --- Card Button's Code ---
+
 document.querySelectorAll('.btn-register').forEach(btn => {
     btn.addEventListener('click', async () => {
         const card = btn.closest('.action-card');

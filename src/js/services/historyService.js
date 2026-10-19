@@ -1,5 +1,10 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeHistory);
+} else {
+  initializeHistory();
+}
 
 async function initializeHistory() {
     try {
@@ -330,5 +335,6 @@ function filterHistoryTable() {
     }
 }
 
-window.initializeHistory = initializeHistory;
-window.setupHistoryEventListeners = setupEventListeners;
+window.filterHistory = filterHistory;
+window.renderHistoryTable = renderHistoryTable;
+window.updateKpiBar = updateKpiBar;

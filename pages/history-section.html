@@ -1,4 +1,15 @@
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="GreenPoints: log your everyday sustainable habits, get points and consult your environmental impact." />
+  <title>GreenPoints</title>
+  <link rel="stylesheet" href="../src/css/base.css" />
+  <link rel="stylesheet" href="../src/css/layout.css" />
+  <link rel="stylesheet" href="../src/css/history.css" />
+</head>
+<body>
   <main class="main-container">
     <section class="view-section">
       
@@ -58,18 +69,20 @@
           <p class="empty-text">Prueba con otra búsqueda o selecciona otra categoría.</p>
         </div>
       </div>
-    </section>
-  </main>
+      <input class="search-input" id="search-input" onkeyup="filterHistory()"
+        placeholder="Buscar en tus acciones..." type="text">
+    </div>
 
-  <!-- MODAL -->
-<div class="modal-overlay" id="modal" hidden aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <header class="modal-header">
-        <h2 id="modal-title">Editar acción</h2>
-        <button type="button" class="icon-btn" id="btn-close" aria-label="Cerrar">
-          <span class="close-icon icon-element" aria-hidden="true"></span>
-        </button>
-      </header>
+    <div class="category-filter-wrapper">
+      <select class="select-filter" id="category-filter" onchange="filterHistory()">
+        <option value="all">Todas las categorías</option>
+        <option value="Movilidad">Movilidad</option>
+        <option value="Naturaleza">Naturaleza</option>
+        <option value="Participación">Participación</option>
+        <option value="Reciclaje">Reciclaje</option>
+      </select>
+    </div>
+  </div>
 
       <form id="action-form" novalidate>
         <div class="form-field">
@@ -122,5 +135,12 @@
       </form>
     </div>
   </div>
-
-  <div class="toast" id="toast" role="status" hidden></div>
+</section>
+  </main>
+  <script type="module" src="../src/js/main.js"></script>
+  <script type="module" src="../src/js/dashboard.js"></script>
+  <script type="module" src="../src/js/components/historyComponent.js"></script>
+  <script type="module" src="../src/js/components/registrationModal.js"></script>
+  <script type="module" src="../src/js/services/historyService.js"></script>
+</body>
+</html>
