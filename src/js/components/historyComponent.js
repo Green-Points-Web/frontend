@@ -1,13 +1,9 @@
 (function () {
-	"use strict";
+  "use strict";
 
-	const DEFAULT_TABLE_SELECTOR = "[data-history-table], #history-table, #historyTable, .history-table";
-	const FIELD_ALIASES = {
-		date: ["date", "createdAt", "created_at", "fecha"],
-		description: ["description", "detail", "concept", "descripcion", "motivo"],
-		type: ["type", "transactionType", "transaction_type", "tipo"],
-		points: ["points", "amount", "pointsAmount", "points_amount", "puntos"]
-	};
+  function initHistoryComponent() {
+    console.log("Componente de historial inicializado correctamente.");
+  }
 
 	function normalizeEntries(payload) {
 		if (Array.isArray(payload)) return payload;
