@@ -6,7 +6,9 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color:grey;
+    background-color:rgba(11, 34, 23, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: none;
     justify-content: center;
     align-items: center;
