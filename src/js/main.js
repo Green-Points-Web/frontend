@@ -111,4 +111,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPage(initialHash);
     await updateDashboardStats();
 
+    window.addEventListener('action:created', async () => {
+        const hash = window.location.hash || '#dashboard';
+        if (hash === '#historial' && typeof window.initializeHistory === 'function') {
+            await window.initializeHistory();
+        } else {
+            await updateDashboardStats();
+        }
+    });
+
 });

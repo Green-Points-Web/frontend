@@ -73,6 +73,7 @@ export function initRegistrationModal(onSuccessCallBack) {
             impactValue.textContent = '+0 pts · 0 kg CO₂';
             closeModal();
             if (typeof onSuccessCallBack === 'function') {onSuccessCallBack();}
+            window.dispatchEvent(new CustomEvent('action:created'));
         }
 
         catch (error) {
