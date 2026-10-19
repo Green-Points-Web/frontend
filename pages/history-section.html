@@ -1,20 +1,4 @@
-<!doctype html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-        content="GreenPoints: log your everyday sustainable habits, get points and consult your environmental impact.">
-  <title>Historial</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&" />
-  <link rel="stylesheet" href="../src/css/base.css" />
-  <link rel="stylesheet" href="../src/css/history.css" />
-</head>
-<body>
   <main class="main-container">
     <section class="view-section">
       
@@ -78,7 +62,7 @@
   </main>
 
   <!-- MODAL -->
-  <div class="modal-overlay" id="modal" hidden>
+<div class="modal-overlay" id="modal" hidden aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <header class="modal-header">
         <h2 id="modal-title">Editar acción</h2>
@@ -140,11 +124,3 @@
   </div>
 
   <div class="toast" id="toast" role="status" hidden></div>
-  
-  <script src="/src/js/components/historyComponent.js"></script>
-  <script src="/src/js/services/historyService.js"></script>
-  <script src="/src/js/services/modaleditcontroller.js"></script>
-  <script src="/src/js/main.js"></script>
-
-</body>
-</html>

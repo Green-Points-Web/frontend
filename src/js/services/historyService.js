@@ -235,20 +235,37 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
                 <span class="material-symbols outlined icon element" aria-hidden="true">edit</span>
             </button>
         `;
-        const editBtn = tdEdit.querySelector("button");
-        editBtn.addEventListener("click", () => {
-            console.log("¡Boton clickeado con exito!");
-            console.log("Datos del item actual:", item);
 
-            if (typeof window.openEditModal === "function") {
-                console.log("la función openEditModal existe. LLamandola ahora ... ");
-                window.openEditModal(item);
-            } else {
-                console.error("No se ha cargado modalcontroller.js");
+        const editBtn = tdEdit.querySelector(".btn-edit-item");
+        editBtn.addEventListener("click", () => {
+            console.log("Botón Editar pulsado");
+            console.log("Datos de la acción:", item);
+
+            if (typeof window.openEditModal !== "function") {
+                console.error(
+                    "No se ha cargado modaleditcontroller.js"
+                );
+                return;
             }
+
+            const actionToEdit = {
+                ...item,
+                action_name: actionName,
+                category: category,
+                description: description
+            };
+
+            window.openEditModal(actionToEdit);
         });
 
-        row.append(tdAction, tdDate, tdCategory, tdImpact, tdPoints, tdEdit);
+
+        row.append(tdAction,
+            tdDate,
+            tdCategory,
+            tdImpact,
+            tdPoints,
+            tdEdit
+        );
         tableBody.appendChild(row);
     });
 }

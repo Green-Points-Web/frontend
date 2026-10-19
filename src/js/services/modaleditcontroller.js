@@ -1,123 +1,206 @@
+
 const API_URL = "http://127.0.0.1:8000";
 
 let currentEditingId = null;
+const initializedModals = new WeakSet();
 
 function setupModalListeners() {
     const modal = document.getElementById("modal");
+
+    if (!modal || initializedModals.has(modal)) return;
+
+    initializedModals.add(modal);
+
+    // El resto del contenido de setupModalListeners continúa aquí.
+
     const btnClose = document.getElementById("btn-close");
     const btnCancel = document.getElementById("btn-cancel");
     const btnDelete = document.getElementById("btn-delete");
     const form = document.getElementById("action-form");
 
-    if (btnClose) btnClose.addEventListener("click", closeModal);
-    if (btnCancel) btnCancel.addEventListener("click", closeModal);
+    btnClose?.addEventListener("click", closeModal);
+    btnCancel?.addEventListener("click", closeModal);
 
-    if (modal) {
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) closeModal();
-        });
-    }
+    // Cerrar al pulsar fuera de la ventana
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 
-    if (btnDelete) {
-        btnDelete.addEventListener("click", async () => {
-            if (!currentEditingId) return;
-            if (confirm("¿Estás seguro de que deseas eliminar esta acción?")) {
-                try {
-                    const response = await fetch(`${API_URL}/history/${currentEditingId}`, {
-                        method: "DELETE"
-                    });
-                    if (response.ok) {
-                        showToast("Acción eliminada correctamente");
-                        closeModal();
+    // Eliminar acción
+    btnDelete?.addEventListener("click", async () => {
+        if (currentEditingId === null) return;
 
-                        if (typeof window.initializeHistory === "function") {
-                            await window.initializeHistory();
-                        }
-                    } else {
-                        alert("No se pudo eliminar la acción.");
-                    }
-                } catch (error) {
-                    console.error("Error al eliminar:", error);
-                }
+        if (!confirm("¿Deseas eliminar esta acción?")) return;
+
+        try {
+            const response = await fetch(
+                `${API_URL}/history/${currentEditingId}`,
+                { method: "DELETE" }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Error al eliminar: ${response.status}`
+                );
             }
-        });
-    }
 
-    if (form) {
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            if (!currentEditingId) return;
+            showToast("Acción eliminada correctamente");
+            closeModal();
 
-            const updatedData = {
-                name: document.getElementById("f-name").value,
-                description: document.getElementById("f-desc").value,
-                date: document.getElementById("f-date").value,
-                category: document.getElementById("f-category").value,
-                co2_saved: parseFloat(document.getElementById("f-kg").value) || 0,
-                points: parseInt(document.getElementById("f-points").value, 10) || 0
-            };
+            if (typeof window.initializeHistory === "function") {
+                await window.initializeHistory();
+            }
+        } catch (error) {
+            console.error("Error al eliminar la acción:", error);
+            alert("No se pudo eliminar la acción.");
+        }
+    });
 
-            try {
-                const response = await fetch(`${API_URL}/history/${currentEditingId}`, {
+    // Guardar cambios
+    form?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (currentEditingId === null) return;
+
+        const updatedData = {
+            name: document.getElementById("f-name").value.trim(),
+            description: document.getElementById("f-desc").value.trim(),
+            date: document.getElementById("f-date").value,
+            category: document.getElementById("f-category").value,
+            co2_saved: Number(document.getElementById("f-kg").value),
+            points: Number(document.getElementById("f-points").value)
+        };
+
+        if (
+            !updatedData.name ||
+            !updatedData.description ||
+            !updatedData.date ||
+            !Number.isFinite(updatedData.co2_saved) ||
+            !Number.isFinite(updatedData.points) ||
+            updatedData.co2_saved < 0 ||
+            updatedData.points < 0
+        ) {
+            alert("Revisa los campos del formulario.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${API_URL}/history/${currentEditingId}`,
+                {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify(updatedData)
-                });
-
-                if (response.ok) {
-                    showToast("¡Cambios guardados con éxito!");
-                    closeModal();
-
-                    if (typeof window.initializeHistory === "function") {
-                        await window.initializeHistory();
-                    }
-                } else {
-                    alert("Error al actualizar la acción en el servidor.");
                 }
-            } catch (error) {
-                console.error("Error al guardar cambios:", error);
+            );
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(
+                    `Error ${response.status}: ${errorText}`
+                );
             }
-        });
-    }
+
+            showToast("Cambios guardados correctamente");
+            closeModal();
+
+            if (typeof window.initializeHistory === "function") {
+                await window.initializeHistory();
+            }
+        } catch (error) {
+            console.error("Error al guardar los cambios:", error);
+            alert(
+                "No se pudieron guardar los cambios. Comprueba los datos que acepta la API."
+            );
+        }
+    });
 }
 
 function openEditModal(item) {
     const modal = document.getElementById("modal");
-    if (!modal) return;
+
+    if (!modal || !item) {
+        console.error("No se encuentra el modal o la acción seleccionada.");
+        return;
+    }
+
+    // El identificador debe ser el ID del registro de historial
+    if (item.id === undefined || item.id === null) {
+        console.error("La acción no tiene un ID de historial:", item);
+        alert("No se puede editar esta acción porque falta su identificador.");
+        return;
+    }
 
     currentEditingId = item.id;
 
-    document.getElementById("f-name").value = item.name || "";
-    document.getElementById("f-desc").value = item.description || "";
-    document.getElementById("f-date").value = (item.date || item.action_date || "").split("T")[0];
-    document.getElementById("f-category").value = item.category || "Movilidad";
-    document.getElementById("f-kg").value = item.co2_saved || item.impact || 0;
-    document.getElementById("f-points").value = item.points || item.points_earned || 0;
+    const fields = {
+        "f-name": item.action_name || item.name || item.title || "",
+        "f-desc": item.description || item.note || item.details || "",
+        "f-date": (item.date || item.action_date || "").split("T")[0],
+        "f-category": normalizeModalCategory(item.category),
+        "f-kg": item.co2_saved ?? item.co2_awarded ?? item.impact ?? 0,
+        "f-points": item.points ?? item.points_earned ?? item.points_awarded ?? 0
+    };
 
-    const modalOverlay = document.getElementById("modal");
-    if (modalOverlay) {
-        modalOverlay.classList.add("is-active");
+    for (const [id, value] of Object.entries(fields)) {
+        const field = document.getElementById(id);
+
+        if (field) {
+            field.value = value;
+        }
     }
+
+    // IMPORTANTE: quitar hidden y añadir la clase CSS
+    modal.hidden = false;
+    modal.classList.add("is-active");
+    modal.setAttribute("aria-hidden", "false");
+
+    document.getElementById("f-name")?.focus();
+}
+
+function normalizeModalCategory(category) {
+    const normalized = (category || "Movilidad")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
+    const categories = {
+        movilidad: "Movilidad",
+        naturaleza: "Naturaleza",
+        reciclaje: "Reciclaje",
+        participacion: "Participación"
+    };
+
+    return categories[normalized] || "Movilidad";
 }
 
 function closeModal() {
-    const modalOverlay = document.getElementById("modal");
-    if (modalOverlay) {
-        modalOverlay.classList.remove("is-active");
+    const modal = document.getElementById("modal");
+
+    if (modal) {
+        modal.classList.remove("is-active");
+        modal.hidden = true;
+        modal.setAttribute("aria-hidden", "true");
     }
-        currentEditingId = null;
-    
+
+    currentEditingId = null;
 }
 
-    function showToast(message) {
-        const toast = document.getElementById("toast");
-        if (!toast) return;
-        toast.textContent = message;
-        toast.hidden = false;
-        setTimeout(() => {
-            toast.hidden = true;
-        }, 3000);
-    }
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    if (!toast) return;
 
-    window.setupModalListeners = setupModalListeners;
-    window.openEditModal = openEditModal;
+    toast.textContent = message;
+    toast.hidden = false;
+
+    setTimeout(() => {
+        toast.hidden = true;
+    }, 3000);
+}
+
+window.setupModalListeners = setupModalListeners;
+window.openEditModal = openEditModal;

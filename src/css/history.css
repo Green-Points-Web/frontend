@@ -335,13 +335,17 @@
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10000;
   padding: 1rem;
   backdrop-filter: blur(4px);
 }
 
-.modal-overlay.is-active .modal.is-active {
-  display:flex !important;
+.modal-overlay.is-active {
+  display: flex !important;
+}
+
+.modal-overlay.is-active .modal {
+  display: flex !important;
 }
 
 .modal {
