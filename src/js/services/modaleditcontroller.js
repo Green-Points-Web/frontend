@@ -156,10 +156,22 @@ function openEditModal(item) {
 
     // IMPORTANTE: quitar hidden y añadir la clase CSS
     modal.hidden = false;
+    modal.removeAttribute("hidden");
     modal.classList.add("is-active");
     modal.setAttribute("aria-hidden", "false");
 
+    // Forzar la visualización del contenedor
+    modal.style.setProperty("display", "flex", "important");
+
+    // Mostrar el formulario interior
+    const modalContent = modal.querySelector(".modal");
+
+    if (modalContent) {
+        modalContent.style.setProperty("display", "flex", "important");
+    }
+
     document.getElementById("f-name")?.focus();
+
 }
 
 function normalizeModalCategory(category) {
@@ -183,8 +195,15 @@ function closeModal() {
 
     if (modal) {
         modal.classList.remove("is-active");
+        modal.style.removeProperty("display");
         modal.hidden = true;
         modal.setAttribute("aria-hidden", "true");
+
+        const modalContent = modal.querySelector(".modal");
+
+        if (modalContent) {
+            modalContent.style.removeProperty("display");
+        }
     }
 
     currentEditingId = null;
