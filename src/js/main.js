@@ -1,3 +1,4 @@
+import { initRegistrationModal } from './components/registrationModal.js';
 document.addEventListener('DOMContentLoaded', async () => {
     const mainContainer = document.querySelector('.site-main');
     const dashboardSection = document.querySelector('#dashboard');
@@ -16,29 +17,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // Function to update Summary statistics by querying the backend
-    async function updateDashboardStats() {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/history');
-            if (!response.ok) return;
-            const historyData = await response.json();
+    
+async function updateDashboardStats() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/dashboard');
 
-            if (historyData && Array.isArray(historyData)) {
-                const totalActions = historyData.length;
-                const totalPoints = historyData.reduce((acc, curr) => acc + (curr.points_earned || 0), 0);
-                const totalCo2 = historyData.reduce((acc, curr) => acc + (curr.co2_saved || 0), 0);
-
-                const pointsEl = document.querySelector('#stat-points');
-                const actionsEl = document.querySelector('#stat-actions');
-                const co2El = document.querySelector('#stat-co2');
-
-                if (pointsEl) pointsEl.textContent = totalPoints;
-                if (actionsEl) actionsEl.textContent = totalActions;
-                if (co2El) co2El.textContent = totalCo2.toFixed(2);
-            }
-        } catch (error) {
-            console.error('Error al actualizar estadísticas:', error);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const data = await response.json();
+
+        const pointsEl = document.querySelector('#stat-points');
+        const actionsEl = document.querySelector('#stat-actions');
+        const co2El = document.querySelector('#stat-co2');
+
+        if (pointsEl) {
+            pointsEl.textContent = data.total_points ?? 0;
+        }
+
+        if (actionsEl) {
+            actionsEl.textContent = data.total_actions ?? 0;
+        }
+
+        if (co2El) {
+            co2El.textContent =
+                Number(data.total_co2_impact_kg ?? 0).toFixed(2);
+        }
+    } catch (error) {
+        console.error('Error al actualizar estadísticas:', error);
     }
+}
 
     // Monitor the manual form submission (top button)
     const modalForm = document.querySelector('#modal-action-form');
@@ -47,8 +56,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             setTimeout(async () => {
                 await updateDashboardStats();
                 if (window.location.hash === '#historial') {
-                    loadHistory();
-                }
+                  await import('./services/historyService.js');
+            }
             }, 500);
         });
     }
@@ -125,8 +134,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (hash === '#historial') {
-                loadHistory(); 
-            }
+             await import('./services/historyService.js');
+           }
 
         } catch (error) {
             console.error("Error al cargar la vista:", error);
@@ -149,43 +158,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    initRegistrationModal(updateDashboardStats);
+    
     const initialHash = window.location.hash || '#dashboard';
     loadPage(initialHash);
     await updateDashboardStats();
-
-    async function loadHistory() {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/history');
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-            const historyData = await response.json();
-            const historyBody = document.querySelector('#history-table-body');
-
-            if (!historyBody) return;
-            historyBody.replaceChildren();
-
-            if (historyData && historyData.length > 0) {
-                historyData.forEach(action => {
-                    const row = document.createElement('tr');
-                    const values = [
-                        action.description || `Acción #${action.action_type_id}`,
-                        action.action_date,
-                        action.category || 'General',
-                        `${action.co2_saved ?? 0} kg CO₂`,
-                        `+${action.points_earned ?? 0} pts`
-                    ];
-
-                    values.forEach(value => {
-                        const cell = document.createElement('td');
-                        cell.textContent = value;
-                        row.appendChild(cell);
-                    });
-
-                    historyBody.appendChild(row);
-                });
-            }
-        } catch (error) {
-            console.error('Error al cargar el historial:', error);
-        }
-    }
 });

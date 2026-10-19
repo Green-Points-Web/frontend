@@ -23,18 +23,28 @@ async function initializeHistory() {
             throw new Error("Could not load dashboard statistics.");
         }
 
-        const historyData = await historyResponse.json();
-        const dashboardData = await dashboardResponse.json();
+        
+const historyResponseData = await historyResponse.json();
+const dashboardData = await dashboardResponse.json();
 
-        const catalogData = catalogResponse.ok
-            ? await catalogResponse.json()
-            : [];
+const catalogResponseData = catalogResponse.ok
+    ? await catalogResponse.json()
+    : [];
 
-        const actionNames = new Map(
-            catalogData.map(action => [action.id, action.name])
-        );
+const historyData = Array.isArray(historyResponseData)
+    ? historyResponseData
+    : historyResponseData.value || [];
 
-        renderHistoryTable(historyData, actionNames);
+const catalogData = Array.isArray(catalogResponseData)
+    ? catalogResponseData
+    : catalogResponseData.value || [];
+
+const actionNames = new Map(
+    catalogData.map(action => [action.id, action.name])
+);
+
+renderHistoryTable(historyData, actionNames, catalogData);
+
         updateKpiBar(dashboardData);
 
         initializeHistoryFilters();
@@ -64,83 +74,93 @@ function normalizeCategory(category = "") {
 
     return categories[normalized] || category;
 }
-
 function getActionIcon(actionName, category) {
-    const name = (actionName || "").toLowerCase();
-
-    if (/bike|bici|bicycle|bicicleta/.test(name)) {
-        return {
-            background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M12 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM5 16l4-8h4l3 8m-7-8-2-3m6 3h3"
-        };
-    }
-
-    if (/bus|transport|transporte|carpool|coche|car\b|walk|caminar/.test(name)) {
-        return {
-            background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2M7 8h.01M17 8h.01M5 16h14"
-        };
-    }
-
-    if (/recycl|recicl/.test(name)) {
-        return {
-            background: "#E2F4F2",
-            color: "#2C8D85",
-            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2M5 10l-2 2 2 2m14-4 2 2-2 2"
-        };
-    }
-
-    if (/tree|arbol|árbol|plant|planta|nature|naturaleza/.test(name)) {
-        return {
-            background: "#E5F5E9",
-            color: "#2C8A4C",
-            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
-        };
-    }
-
-    if (/volunteer|voluntari|particip/.test(name)) {
-        return {
-            background: "#FAEDE5",
-            color: "#D9773B",
-            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-7a4 4 0 0 1 0 8m2 3a4 4 0 0 1 2 3v2"
-        };
-    }
+    const name = (actionName || "").toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 
     const normalizedCategory = normalizeCategory(category);
 
-    const categoryIcons = {
-        Movilidad: {
+    if (/bike|bici|bicycle|bicicleta/.test(name)) {
+        return {
+            emoji: "🚲",
             background: "#EFE8F8",
-            color: "#7A4DB8",
-            path: "M5 16V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10M5 12h14M8 16v2m8-2v2"
-        },
-        Naturaleza: {
-            background: "#E5F5E9",
-            color: "#2C8A4C",
-            path: "M12 21v-8m0 3c-5 0-8-3-8-8 5 0 8 3 8 8Zm0-4c0-5 3-8 8-8 0 5-3 8-8 8Z"
-        },
-        Reciclaje: {
-            background: "#E2F4F2",
-            color: "#2C8D85",
-            path: "M7 7h10l-2-2m2 2-2 2M17 17H7l2 2m-2-2 2-2"
-        },
-        Participación: {
-            background: "#FAEDE5",
-            color: "#D9773B",
-            path: "M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
-        }
-    };
+            color: "#7A4DB8"
+        };
+    }
 
-    return categoryIcons[normalizedCategory] || {
-        background: "#FAEDE5",
-        color: "#D9773B",
-        path: "M12 3v18m-9-9h18"
+    if (/bus|autobus|transporte publico|metro|tren/.test(name)) {
+        return {
+            emoji: "🚌",
+            background: "#EFE8F8",
+            color: "#7A4DB8"
+        };
+    }
+
+    if (/walk|caminar|andando|a pie/.test(name)) {
+        return {
+            emoji: "🚶",
+            background: "#EFE8F8",
+            color: "#7A4DB8"
+        };
+    }
+
+    if (/carpool|compartir coche|coche compartido/.test(name)) {
+        return {
+            emoji: "🚗",
+            background: "#EFE8F8",
+            color: "#7A4DB8"
+        };
+    }
+
+    if (/recycl|recicl/.test(name)
+        || normalizedCategory === "Reciclaje") {
+        return {
+            emoji: "♻️",
+            background: "#E2F4F2",
+            color: "#2C8D85"
+        };
+    }
+
+    if (/volunteer|voluntari|particip/.test(name)
+        || normalizedCategory === "Participación") {
+        return {
+            emoji: "🤝",
+            background: "#FAEDE5",
+            color: "#D9773B"
+        };
+    }
+
+    if (/tree|arbol|plant|planta|nature|naturaleza/.test(name)
+        || normalizedCategory === "Naturaleza") {
+        return {
+            emoji: "🌳",
+            background: "#E5F5E9",
+            color: "#2C8A4C"
+        };
+    }
+
+    if (normalizedCategory === "Movilidad") {
+        return {
+            emoji: "🚶",
+            background: "#EFE8F8",
+            color: "#7A4DB8"
+        };
+    }
+
+    return {
+        emoji: "🌱",
+        background: "#E5F5E9",
+        color: "#2C8A4C"
     };
 }
 
-function renderHistoryTable(historyData, actionNames = new Map()) {
+
+function renderHistoryTable(
+    historyData,
+    actionNames = new Map(),
+    catalogData = []
+) {
     const tableBody = document.getElementById("history-table-body");
 
     if (!tableBody) {
@@ -154,7 +174,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
 
-        cell.colSpan = 5;
+        cell.colSpan = 6;
         cell.className = "history-empty";
         cell.textContent = "Todavía no hay acciones registradas.";
 
@@ -165,11 +185,27 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
     historyData.forEach(item => {
         const actionName =
+            item.action_name ||
             actionNames.get(item.action_type_id) ||
             `Acción #${item.action_type_id}`;
 
         const category = normalizeCategory(item.category);
-        const description = item.description || "Acción sostenible";
+        const rawDescription = String(item.description ?? "").trim();
+
+        const normalizedDescription = rawDescription.toLowerCase();
+
+        const isGenericDescription =
+         !normalizedDescription ||
+          ["string", "null", "undefined", "none", "n/a"].includes(
+           normalizedDescription
+       ) ||
+         normalizedDescription.startsWith("acción registrada:") ||
+         normalizedDescription.startsWith("registro automático desde el catálogo:");
+
+        const description = isGenericDescription
+         ? "Añade una descripción de cómo realizaste esta acción."
+         : rawDescription;
+
         const icon = getActionIcon(actionName, category);
 
         const row = document.createElement("tr");
@@ -187,29 +223,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         iconBox.className = "row-icon-box";
         iconBox.style.backgroundColor = icon.background;
         iconBox.style.color = icon.color;
-
-        const svg = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-        );
-
-        svg.setAttribute("class", "icon-md");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        svg.setAttribute("fill", "none");
-        svg.setAttribute("stroke", "currentColor");
-        svg.setAttribute("stroke-width", "1.8");
-        svg.setAttribute("stroke-linecap", "round");
-        svg.setAttribute("stroke-linejoin", "round");
-        svg.setAttribute("aria-hidden", "true");
-
-        const path = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-        );
-
-        path.setAttribute("d", icon.path);
-        svg.appendChild(path);
-        iconBox.appendChild(svg);
+        iconBox.textContent = icon.emoji;
 
         const textWrapper = document.createElement("div");
 
@@ -245,12 +259,27 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         pointsCell.className = "td-right";
         pointsCell.textContent = String(item.points_earned ?? 0);
 
+        const editCell = document.createElement("td");
+        editCell.className = "td-general";
+
+        const editButton = document.createElement("button");
+        editButton.type = "button";
+        editButton.textContent = "Editar";
+        editButton.className = "btn-edit-action";
+
+        editButton.addEventListener("click", () => {
+         openEditModal(item, catalogData);
+   });
+
+        editCell.appendChild(editButton);
+
         row.append(
             actionCell,
             dateCell,
             categoryCell,
             impactCell,
-            pointsCell
+            pointsCell,
+            editCell
         );
 
         tableBody.appendChild(row);
@@ -354,6 +383,184 @@ function showHistoryError() {
 
     row.appendChild(cell);
     tableBody.appendChild(row);
+}
+
+
+function openEditModal(item, catalogData) {
+    document.getElementById("history-edit-modal")?.remove();
+
+    const overlay = document.createElement("div");
+    overlay.id = "history-edit-modal";
+    overlay.className = "history-modal-overlay";
+
+    const modal = document.createElement("section");
+    modal.className = "history-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "history-modal-title");
+
+    const title = document.createElement("h2");
+    title.id = "history-modal-title";
+    title.textContent = "Editar acción";
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "history-modal-close";
+    closeButton.textContent = "×";
+    closeButton.setAttribute("aria-label", "Cerrar ventana");
+
+    const form = document.createElement("form");
+    form.className = "history-modal-form";
+
+    const actionLabel = document.createElement("label");
+    actionLabel.textContent = "Tipo de acción";
+
+    const actionSelect = document.createElement("select");
+    actionSelect.name = "action_type_id";
+    actionSelect.required = true;
+
+    catalogData.forEach(action => {
+        const option = document.createElement("option");
+        option.value = String(action.id);
+        option.textContent = action.name;
+        option.selected = Number(action.id) === Number(item.action_type_id);
+        actionSelect.appendChild(option);
+    });
+
+    actionLabel.appendChild(actionSelect);
+
+    const dateLabel = document.createElement("label");
+    dateLabel.textContent = "Fecha";
+
+    const dateInput = document.createElement("input");
+    dateInput.type = "date";
+    dateInput.name = "action_date";
+    dateInput.required = true;
+    dateInput.max = new Date().toLocaleDateString("en-CA");
+    dateInput.value = String(item.action_date || "").slice(0, 10);
+
+    dateLabel.appendChild(dateInput);
+
+    const descriptionLabel = document.createElement("label");
+    descriptionLabel.textContent = "Descripción";
+
+    const descriptionInput = document.createElement("textarea");
+    descriptionInput.name = "description";
+    descriptionInput.maxLength = 500;
+    descriptionInput.rows = 4;
+    const currentDescription = String(item.description ?? "").trim();
+
+const isGenericEditDescription =
+    !currentDescription ||
+    ["string", "null", "undefined", "none", "n/a"].includes(
+        currentDescription.toLowerCase()
+    ) ||
+    currentDescription.toLowerCase().startsWith("acción registrada:") ||
+    currentDescription.toLowerCase().startsWith(
+        "registro automático desde el catálogo:"
+    );
+
+descriptionInput.value = isGenericEditDescription
+    ? ""
+    : currentDescription;
+    descriptionInput.placeholder = "Describe cómo realizaste la acción";
+
+    descriptionLabel.appendChild(descriptionInput);
+
+    const errorMessage = document.createElement("p");
+    errorMessage.className = "history-modal-error";
+    errorMessage.setAttribute("role", "alert");
+    errorMessage.hidden = true;
+
+    const buttons = document.createElement("div");
+    buttons.className = "history-modal-buttons";
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "history-modal-cancel";
+    cancelButton.textContent = "Cancelar";
+
+    const saveButton = document.createElement("button");
+    saveButton.type = "submit";
+    saveButton.className = "history-modal-save";
+    saveButton.textContent = "Guardar cambios";
+
+    buttons.append(cancelButton, saveButton);
+    form.append(actionLabel, dateLabel, descriptionLabel, errorMessage, buttons);
+    modal.append(closeButton, title, form);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const closeModal = () => overlay.remove();
+
+    closeButton.addEventListener("click", closeModal);
+    cancelButton.addEventListener("click", closeModal);
+
+    overlay.addEventListener("click", event => {
+        if (event.target === overlay) closeModal();
+    });
+
+    const handleEscape = event => {
+        if (event.key === "Escape") {
+            closeModal();
+            document.removeEventListener("keydown", handleEscape);
+        }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    form.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        if (!form.reportValidity()) return;
+
+        if (dateInput.value > dateInput.max) {
+            errorMessage.textContent = "La fecha no puede ser futura.";
+            errorMessage.hidden = false;
+            return;
+        }
+
+        saveButton.disabled = true;
+        saveButton.textContent = "Guardando…";
+        errorMessage.hidden = true;
+
+        try {
+            const response = await fetch(
+                `${API_BASE_URL}/actions/${item.id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        action_type_id: Number(actionSelect.value),
+                        action_date: dateInput.value,
+                        description: descriptionInput.value.trim() || null
+                    })
+                }
+            );
+
+            const result = await response.json().catch(() => ({}));
+
+            if (!response.ok) {
+                throw new Error(
+                    result.detail || "No se pudieron guardar los cambios."
+                );
+            }
+
+            document.removeEventListener("keydown", handleEscape);
+            closeModal();
+            await initializeHistory();
+        } catch (error) {
+            errorMessage.textContent =
+                error.message || "Error al guardar los cambios.";
+            errorMessage.hidden = false;
+            saveButton.disabled = false;
+            saveButton.textContent = "Guardar cambios";
+        }
+    });
+
+    closeButton.focus();
 }
 
 window.filterHistory = filterHistory;
