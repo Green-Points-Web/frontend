@@ -35,8 +35,8 @@ export function initRegistrationModal(onSuccessCallBack) {
         }
     }
 
-    const openModal = () => modal.classList.add('is-open');
-    const closeModal = () => modal.classList.remove('is-open');
+    const openModal = () => modal.classList.add('is-active');
+    const closeModal = () => modal.classList.remove('is-active');
 
     openBtn?.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
@@ -73,6 +73,7 @@ export function initRegistrationModal(onSuccessCallBack) {
             impactValue.textContent = '+0 pts · 0 kg CO₂';
             closeModal();
             if (typeof onSuccessCallBack === 'function') {onSuccessCallBack();}
+            window.dispatchEvent(new CustomEvent('action:created'));
         }
 
         catch (error) {
