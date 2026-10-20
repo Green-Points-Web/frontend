@@ -15,6 +15,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         '#historial': 'history-section'
     };
 
+    async function updateRecentActions() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/history');
+            if (!response.ok) return;
+            const historyData = await response.json();
+
+            if (historyData && Array.isArray(historyData)) {
+                
+                const actionNames = window.globalActionNames || new Map(); 
+                
+                if (typeof window.renderRecentActionsList === 'function') {
+                    window.renderRecentActionsList(historyData, actionNames);
+                }
+            }
+        } catch (error) {
+            console.error('Error al actualizar las últimas acciones recientes:', error);
+        }
+    }
+
 
     async function updateDashboardStats() {
         try {
@@ -46,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (dashboardSection) dashboardSection.hidden = false;
             if (dynamicContent) dynamicContent.innerHTML = '';
             await updateDashboardStats();
+            await updateRecentActions();
             return;
         }
 
@@ -136,6 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const initialHash = window.location.hash || '#dashboard';
     loadPage(initialHash);
     await updateDashboardStats();
+    await updateRecentActions();
 
     window.addEventListener('action:created', async () => {
         const hash = window.location.hash || '#dashboard';
@@ -146,4 +167,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    window.addEventListener('action:created', async () => {
+        const hash = window.location.hash || '#dashboard';
+        if (hash === '#historial' && typeof window.initializeHistory === 'function') {
+            await window.initializeHistory();
+        } else {
+            await updateDashboardStats();
+            await updateRecentActions(); 
+        }
+    });
+
 });
+
+

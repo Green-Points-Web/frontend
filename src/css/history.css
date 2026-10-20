@@ -378,6 +378,29 @@
   color: #0B2217;
 }
 
+#modal select,
+#modal input[type="date"] {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.6rem 0.875rem;
+  background-color: #ffffff;
+  border: 1px solid #E7EFEA;
+  border-radius: 0.875rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 200ms ease-in-out;
+}
+
+#modal select:hover,
+#modal input[type="date"]:hover,
+#modal select:focus,
+#modal input[type="date"]:focus {
+  border-color: #358850;
+  box-shadow: 0 0 0 3px rgba(53, 136, 80, 0.12);
+}
+
 .icon-btn {
   background: transparent;
   border: none;
@@ -533,5 +556,11 @@
 
   .history-table {
     min-width: 40rem;
+  }
+
+  #modal select,
+  #modal input[type="date"] {
+    font-size: 16px;
+    padding: 0.75rem;
   }
 }
