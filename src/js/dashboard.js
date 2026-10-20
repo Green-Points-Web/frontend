@@ -8,7 +8,6 @@ const loadDashboard = async () => {
         const data = await getDashboardSummary();
         renderDashboard(data);
         
-        // Ejecutamos tu función para actualizar la barra de progreso
         renderLevelProgress(data);
     } catch (error) {
         console.error("Could not load dashboard:", error);
@@ -18,5 +17,5 @@ const loadDashboard = async () => {
 loadDashboard();
 initRegistrationModal();
 
-// "Chivato": Escucha cuándo se guarda una acción para recargar los datos en tiempo real
 window.addEventListener("action:created", loadDashboard);
+window.addEventListener("action:deleted", loadDashboard);

@@ -11,7 +11,6 @@ function setupModalListeners() {
 
     initializedModals.add(modal);
 
-    // El resto del contenido de setupModalListeners continúa aquí.
 
     const btnClose = document.getElementById("btn-close");
     const btnCancel = document.getElementById("btn-cancel");
@@ -21,14 +20,12 @@ function setupModalListeners() {
     btnClose?.addEventListener("click", closeModal);
     btnCancel?.addEventListener("click", closeModal);
 
-    // Cerrar al pulsar fuera de la ventana
     modal.addEventListener("click", (event) => {
         if (event.target === modal) {
             closeModal();
         }
     });
 
-    // Eliminar acción
     btnDelete?.addEventListener("click", async () => {
         if (currentEditingId === null) return;
 
@@ -49,6 +46,10 @@ function setupModalListeners() {
             showToast("Acción eliminada correctamente");
             closeModal();
 
+            
+
+        window.dispatchEvent(new Event("action:deleted"));
+
             if (typeof window.initializeHistory === "function") {
                 await window.initializeHistory();
             }
@@ -58,7 +59,6 @@ function setupModalListeners() {
         }
     });
 
-    // Guardar cambios
     form?.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -128,7 +128,6 @@ function openEditModal(item) {
         return;
     }
 
-    // El identificador debe ser el ID del registro de historial
     if (item.id === undefined || item.id === null) {
         console.error("La acción no tiene un ID de historial:", item);
         alert("No se puede editar esta acción porque falta su identificador.");
@@ -154,16 +153,13 @@ function openEditModal(item) {
         }
     }
 
-    // IMPORTANTE: quitar hidden y añadir la clase CSS
     modal.hidden = false;
     modal.removeAttribute("hidden");
     modal.classList.add("is-active");
     modal.setAttribute("aria-hidden", "false");
 
-    // Forzar la visualización del contenedor
     modal.style.setProperty("display", "flex", "important");
 
-    // Mostrar el formulario interior
     const modalContent = modal.querySelector(".modal");
 
     if (modalContent) {
