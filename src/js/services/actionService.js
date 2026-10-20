@@ -29,6 +29,8 @@ export async function createAction(actionData) {
     return await response.json();
 }
 
+window.createAction = createAction;
+
 // --- Card Button's Code ---
 
 document.querySelectorAll('.btn-register').forEach(btn => {
