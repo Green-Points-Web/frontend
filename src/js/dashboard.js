@@ -1,3 +1,9 @@
+﻿import {
+  getDashboardSummary,
+  getRecentHistory,
+  getActionCatalog
+} from "./services/dashboardService.js";
+
 import { getDashboardSummary } from "./services/dashboardService.js";
 import { renderDashboard, renderLevelProgress } from "./components/dashboardComponent.js";
 import { initRegistrationModal } from "./components/registrationModal.js";
@@ -13,13 +19,21 @@ function renderWeeklyEvolution(history) {
   const labelsContainer = $(".chart-labels");
   if (!chart || !labelsContainer) return;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const days = Array.from({ length: 7 }, (_, index) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() - (6 - index));
-    return date;
-  });
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+// Start with Monday of the current week.
+const monday = new Date(today);
+const dayOfWeek = (today.getDay() + 6) % 7;
+monday.setDate(today.getDate() - dayOfWeek);
+
+const days = Array.from({ length: 7 }, (_, index) => {
+  const date = new Date(monday);
+  date.setDate(monday.getDate() + index);
+  return date;
+});
+
   const totals = days.map(day => {
     const key = localDateKey(day);
     return history.reduce((sum, item) => {
@@ -31,7 +45,7 @@ function renderWeeklyEvolution(history) {
   chart.replaceChildren();
   days.forEach((day, index) => {
     const bar = document.createElement("div");
-    bar.className = `bar${index === 6 ? " active" : ""}`;
+    bar.className = `bar${localDateKey(day) === localDateKey(today) ? " active" : ""}`;
     const percentage = totals[index] > 0
   ? (totals[index] / max) * 100
   : 0;
@@ -39,7 +53,7 @@ function renderWeeklyEvolution(history) {
 
     const pointsLabel = document.createElement("span");
     pointsLabel.className = "bar-points";
-    pointsLabel.textContent = String(totals[index]);
+    pointsLabel.textContent = `+${totals[index]} pts`;
 
     bar.style.height = `${percentage}%`;
     bar.title = `${day.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "short" })}: ${totals[index]} puntos`;
@@ -53,7 +67,9 @@ function renderWeeklyEvolution(history) {
   days.forEach((day, index) => {
     const label = document.createElement("span");
     label.textContent = day.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", "").slice(0, 1).toUpperCase();
-    if (index === 6) label.className = "active";
+    if (localDateKey(day) === localDateKey(today)) {
+    label.className = "active";
+}
     labelsContainer.appendChild(label);
   });
 }
@@ -140,9 +156,8 @@ export async function refreshDashboard() {
     ]);
 
     // Importamos dinámicamente el componente para pintar los datos y la barra de progreso
-    import("./components/dashboardComponent.js").then(module => {
-        module.renderDashboard(summary);
-    });
+    renderDashboard(summary);
+    renderLevelProgress(summary);
 
     renderWeeklyEvolution(history);
     renderRecentActions(history, catalog);
@@ -152,8 +167,8 @@ export async function refreshDashboard() {
     console.error("No se pudo actualizar el dashboard:", error);
     const message = $("#app-error");
     if (message) {
-      message.textContent = "No se han podido actualizar los datos. Comprueba que el backend esté iniciado.";
-      message.hidden = false;
+      message.textContent = "No se han podido actualizar los datos. Comprueba que el backend está iniciado.";
+      message.hidden = false
     }
   }
 }
@@ -166,6 +181,10 @@ const loadDashboard = async () => {
     } catch (error) {
         console.error("Could not load dashboard:", error);
     }
+  }
+}
+const loadDashboard = async () => {
+    await refreshDashboard();
 };
 
 loadDashboard();
