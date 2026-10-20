@@ -67,23 +67,24 @@ function getActionIcon(actionName, category) {
         return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
     }
     if (/walk|pie|caminar|andando/.test(name)) {
-        return { background: "#E8F5E9", color: "#2E7D32", iconName: "directions_walk" };
+        return { background: "#ffffef", color: "#fcd900", iconName: "directions_walk" };
     }
     if (/carpool|coche|compartir/.test(name)) {
         return { background: "#E3F2FD", color: "#1565C0", iconName: "directions_car" };
     }
     if (/tren|bus|metro|publico|transporte/.test(name)) {
-        return { background: "#F3E5F5", color: "#9A1B5A", iconName: "directions_bus" };
+        return { background: "#fee7ee", color: "#b81466", iconName: "directions_bus" };
     }
     if (/voluntariado|ambiental|voluntario/.test(name)) {
-        return { background: "#EFEBE9", color: "#4E342E", iconName: "volunteer_activism" };
+        return { background: "#ffddd4", color: "#ff4500", iconName: "volunteer_activism" };
     }
     if (/recycl|recicl/.test(name)) {
-        return { background: "#E2F4F2", color: "#2C8D85", iconName: "recycling" };
+        return { background: "#E1F6F6", color: "#008080", iconName: "recycling" };
     }
     if (/tree|arbol|árbol|plant|planta/.test(name)) {
         return { background: "#EBF7EE", color: "#358850", iconName: "park" };
     }
+    /* IMPORTANTE: Sólo hay siete acciones pero aquí aparecen ocho (esta es como la de voluntariado) */
     if (/volunteer|voluntari|particip/.test(name)) {
         return { background: "#FDF2EE", color: "#E06D43", iconName: "group" };
     }
@@ -116,12 +117,20 @@ function renderCatalogGrid(catalogData) {
         const actionName = item.name || item.action_name || "Acción";
         const category = normalizeCategory(item.category || "Movilidad");
         const icon = getActionIcon(actionName, category);
+        const catColors = {
+            Movilidad: { background: "#F4EEF8", color: "#8C52BE" },
+            Naturaleza: { background: "#EBF7EE", color: "#358850" },
+            Reciclaje: { background: "#e2eaf4", color: "#2c598d" },
+            Participación: { background: "#edffe5", color: "#8fe043" }
+        };
+        const catColor = catColors[category] || icon;
         const co2Val = `${Number(item.co2_kg ?? item.co2_impact ?? 0)} kg CO₂`;
         const pointsVal = `+${Number(item.points ?? 0)} puntos`;
 
         // Creamos la tarjeta (<article>) que requiere el CSS
         const card = document.createElement("article");
         card.className = "action-card";
+        card.style.borderColor = catColor.color;
         card.dataset.id = item.id;
         card.dataset.category = category;
         card.dataset.searchable = `${actionName} ${category} ${pointsVal} ${co2Val}`.toLowerCase();
@@ -131,7 +140,7 @@ function renderCatalogGrid(catalogData) {
                 <div class="card-icon" style="background-color: ${icon.background}; color: ${icon.color};">
                     <span class="material-symbols-outlined" aria-hidden="true">${icon.iconName}</span>
                 </div>
-                <span class="category-tag">${category}</span>
+                <span class="category-tag" style="background-color: ${catColor.background}; color: ${catColor.color};">${category}</span>
             </div>
             <h3>${actionName}</h3>
             <div class="card-meta">
