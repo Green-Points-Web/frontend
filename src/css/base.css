@@ -49,10 +49,10 @@ body {
     gap: 8px;
 }
 
-.logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
+.main-nav__logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
 .site-title {
