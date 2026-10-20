@@ -27,3 +27,39 @@ export function renderDashboard(data) {
         co2Element.textContent = `${co2.toFixed(2)} kg`;
     }
 }
+export function renderLevelProgress(data) {
+    if (!data) return;
+
+    // Actualizar textos principales
+    const statLevel = document.getElementById('stat-level');
+    if (statLevel) statLevel.textContent = data.current_level || 'Seed';
+
+    const progressTitle = document.getElementById('progress-title');
+    if (progressTitle && data.next_level) progressTitle.textContent = `Camino a ${data.next_level}`;
+
+    const badgeLevelName = document.getElementById('badge-level-name');
+    if (badgeLevelName) badgeLevelName.textContent = data.current_level;
+
+    // Actualizar barra y números
+    const progressBar = document.getElementById('level-progress-bar');
+    if (progressBar) progressBar.value = data.progress_percent || 0;
+
+    const minPts = document.getElementById('progress-min-pts');
+    if (minPts) minPts.textContent = `${data.total_points || 0} pts`;
+
+    const maxPts = document.getElementById('progress-max-pts');
+    if (maxPts && data.next_level_min) maxPts.textContent = `${data.next_level_min} pts`;
+
+    const currentName = document.getElementById('progress-current-name');
+    if (currentName) currentName.textContent = data.current_level;
+
+    const nextName = document.getElementById('progress-next-name');
+    if (nextName) nextName.textContent = data.next_level || 'Máx';
+
+    const alertText = document.getElementById('progress-alert-text');
+    if (alertText && data.points_to_next) {
+        alertText.textContent = `Te faltan ${data.points_to_next} puntos para alcanzar el nivel ${data.next_level}.`;
+    } else if (alertText) {
+        alertText.textContent = `¡Has alcanzado el nivel máximo!`;
+    }
+}
