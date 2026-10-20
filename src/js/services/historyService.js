@@ -1,5 +1,8 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
+const PAGE_SIZE = 15;
+let currentPage = 1;
+let allRows = [];
 
 async function initializeHistory() {
     try {
@@ -165,9 +168,12 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     }
 
     tableBody.replaceChildren();
+    allRows = [];
+    currentPage = 1;
 
     if (!Array.isArray(historyData) || historyData.length === 0) {
         if (emptyState) emptyState.hidden = false;
+        updatePagination(0);
         return;
     }
 
@@ -295,7 +301,10 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
             tdEdit
         );
         tableBody.appendChild(row);
+        allRows.push(row);
     });
+
+    renderPage();
 }
 
 function formatDate(value) {
@@ -320,11 +329,14 @@ function setupEventListeners() {
     const filterSelect = document.getElementById("filter-select");
 
     if (searchInput) {
-        searchInput.addEventListener("input", filterHistoryTable);
+        searchInput.addEventListener("input", () => { currentPage = 1; filterHistoryTable(); });
     }
     if (filterSelect) {
-        filterSelect.addEventListener("change", filterHistoryTable);
+        filterSelect.addEventListener("change", () => { currentPage = 1; filterHistoryTable(); });
     }
+
+    document.getElementById("page-prev")?.addEventListener("click", () => goToPage(-1));
+    document.getElementById("page-next")?.addEventListener("click", () => goToPage(1));
 }
 
 function filterHistoryTable() {
@@ -335,27 +347,68 @@ function filterHistoryTable() {
     const query = (searchInput?.value || "").toLowerCase().trim();
     const selectedCategory = filterSelect?.value || "Todas";
 
-    const rows = document.querySelectorAll(".history-row");
     let visibleCount = 0;
 
-    rows.forEach(row => {
+    allRows.forEach(row => {
         const searchText = row.dataset.searchable || "";
         const rowCategory = row.dataset.category || "";
 
         const matchesSearch = searchText.includes(query);
         const matchesCategory = selectedCategory === "Todas" || rowCategory.toLowerCase() === selectedCategory.toLowerCase();
 
-        if (matchesSearch && matchesCategory) {
-            row.style.display = "";
-            visibleCount++;
-        } else {
-            row.style.display = "none";
-        }
+        row.dataset.visible = (matchesSearch && matchesCategory) ? "1" : "0";
+        if (matchesSearch && matchesCategory) visibleCount++;
+    });
+
+    const visibleRows = allRows.filter(r => r.dataset.visible === "1");
+    const totalPages = Math.max(1, Math.ceil(visibleCount / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    allRows.forEach(row => {
+        const pos = visibleRows.indexOf(row);
+        row.style.display = (pos >= start && pos < start + PAGE_SIZE) ? "" : "none";
     });
 
     if (emptyState) {
         emptyState.hidden = visibleCount > 0;
     }
+
+    updatePagination(visibleCount);
+}
+
+function renderPage() {
+    const totalPages = Math.max(1, Math.ceil(allRows.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+
+    allRows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    updatePagination(allRows.length);
+}
+
+function updatePagination(total) {
+    const info = document.getElementById("pagination-info");
+    const prevBtn = document.getElementById("page-prev");
+    const nextBtn = document.getElementById("page-next");
+    const nav = document.getElementById("pagination");
+
+    if (nav) nav.hidden = total === 0;
+
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (info) info.textContent = `Página ${currentPage} de ${totalPages}`;
+    if (prevBtn) prevBtn.disabled = currentPage <= 1;
+    if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+}
+
+function goToPage(delta) {
+    currentPage += delta;
+    renderPage();
 }
 
 window.initializeHistory = initializeHistory;
