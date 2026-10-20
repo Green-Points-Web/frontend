@@ -80,7 +80,7 @@ function getActionIcon(actionName, category) {
     }
     if (/walk|pie|caminar|andando/.test(name)) {
         return {
-            background: "#E8F5E9",
+            background: "#f5f5e8",
             color: "#EAEE1A",
             iconName: "directions_walk"
         };
