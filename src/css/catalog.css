@@ -24,6 +24,9 @@
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
 }
 
 .catalog-header h2 {
@@ -112,6 +115,16 @@
 .points {
     color: #2e7d32;
     font-weight: 600;
+}
+
+.co2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.co2 .material-symbols-outlined {
+    font-size: 1.1em;
 }
 
 /* 'Register Action' Button */
