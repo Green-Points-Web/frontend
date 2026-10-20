@@ -53,7 +53,6 @@
   color: #0B2217;
 }
 
-
 /* Green Impact Box */
 
 .impact-box {
@@ -97,4 +96,10 @@
 .feedback-message.error {
     background-color: lightpink;
     color: darkred;
+}
+
+/* Close button (cancel) */
+
+.close-btn {
+    display: none;
 }
