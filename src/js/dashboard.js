@@ -80,18 +80,7 @@ function localDateKey(value) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-function actionIcon(actionName, category) {
-  const name = String(actionName || "").toLowerCase();
-
-  if (/bike|bici|bicicleta/.test(name)) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
-  if (/walk|pie|caminar|andando/.test(name)) return { background: "#ffffef", color: "#fcd900", iconName: "directions_walk" };
-  if (/carpool|coche|compartir/.test(name)) return { background: "#E3F2FD", color: "#1565C0", iconName: "directions_car" };
-  if (/tren|bus|metro|publico|transporte/.test(name)) return { background: "#fee7ee", color: "#b81466", iconName: "directions_bus" };
-  if (/voluntariado|ambiental|voluntario/.test(name)) return { background: "#ffddd4", color: "#ff4500", iconName: "volunteer_activism" };
-  if (/recycl|recicl/.test(name)) return { background: "#E1F6F6", color: "#008080", iconName: "recycling" };
-  if (/tree|arbol|árbol|plant|planta/.test(name)) return { background: "#EBF7EE", color: "#358850", iconName: "park" };
-  if (/volunteer|voluntari|particip/.test(name)) return { background: "#FDF2EE", color: "#E06D43", iconName: "group" };
-
+function categoryIcon(category) {
   const value = String(category || "").toLowerCase();
   if (value.includes("movil")) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
   if (value.includes("natur")) return { background: "#EBF7EE", color: "#358850", iconName: "park" };
@@ -122,7 +111,7 @@ function renderRecentActions(history, catalog) {
   recent.forEach(item => {
     const name = names.get(String(item.action_type_id)) || item.action_name || item.name || `Acción #${item.action_type_id ?? item.id}`;
     const date = item.action_date || item.date;
-    const catStyles = actionIcon(name, item.category);
+    const catStyles = categoryIcon(item.category);
     const row = document.createElement("button");
     row.type = "button";
     row.className = "action-item action-item--button";
