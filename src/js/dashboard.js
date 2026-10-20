@@ -80,13 +80,24 @@ function localDateKey(value) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-function categoryIcon(category) {
+function actionIcon(actionName, category) {
+  const name = String(actionName || "").toLowerCase();
+
+  if (/bike|bici|bicicleta/.test(name)) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
+  if (/walk|pie|caminar|andando/.test(name)) return { background: "#ffffef", color: "#fcd900", iconName: "directions_walk" };
+  if (/carpool|coche|compartir/.test(name)) return { background: "#E3F2FD", color: "#1565C0", iconName: "directions_car" };
+  if (/tren|bus|metro|publico|transporte/.test(name)) return { background: "#fee7ee", color: "#b81466", iconName: "directions_bus" };
+  if (/voluntariado|ambiental|voluntario/.test(name)) return { background: "#ffddd4", color: "#ff4500", iconName: "volunteer_activism" };
+  if (/recycl|recicl/.test(name)) return { background: "#E1F6F6", color: "#008080", iconName: "recycling" };
+  if (/tree|arbol|árbol|plant|planta/.test(name)) return { background: "#EBF7EE", color: "#358850", iconName: "park" };
+  if (/volunteer|voluntari|particip/.test(name)) return { background: "#FDF2EE", color: "#E06D43", iconName: "group" };
+
   const value = String(category || "").toLowerCase();
-  if (value.includes("movil")) return "directions_bike";
-  if (value.includes("natur")) return "park";
-  if (value.includes("recicl")) return "recycling";
-  if (value.includes("particip")) return "volunteer_activism";
-  return "eco";
+  if (value.includes("movil")) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
+  if (value.includes("natur")) return { background: "#EBF7EE", color: "#358850", iconName: "park" };
+  if (value.includes("recicl")) return { background: "#e2eaf4", color: "#2c598d", iconName: "recycling" };
+  if (value.includes("particip")) return { background: "#edffe5", color: "#8fe043", iconName: "group" };
+  return { background: "#E8F4EE", color: "#2F6B50", iconName: "eco" };
 }
 
 function renderRecentActions(history, catalog) {
@@ -111,14 +122,16 @@ function renderRecentActions(history, catalog) {
   recent.forEach(item => {
     const name = names.get(String(item.action_type_id)) || item.action_name || item.name || `Acción #${item.action_type_id ?? item.id}`;
     const date = item.action_date || item.date;
+    const catStyles = actionIcon(name, item.category);
     const row = document.createElement("button");
     row.type = "button";
     row.className = "action-item action-item--button";
+    row.style.borderColor = catStyles.color;
     row.dataset.id = String(item.id);
     row.setAttribute("aria-label", `Editar ${name}`);
     row.innerHTML = `
       <span class="action-info">
-        <span class="action-icon"><span class="material-symbols-outlined" aria-hidden="true">${categoryIcon(item.category)}</span></span>
+        <span class="action-icon" style="background-color: ${catStyles.background}; color: ${catStyles.color};"><span class="material-symbols-outlined" aria-hidden="true">${catStyles.iconName}</span></span>
         <span><strong>${escapeHTML(name)}</strong><span class="action-description">${escapeHTML(item.description || "Acción sostenible registrada")}</span></span>
       </span>
       <span class="action-meta">
