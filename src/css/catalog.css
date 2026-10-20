@@ -54,7 +54,6 @@
 
 .action-card {
     background: #ffffff;
-    border: 1px solid #eaeaea;
     border-radius: 16px;
     padding: 1.5rem;
     display: flex;
@@ -116,6 +115,7 @@
 .points {
     color: #2e7d32;
     font-weight: 600;
+    display: inline-flex;
 }
 
 .co2 {

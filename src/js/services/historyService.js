@@ -80,8 +80,8 @@ function getActionIcon(actionName, category) {
     }
     if (/walk|pie|caminar|andando/.test(name)) {
         return {
-            background: "#f5f5e8",
-            color: "#EAEE1A",
+            background: "#ffffef",
+            color: "#fcd900",
             iconName: "directions_walk"
         };
     }
@@ -94,22 +94,22 @@ function getActionIcon(actionName, category) {
     }
     if (/tren|bus|metro|publico|transporte/.test(name)) {
         return {
-            background: "#F3E5F5",
-            color: "#9A1B5A",
+            background: "#fee7ee",
+            color: "#b81466",
             iconName: "directions_bus"
         };
     }
     if (/voluntariado|ambiental|voluntario/.test(name)) {
         return {
-            background: "#EFEBE9",
-            color: "#4E342E",
+            background: "#ffddd4",
+            color: "#ff4500",
             iconName: "volunteer_activism"
         };
     }
     if (/recycl|recicl/.test(name)) {
         return {
-            background: "#E2F4F2",
-            color: "#2C8D85",
+            background: "#E1F6F6",
+            color: "#008080",
             iconName: "recycling"
         };
     }
@@ -120,6 +120,7 @@ function getActionIcon(actionName, category) {
             iconName: "park"
         };
     }
+/* IMPORTANTE: Aquí ocurre lo mismo que en cataalogService, voluntariado esta duplicado*/
     if (/volunteer|voluntari|particip/.test(name)) {
         return {
             background: "#FDF2EE",

@@ -162,6 +162,16 @@ body {
   margin-bottom: 2rem;
 }
 
+.dashboard-header .material-symbols-outlined,
+.dashboard-header .badge-super {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.dashboard-header .material-symbols-outlined {
+  margin-right: 8px; /* Space between them */
+}
+
 .badge-super {
   font-size: 0.75rem;
   font-weight: bold;
@@ -219,6 +229,13 @@ body {
   margin: 0;
 }
 
+.action-meta .date,
+.action-meta .co2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 .stat-card .stat-sub {
   font-size: 0.75rem;
   margin-top: 0.5rem;
@@ -270,6 +287,14 @@ body {
   border-radius: 999px;
   font-size: 0.875rem;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-level .material-symbols-outlined {
+  display: block;
+  font-size: 20px;
 }
 
 .link-action {
@@ -301,6 +326,20 @@ body {
   font-size: 0.875rem;
   margin-top: 1.5rem;
   border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-alert strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.progress-alert .material-symbols-outlined {
+  font-size: 1.25rem;
+  display: block;
 }
 
 .level-progress__bar {
