@@ -143,12 +143,21 @@ function renderCatalogGrid(catalogData) {
             </button>
         `;
 
-        // Evento para abrir el modal al hacer clic en registrar
         const registerBtn = card.querySelector(".btn-register");
-        registerBtn.addEventListener("click", () => {
-            console.log("Registrar acción pulsado para:", item);
-            if (typeof window.openRegistrationModal === "function") {
-                window.openRegistrationModal(item);
+        registerBtn.addEventListener("click", async () => {
+            registerBtn.disabled = true;
+            try {
+                await window.createAction({
+                    user_id: 1,
+                    action_type_id: item.id,
+                    action_date: new Date().toISOString().slice(0, 10),
+                    description: null
+                });
+                registerBtn.textContent = "¡Registrada!";
+                window.dispatchEvent(new CustomEvent("action:created"));
+            } catch (error) {
+                alert(error.message || "No se pudo registrar la acción");
+                registerBtn.disabled = false;
             }
         });
 
