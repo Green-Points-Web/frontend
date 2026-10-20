@@ -2,6 +2,58 @@
     justify-content: flex-end;
 }
 
+.modal-registration.active {
+  display: flex;
+}
+
+.modal-registration {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(11, 34, 23, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal-registration.is-active {
+  display: flex !important;
+}
+
+.modal-registration.is-active .modal-container {
+  display: flex !important;
+}
+
+.modal-container {
+  background-color: #FFFFFF;
+  border-radius: 1.25rem;
+  border: 1px solid #DCE6E0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 32rem;
+  padding: 1.5rem;
+  display: none;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #E2ECE5;
+  padding-bottom: 0.75rem;
+}
+
+.modal-subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0B2217;
+}
+
+
 /* Green Impact Box */
 
 .impact-box {
