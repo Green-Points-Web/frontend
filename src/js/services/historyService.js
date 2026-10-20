@@ -73,84 +73,77 @@ function getActionIcon(actionName, category) {
 
     if (/bike|bici|bicicleta/.test(name)) {
         return {
-            background: "#F4EEF8",
-            color: "#8C52BE",
+            background: "#fff9f4",
+            color: "#ff8a2b",
             iconName: "directions_bike"
         };
     }
     if (/walk|pie|caminar|andando/.test(name)) {
         return {
-            background: "#f5f5e8",
-            color: "#EAEE1A",
+            background: "#efffee",
+            color: "#219c15",
             iconName: "directions_walk"
         };
     }
     if (/carpool|coche|compartir/.test(name)) {
         return {
-            background: "#E3F2FD",
-            color: "#1565C0",
+            background: "#dff1fd",
+            color: "#0f6fdd",
             iconName: "directions_car"
         };
     }
     if (/tren|bus|metro|publico|transporte/.test(name)) {
         return {
-            background: "#F3E5F5",
+            background: "#f9e6fc",
             color: "#9A1B5A",
             iconName: "directions_bus"
         };
     }
-    if (/voluntariado|ambiental|voluntario/.test(name)) {
+    if (/voluntariado|ambiental|voluntario|volunteer|particip/.test(name)) {
         return {
-            background: "#EFEBE9",
-            color: "#4E342E",
+            background: "#fce6e6",
+            color: "#eb1a1a",
             iconName: "volunteer_activism"
         };
     }
     if (/recycl|recicl/.test(name)) {
         return {
-            background: "#E2F4F2",
-            color: "#2C8D85",
+            background: "#dbf9fd",
+            color: "#0fb9be",
             iconName: "recycling"
         };
     }
     if (/tree|arbol|árbol|plant|planta/.test(name)) {
         return {
-            background: "#EBF7EE",
-            color: "#358850",
+            background: "#e6fcec",
+            color: "#3cf774",
             iconName: "park"
-        };
-    }
-    if (/volunteer|voluntari|particip/.test(name)) {
-        return {
-            background: "#FDF2EE",
-            color: "#E06D43",
-            iconName: "group"
         };
     }
 
 
     const iconsByCat = {
         Movilidad: {
-            background: "#F4EEF8",
-            color: "#8C52BE",
+            background: "#E8F4EE",
+            color: "#2F6B50",
             iconName: "directions_bike"
         },
 
         Naturaleza: {
-            background: "#EBF7EE",
-            color: "#358850",
+            background: "#E8F4EE",
+            color: "#2F6B50",
             iconName: "park"
         },
 
         Reciclaje: {
-            background: "#e2eaf4",
-            color: "#2c598d",
+            background: "#E8F4EE",
+            color: "#2F6B50",
             iconName: "recycling"
         },
 
         Participación: {
-            background: "#edffe5",
-            color: "#8fe043",
+            background: "#E8F4EE",
+            color: "#2F6B50",
             iconName: "proup"
         }
     };
@@ -166,6 +159,10 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     const emptyState = document.getElementById("empty-state");
 
     if (!tableBody) return;
+
+    if (Array.isArray(historyData)) {
+        historyData.sort((a, b) => new Date(b.date || b.action_date) - new Date(a.date || a.action_date));
+    }
 
     tableBody.replaceChildren();
 
@@ -209,30 +206,61 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdDate = document.createElement("td");
         tdDate.className = "td-general";
-        tdDate.textContent = dateStr;
+        tdDate.innerHTML = `
+            <div style="display: inline-flex; align-items: center; gap: 0.3rem;">
+                <span class="material-symbols-outlined" style="font-size: 14px; color: #6b7280;">schedule</span>
+                <span>${dateStr}</span>
+            </div>
+        `;
 
 
         const tdCategory = document.createElement("td");
         tdCategory.className = "td-general";
         const styles = getActionIcon(item.name || item.actionName, item.category);
-        tdCategory.innerHTML = `<span class="category-tag-table" style="background-color: ${styles.background}; color: ${styles.color}; padding: 4px 8px; border-radius: 4px; display: inline-block;">${item.category}</span>`;
+
+        tdCategory.innerHTML = `
+            <span style="
+                background-color: ${styles.background}; 
+                color: ${styles.color}; 
+                width: 110px; 
+                padding: 0.25rem 0.625rem; 
+                border-radius: 9999px; 
+                display: inline-flex; 
+                align-items: center; 
+                justify-content: center; 
+                font-size: 0.75rem; 
+                font-weight: 500; 
+                text-align: center; 
+                box-sizing: border-box;
+            ">${item.category}</span>
+        `;
 
 
         const tdImpact = document.createElement("td");
         tdImpact.className = "td-general";
-        tdImpact.textContent = co2Val;
+        tdImpact.innerHTML = `
+            <div style="color: #1f2c1f; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; width: 100px; box-sizing: border-box; justify-content: center;">
+                <span class="material-symbols-outlined" style="font-size: 14px;">emoji_nature</span>
+                <span>${co2Val}</span>
+            </div>
+        `;
 
 
         const tdPoints = document.createElement("td");
         tdPoints.className = "td-right";
-        tdPoints.textContent = pointsVal;
+        tdPoints.innerHTML = `
+            <div style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 0.2rem; font-size: 0.95rem; font-weight: 600; color: #111827;">
+                <span><span class="material-symbols-outlined" style="font-size: 13px; color: #f59e0b; font-variation-settings: 'FILL' 1;">star</span>${pointsVal}</span>
+                
+            </div>
+        `;
 
 
         const tdEdit = document.createElement("td");
         tdEdit.className = "td-general";
         tdEdit.innerHTML = `
             <button type="button" class="icon-btn btn-edit-item" aria-label="Editar acción" title="Editar">
-                <span class="material-symbols outlined icon element" aria-hidden="true">edit</span>
+            <span class="material-symbols-outlined" aria-hidden="true">edit_square</span>
             </button>
         `;
 
