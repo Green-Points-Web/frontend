@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const mainContainer = document.querySelector('.site-main');
     const dashboardSection = document.querySelector('#dashboard');
-    const menuLinks = document.querySelectorAll('nav a');
+
 
     let dynamicContent = document.querySelector('#dynamic-content');
     if (!dynamicContent && mainContainer) {
@@ -96,15 +96,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    menuLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const hash = link.getAttribute('href');
-            if (hash && hash.startsWith('#')) {
-                e.preventDefault();
-                history.pushState(null, null, hash);
-                loadPage(hash);
-            }
-        });
+
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+
+        const hash = link.getAttribute('href');
+        if (!hash || hash === '#') return;
+
+        e.preventDefault();
+        history.pushState(null, null, hash);
+        loadPage(hash);
+    });
+    window.addEventListener('popstate', () => {
+        const hash = window.location.hash || '#dashboard';
+        loadPage(hash);
     });
 
     const initialHash = window.location.hash || '#dashboard';
