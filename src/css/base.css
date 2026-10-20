@@ -115,9 +115,43 @@ body {
 .level-progress__bar::-webkit-progress-bar { background-color: #E0E5E2; }
 .level-progress__bar::-webkit-progress-value { background-color: var(--clr-accent); }
 
-.mock-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
-.mock-chart .bar { flex: 1; background: #d1fae5; border-radius: 4px 4px 0 0; }
-.mock-chart .bar.active { background: var(--clr-primary); }
+
+.mock-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 145px;
+  padding-top: 20px;
+  overflow: visible;
+}
+
+
+.mock-chart .bar {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  background: #4ade80;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease, background-color 0.3s ease;
+}
+
+.mock-chart .bar.active {
+  background: #166534;
+}
+
+
+.mock-chart .bar-points {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
 .chart-labels { display: flex; justify-content: space-between; margin-top: 0.75rem; font-size: 0.75rem; color: var(--clr-text-muted); font-weight: bold; }
 .chart-labels .active { color: var(--clr-primary); }
 

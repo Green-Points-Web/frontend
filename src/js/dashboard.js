@@ -30,11 +30,22 @@ function renderWeeklyEvolution(history) {
   days.forEach((day, index) => {
     const bar = document.createElement("div");
     bar.className = `bar${index === 6 ? " active" : ""}`;
-    bar.style.height = `${Math.max(totals[index] > 0 ? 6 : 2, (totals[index] / max) * 100)}%`;
+    const percentage = totals[index] > 0
+  ? (totals[index] / max) * 100
+  : 0;
+
+
+    const pointsLabel = document.createElement("span");
+    pointsLabel.className = "bar-points";
+    pointsLabel.textContent = String(totals[index]);
+
+    bar.style.height = `${percentage}%`;
     bar.title = `${day.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "short" })}: ${totals[index]} puntos`;
     bar.setAttribute("role", "img");
     bar.setAttribute("aria-label", bar.title);
+    bar.appendChild(pointsLabel);
     chart.appendChild(bar);
+
   });
   labelsContainer.replaceChildren();
   days.forEach((day, index) => {
@@ -125,7 +136,7 @@ export async function refreshDashboard() {
     const [summary, history, catalog] = await Promise.all([
       getDashboardSummary(), getRecentHistory(200), getActionCatalog()
     ]);
-    
+
     // Importamos dinámicamente el componente para pintar los datos y la barra de progreso
     import("./components/dashboardComponent.js").then(module => {
         module.renderDashboard(summary);
