@@ -375,6 +375,7 @@ body {
 .action-meta .points { color: #166534; background: #f0fdf4; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: bold; }
 .action-meta .arrow { color: #9ca3af; font-size: 1.25rem; }
 
+.mock-chart {
   height: 120px;
 }
 
