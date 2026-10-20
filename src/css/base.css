@@ -560,3 +560,44 @@ body {
   outline: 2px solid var(--clr-accent);
   border-color: transparent;
 }
+
+/* Dashboard chart layout and colors */
+.dashboard-middle {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.27fr) minmax(0, 1fr) !important;
+  gap: 32px !important;
+  width: 100% !important;
+  align-items: stretch !important;
+}
+
+.dashboard-middle > .progress-card {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.dashboard-middle > .chart-card {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.dashboard-middle .mock-chart {
+  display: flex !important;
+  align-items: flex-end !important;
+  gap: 12px !important;
+  height: 220px !important;
+  width: 100% !important;
+  padding: 35px 8px 0 !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-middle .mock-chart .bar {
+  position: relative !important;
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  background-color: #4ade80 !important;
+  border-radius: 7px 7px 0 0 !important;
+}
+
+.dashboard-middle .mock-chart .bar.active {
+  background-color: #166534 !important;
+}
