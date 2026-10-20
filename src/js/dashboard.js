@@ -1,5 +1,3 @@
-import { getDashboardSummary, getRecentHistory, getActionCatalog } from "./services/dashboardService.js";
-
 const $ = selector => document.querySelector(selector);
 const number = value => Number(value || 0);
 const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -152,9 +150,23 @@ export async function refreshDashboard() {
     if (message) {
       message.textContent = "No se han podido actualizar los datos. Comprueba que el backend esté iniciado.";
       message.hidden = false;
-    }
-  }
-}
+import { getDashboardSummary } from "./services/dashboardService.js";
+import { renderDashboard, renderLevelProgress } from "./components/dashboardComponent.js";
+import { initRegistrationModal } from "./components/registrationModal.js";
 
-window.refreshDashboard = refreshDashboard;
-document.addEventListener("DOMContentLoaded", refreshDashboard);
+const loadDashboard = async () => {
+    try {
+        const data = await getDashboardSummary();
+        renderDashboard(data);
+        
+        renderLevelProgress(data);
+    } catch (error) {
+        console.error("Could not load dashboard:", error);
+    }
+};
+
+loadDashboard();
+initRegistrationModal();
+
+window.addEventListener("action:created", loadDashboard);
+window.addEventListener("action:deleted", loadDashboard);

@@ -1,91 +1,149 @@
-// Navegación SPA sencilla y sincronización de datos del dashboard.
-document.addEventListener("DOMContentLoaded", () => {
-  const dashboard = document.querySelector("#dashboard");
-  const main = document.querySelector(".site-main");
-  let dynamicContent = document.querySelector("#dynamic-content");
+document.addEventListener('DOMContentLoaded', async () => {
+    const mainContainer = document.querySelector('.site-main');
+    const dashboardSection = document.querySelector('#dashboard');
 
-  if (!dynamicContent && main) {
-    dynamicContent = document.createElement("div");
-    dynamicContent.id = "dynamic-content";
-    dynamicContent.hidden = true;
-    main.appendChild(dynamicContent);
-  }
 
-  const routes = {
-    "#acciones": "catalog-section",
-    "#historial": "history-section",
-  };
-
-  let navigationSequence = 0;
-
-  async function loadPage(hash = window.location.hash || "#dashboard") {
-    const sequence = ++navigationSequence;
-
-    if (hash === "" || hash === "#dashboard") {
-      if (dashboard) dashboard.hidden = false;
-      if (dynamicContent) {
-        dynamicContent.hidden = true;
-        dynamicContent.replaceChildren();
-      }
-      await window.refreshDashboard?.();
-      return;
+    let dynamicContent = document.querySelector('#dynamic-content');
+    if (!dynamicContent && mainContainer) {
+        dynamicContent = document.createElement('div');
+        dynamicContent.id = 'dynamic-content';
+        mainContainer.appendChild(dynamicContent);
     }
 
-    const pageName = routes[hash];
-    if (!pageName || !dynamicContent) return;
+    const routes = {
+        '#acciones': 'catalog-section',
+        '#historial': 'history-section'
+    };
 
-    try {
-      const response = await fetch(`./pages/${pageName}.html`);
-      if (!response.ok) throw new Error(`HTTP ${response.status} al cargar ${pageName}.html`);
-      const html = await response.text();
-      if (sequence !== navigationSequence) return;
 
-      if (dashboard) dashboard.hidden = true;
-      dynamicContent.hidden = false;
-      dynamicContent.innerHTML = html;
+    async function updateDashboardStats() {
+        try {
+            const response = await fetch('http://127.0.0.1:8000/history');
+            if (!response.ok) return;
+            const historyData = await response.json();
 
-      if (hash === "#historial") {
-        window.setupModalListeners?.();
-        window.setupHistoryEventListeners?.();
-        await window.initializeHistory?.();
+            if (historyData && Array.isArray(historyData)) {
+                const totalActions = historyData.length;
+                const totalPoints = historyData.reduce((acc, curr) => acc + (curr.points_earned || curr.points || 0), 0);
+                const totalCo2 = historyData.reduce((acc, curr) => acc + (curr.co2_saved || 0), 0);
 
-        // Si se llegó desde una acción reciente, abrir esa acción en el editor.
-        const requestedId = sessionStorage.getItem("greenpoints-edit-action-id");
-        if (requestedId) {
-          sessionStorage.removeItem("greenpoints-edit-action-id");
-          const editButton = [...dynamicContent.querySelectorAll(".btn-edit-item")]
-            .find(button => button.dataset.id === String(requestedId));
-          editButton?.click();
+                const pointsEl = document.querySelector('#stat-points') || document.querySelector('#kpi-points');
+                const actionsEl = document.querySelector('#stat-actions') || document.querySelector('#kpi-actions');
+                const co2El = document.querySelector('#stat-co2') || document.querySelector('#kpi-co2');
+
+                if (pointsEl) pointsEl.textContent = totalPoints;
+                if (actionsEl) actionsEl.textContent = totalActions;
+                if (co2El) co2El.textContent = `${totalCo2.toFixed(1)} kg`;
+            }
+        } catch (error) {
+            console.error('Error al actualizar estadísticas:', error);
         }
-      } else if (hash === "#acciones") {
-        window.initializeCatalog?.();
-      }
-    } catch (error) {
-      console.error("Error al cargar la vista:", error);
-      if (sequence !== navigationSequence) return;
-      if (dashboard) dashboard.hidden = true;
-      dynamicContent.hidden = false;
-      dynamicContent.textContent = "No se pudo cargar esta sección. Comprueba que el archivo HTML existe.";
     }
-  }
 
-  document.addEventListener("click", event => {
-    const link = event.target.closest('a[href^="#"]');
-    if (!link) return;
-    const hash = link.getAttribute("href");
-    if (!["#dashboard", "#acciones", "#historial"].includes(hash)) return;
-    event.preventDefault();
-    if (window.location.hash !== hash) history.pushState(null, "", hash);
-    loadPage(hash);
-  });
 
-  window.addEventListener("popstate", () => loadPage(window.location.hash || "#dashboard"));
+    async function loadPage(hash) {
+        if (hash === '#dashboard' || hash === '') {
+            if (dashboardSection) dashboardSection.hidden = false;
+            if (dynamicContent) dynamicContent.innerHTML = '';
+            await updateDashboardStats();
+            return;
+        }
 
-  // Cualquier módulo que guarde/edite/elimine una acción debe emitir este evento.
-  window.addEventListener("greenpoints:data-changed", async () => {
-    await window.refreshDashboard?.();
-    if (window.location.hash === "#historial") await window.initializeHistory?.();
-  });
+        const fileName = routes[hash];
+        if (!fileName) return;
 
-  loadPage(window.location.hash || "#dashboard");
+        try {
+            const response = await fetch(`./pages/${fileName}.html`);
+            if (!response.ok) throw new Error('Archivo no encontrado');
+
+            const html = await response.text();
+
+            if (dashboardSection) dashboardSection.hidden = true;
+            if (dynamicContent) {
+                dynamicContent.hidden = false;
+                dynamicContent.innerHTML = html;
+
+                
+            }
+
+            if (hash === '#acciones') { 
+                const loadCatalogScript = () => {
+                    return new Promise((resolve, reject) => {
+                        if (typeof window.initializeCatalog === "function") return resolve();
+                        const script = document.createElement('script');
+                        script.src = "./src/js/services/catalogService.js";
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                };
+                try {
+                    await loadCatalogScript();
+                    await window.initializeCatalog();
+                    if (typeof window.setupCatalogEventListeners === "function") {
+                        window.setupCatalogEventListeners();
+                    }
+                } catch (err) {
+                    console.error("No se ha cargado el script del catálogo (catalogService.js) correctamente.", err);
+                }
+            }
+
+            if (hash === '#historial') {
+                if (typeof window.initializeHistory === "function") {
+                    await window.initializeHistory();
+                } else {
+                    console.error("No se ha cargado historyService.js");
+                }
+
+                if (typeof window.setupHistoryEventListeners === "function") {
+                    window.setupHistoryEventListeners();
+                }
+
+                if (typeof window.setupModalListeners === "function") {
+                    window.setupModalListeners();
+                } else {
+                    console.error("No se ha cargado modalcontroller.js");
+                }
+            }
+
+        } catch (error) {
+            console.error("Error al cargar la vista:", error);
+            if (dashboardSection) dashboardSection.hidden = true;
+            if (dynamicContent) {
+                dynamicContent.hidden = false;
+                dynamicContent.innerHTML = '<p>Error al cargar la sección.</p>';
+            }
+        }
+    }
+
+
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+
+        const hash = link.getAttribute('href');
+        if (!hash || hash === '#') return;
+
+        e.preventDefault();
+        history.pushState(null, null, hash);
+        loadPage(hash);
+    });
+    window.addEventListener('popstate', () => {
+        const hash = window.location.hash || '#dashboard';
+        loadPage(hash);
+    });
+
+    const initialHash = window.location.hash || '#dashboard';
+    loadPage(initialHash);
+    await updateDashboardStats();
+
+    window.addEventListener('action:created', async () => {
+        const hash = window.location.hash || '#dashboard';
+        if (hash === '#historial' && typeof window.initializeHistory === 'function') {
+            await window.initializeHistory();
+        } else {
+            await updateDashboardStats();
+        }
+    });
+
 });

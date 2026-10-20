@@ -13,6 +13,9 @@ export function initRegistrationModal(onSuccessCallBack) {
     const cancelBtn = document.getElementById('cancel-btn');
     const submitBtn = document.getElementById('submit-btn');
 
+    const today = new Date().toISOString().slice(0, 10);
+    if (dateInput) dateInput.max = today;
+
     if (!modal || !form) return;
 
     let catalogData = [];
@@ -54,6 +57,13 @@ export function initRegistrationModal(onSuccessCallBack) {
     });
 
     form.addEventListener('submit', async (event) => {
+
+        if (dateInput.value > today) {
+            alert('No puedes registrar una acción en una fecha futura.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Guardar eco-acción';
+            return;
+        }
 
         event.preventDefault();
         submitBtn.disabled = true;

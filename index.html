@@ -7,10 +7,12 @@
   <meta name="description"
     content="GreenPoints: log your everyday sustainable habits, get points and consult your environmental impact." />
   <title>GreenPoints</title>
+  <link rel="icon" type="image/jpeg" href="./img/favicon.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" /> 
   <link rel="stylesheet" href="./src/css/base.css" />
   <link rel="stylesheet" href="./src/css/catalog.css" />
   <link rel="stylesheet" href="./src/css/registration.css" />
@@ -19,19 +21,42 @@
 
 <body>
   <header class="site-header">
-    <h1 class="site-title">GreenPoints</h1>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <ul class="main-nav__list">
-        <li><a class="main-nav__link" href="#dashboard">Resumen</a></li>
-        <li><a class="main-nav__link" href="#acciones">Acciones</a></li>
-        <li><a class="main-nav__link" href="#historial">Historial</a></li>
-      </ul>
-    </nav>
+    <div class="site-brand">
+      <img src="img/favicon.jpg" alt="GreenPoints" class="logo">
+
+      <h1 class="site-title"><span class="green-text">Green</span><span class="points-text">Points</span></h1>
+    </div>
+   
+<nav class="main-nav" aria-label="Navegación principal">
+  <ul class="main-nav__list">
+    <li>
+      <a class="main-nav__link" href="#dashboard">
+        <span class="material-symbols-outlined">home</span>
+        <span>Resumen</span>
+      </a>
+    </li>
+
+    <li>
+      <a class="main-nav__link" href="#acciones">
+        <span class="material-symbols-outlined">eco</span>
+        <span>Acciones</span>
+      </a>
+    </li>
+
+    <li>
+      <a class="main-nav__link" href="#historial">
+        <span class="material-symbols-outlined">history</span>
+        <span>Historial</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
     <button type="button" id="open-modal-btn" class="btn btn--primary">
       Registro de acción
     </button>
 
-<!-- MODAL DE REGISTRO -->
+    <!-- MODAL DE REGISTRO -->
 
     <section id="modal-registration" class="modal-registration">
       <div class="modal-container">
@@ -40,13 +65,10 @@
         </button>
         <div class="modal-header">
           <h2>Registro de acción</h2>
-          <p class="modal-subtitle">
-            Selecciona una eco-acción...
-          </p>
         </div>
         <form id="modal-action-form">
           <div class="form-field">
-            <label for="modal-action-type-select">Acción</label>
+            <label for="modal-action-type-select">Eco-acción</label>
             <select id="modal-action-type-select" name="action_type_id" required>
               <option value="" disabled selected>
                 Selecciona una eco-acción...
@@ -112,7 +134,7 @@
         </div>
         <div class="stat-card">
           <dt>Impacto estimado</dt>
-          <dd><span id="stat-co2">0.00</span> <small>kg</small></dd>
+          <dd><span id="stat-co2">0.00</span></dd>
           <span class="stat-sub">de CO₂ evitados</span>
         </div>
         <div class="stat-card">
@@ -122,29 +144,31 @@
         </div>
       </div>
 
-<!-- Central section: Progress & Graphics -->
+      <!-- Central section: Progress & Graphics -->
       <div class="dashboard-middle">
-        
         <!-- Progress Card -->
         <div class="card progress-card">
           <div class="card-header">
             <div>
               <span class="eyebrow">TU PROGRESO</span>
-              <h3 id="progress-title">Camino a Tree</h3>
+              <h3>Camino a Tree</h3>
             </div>
-            <span id="badge-level" class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span> Nivel Sprout</span>
+            <span class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span>
+              Nivel Sprout</span>
           </div>
           <div class="progress-labels">
-            <span id="level-min-points">0 pts</span>
-            <span id="level-max-points">0 pts</span>
+            <span>210 pts</span>
+            <span>300 pts</span>
           </div>
-          <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100"></progress>
+          <progress id="level-progress-bar" class="level-progress__bar" value="210" max="300"></progress>
           <div class="progress-labels-bottom">
-            <span id="current-level-name">Seed</span>
-            <span id="next-level-name">Sprout</span>
+            <span>Sprout</span>
+            <span>Tree</span>
           </div>
-          <div id="level-alert-message" class="progress-alert">
-            <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Cargando datos!</strong>
+          <div class="progress-alert">
+            <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Lo estás haciendo
+              genial!</strong> Te faltan 90 puntos
+            para alcanzar el nivel Tree.
           </div>
         </div>
 
@@ -171,10 +195,7 @@
               class="active">S</span><span>D</span>
           </div>
         </div>
-        
       </div>
-
-        
 
       <!-- Last Actions -->
       <div class="recent-actions">
@@ -183,22 +204,25 @@
             <span class="eyebrow">ACTIVIDAD RECIENTE</span>
             <h3>Tus últimas acciones</h3>
           </div>
-        <a href="#historial" class="btn-outline">Ver todas &rarr;</a>
+          <a href="#historial" class="btn-outline">Ver todas &rarr;</a>
         </div>
 
         <div class="actions-list">
           <!-- Action 1 -->
           <div class="action-item">
             <div class="action-info">
-              <div class="action-icon participation"><span class="material-symbols-outlined">volunteer_activism</span></div>
+              <div class="action-icon participation"><span class="material-symbols-outlined">volunteer_activism</span>
+              </div>
               <div>
                 <h4>Voluntariado ambiental</h4>
                 <p>Limpieza del parque junto al equipo</p>
               </div>
             </div>
             <div class="action-meta">
-              <span class="date"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>8 Oct</span>
-              <span class="co2"><span class="material-symbols-outlined" aria-hidden="true">emoji_nature</span>15 kg CO₂</span>
+              <span class="date"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>8
+                Oct</span>
+              <span class="co2"><span class="material-symbols-outlined" aria-hidden="true">emoji_nature</span>15 kg
+                CO₂</span>
               <span class="points">+100 pts</span>
               <span class="arrow">&rsaquo;</span>
             </div>
@@ -206,7 +230,7 @@
         </div>
     </section>
   </main>
-  
+
   <script src="./src/js/components/registrationModal.js" type="module"></script>
 
   <script src="./src/js/components/dashboardComponent.js" type="module"></script>
@@ -217,14 +241,15 @@
   <script src="./src/js/components/historyComponent.js"></script>
   <script src="./src/js/services/historyService.js"></script>
   <script src="./src/js/services/modaleditcontroller.js"></script>
-  
+
   <script src="./src/js/components/catalogComponent.js" type="module"></script>
   <script src="./src/js/services/catalogService.js" type="module"></script>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="./src/js/dashboard.js" type="module"></script>
-  
+
   <script src="./src/js/main.js" type="module"></script>
 
 </body>
+
 </html>
