@@ -7,7 +7,7 @@
   <meta name="description"
     content="GreenPoints: log your everyday sustainable habits, get points and consult your environmental impact." />
   <title>GreenPoints</title>
-  <link rel="icon" type="image/jpeg" href="./img/favicon.jpg">
+  <link rel="icon" type="image/png" href="src/img/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,11 +22,10 @@
 <body>
   <header class="site-header">
     <div class="site-brand">
-      <img src="img/favicon.jpg" alt="GreenPoints" class="logo">
-
+    <img src="src/img/logo.png" alt="GreenPoints" class="main-nav__logo">
       <h1 class="site-title"><span class="green-text">Green</span><span class="points-text">Points</span></h1>
     </div>
-   
+
 <nav class="main-nav" aria-label="Navegación principal">
   <ul class="main-nav__list">
     <li>
@@ -147,30 +146,28 @@
       <!-- Central section: Progress & Graphics -->
       <div class="dashboard-middle">
         <!-- Progress Card -->
-        <div class="card progress-card">
-          <div class="card-header">
-            <div>
-              <span class="eyebrow">TU PROGRESO</span>
-              <h3>Camino a Tree</h3>
-            </div>
-            <span class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span>
-              Nivel Sprout</span>
-          </div>
-          <div class="progress-labels">
-            <span>210 pts</span>
-            <span>300 pts</span>
-          </div>
-          <progress id="level-progress-bar" class="level-progress__bar" value="210" max="300"></progress>
-          <div class="progress-labels-bottom">
-            <span>Sprout</span>
-            <span>Tree</span>
-          </div>
-          <div class="progress-alert">
-            <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Lo estás haciendo
-              genial!</strong> Te faltan 90 puntos
-            para alcanzar el nivel Tree.
-          </div>
-        </div>
+<div class="card progress-card">
+  <div class="card-header">
+    <div>
+      <span class="eyebrow">TU PROGRESO</span>
+      <h3 id="progress-title">Camino a Tree</h3>
+    </div>
+    <span class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span> Nivel <span id="badge-level-name">Sprout</span></span>
+  </div>
+  <div class="progress-labels">
+    <span id="progress-min-pts">0 pts</span>
+    <span id="progress-max-pts">100 pts</span>
+  </div>
+  <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100"></progress>
+  <div class="progress-labels-bottom">
+    <span id="progress-current-name">Sprout</span>
+    <span id="progress-next-name">Tree</span>
+  </div>
+  <div class="progress-alert">
+    <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Lo estás haciendo genial!</strong> 
+    <span id="progress-alert-text">Calculando progreso...</span>
+  </div>
+</div>
 
         <!-- Evolution Card -->
         <div class="card chart-card">

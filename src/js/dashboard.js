@@ -3,6 +3,8 @@
   getRecentHistory,
   getActionCatalog
 } from "./services/dashboardService.js";
+
+import { getDashboardSummary } from "./services/dashboardService.js";
 import { renderDashboard, renderLevelProgress } from "./components/dashboardComponent.js";
 import { initRegistrationModal } from "./components/registrationModal.js";
 
@@ -166,7 +168,18 @@ export async function refreshDashboard() {
     const message = $("#app-error");
     if (message) {
       message.textContent = "No se han podido actualizar los datos. Comprueba que el backend está iniciado.";
-      message.hidden = false;
+      message.hidden = false
+    }
+  }
+}
+
+const loadDashboard = async () => {
+    try {
+        const data = await getDashboardSummary();
+        renderDashboard(data);
+        renderLevelProgress(data);
+    } catch (error) {
+        console.error("Could not load dashboard:", error);
     }
   }
 }
