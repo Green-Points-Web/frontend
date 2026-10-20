@@ -136,7 +136,7 @@ function renderCatalogGrid(catalogData) {
             <h3>${actionName}</h3>
             <div class="card-meta">
                 <span class="points">★ ${pointsVal}</span>
-                <span class="co2">🍃 ${co2Val}</span>
+                <span class="co2"><span class="material-symbols-outlined" aria-hidden="true">emoji_nature</span>${co2Val}</span>
             </div>
             <button type="button" class="btn-register" data-id="${item.id}" data-action="${actionName}">
                 Registrar acción &rarr;
