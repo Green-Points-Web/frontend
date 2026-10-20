@@ -4,7 +4,6 @@
   getActionCatalog
 } from "./services/dashboardService.js";
 
-import { getDashboardSummary } from "./services/dashboardService.js";
 import { renderDashboard, renderLevelProgress } from "./components/dashboardComponent.js";
 import { initRegistrationModal } from "./components/registrationModal.js";
 
@@ -173,16 +172,7 @@ export async function refreshDashboard() {
   }
 }
 
-const loadDashboard = async () => {
-    try {
-        const data = await getDashboardSummary();
-        renderDashboard(data);
-        renderLevelProgress(data);
-    } catch (error) {
-        console.error("Could not load dashboard:", error);
-    }
-  }
-}
+
 const loadDashboard = async () => {
     await refreshDashboard();
 };
