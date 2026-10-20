@@ -122,29 +122,29 @@
         </div>
       </div>
 
-      <!-- Central section: Progress & Graphics -->
+<!-- Central section: Progress & Graphics -->
       <div class="dashboard-middle">
+        
         <!-- Progress Card -->
         <div class="card progress-card">
           <div class="card-header">
             <div>
               <span class="eyebrow">TU PROGRESO</span>
-              <h3>Camino a Tree</h3>
+              <h3 id="progress-title">Camino a Tree</h3>
             </div>
-            <span class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span> Nivel Sprout</span>
+            <span id="badge-level" class="badge-level"><span class="material-symbols-outlined" aria-hidden="true">potted_plant</span> Nivel Sprout</span>
           </div>
           <div class="progress-labels">
-            <span>210 pts</span>
-            <span>300 pts</span>
+            <span id="level-min-points">0 pts</span>
+            <span id="level-max-points">0 pts</span>
           </div>
-          <progress id="level-progress-bar" class="level-progress__bar" value="210" max="300"></progress>
+          <progress id="level-progress-bar" class="level-progress__bar" value="0" max="100"></progress>
           <div class="progress-labels-bottom">
-            <span>Sprout</span>
-            <span>Tree</span>
+            <span id="current-level-name">Seed</span>
+            <span id="next-level-name">Sprout</span>
           </div>
-          <div class="progress-alert">
-            <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Lo estás haciendo genial!</strong> Te faltan 90 puntos
-            para alcanzar el nivel Tree.
+          <div id="level-alert-message" class="progress-alert">
+            <strong><span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>¡Cargando datos!</strong>
           </div>
         </div>
 
@@ -171,7 +171,10 @@
               class="active">S</span><span>D</span>
           </div>
         </div>
+        
       </div>
+
+        
 
       <!-- Last Actions -->
       <div class="recent-actions">
