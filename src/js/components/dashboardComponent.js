@@ -3,6 +3,8 @@ export function renderDashboard(data) {
     if (!data) {
         console.error("Dashboard data is missing.");
         return;
+        renderLevelProgress(data);
+
     }
 
     const pointsElement = document.getElementById("stat-points");
@@ -29,10 +31,13 @@ export function renderDashboard(data) {
 }
 export function renderLevelProgress(data) {
     if (!data) return;
-
-    // Actualizar textos principales
-    const statLevel = document.getElementById('stat-level');
-    if (statLevel) statLevel.textContent = data.current_level || 'Seed';
+    
+    const statLevelSub = document.querySelector('#stat-level ~ .stat-sub');
+    if (statLevelSub) {
+        statLevelSub.textContent = data.points_to_next 
+            ? `${data.points_to_next} pts para ${data.next_level}` 
+            : '¡Has alcanzado el nivel máximo!';
+    }
 
     const progressTitle = document.getElementById('progress-title');
     if (progressTitle && data.next_level) progressTitle.textContent = `Camino a ${data.next_level}`;
