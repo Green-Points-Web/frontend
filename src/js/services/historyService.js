@@ -197,6 +197,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdAction = document.createElement("td");
         tdAction.className = "td-left";
+        tdAction.dataset.label = "Acción";
         tdAction.innerHTML = `
             <div style="display: flex; align-items: center; gap: 0.75rem;">
                 <div class="row-icon-box" style="background-color: ${icon.background}; color: ${icon.color};">
@@ -212,6 +213,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdDate = document.createElement("td");
         tdDate.className = "td-general";
+        tdDate.dataset.label = "Fecha";
         tdDate.innerHTML = `
             <div style="display: inline-flex; align-items: center; gap: 0.3rem;">
                 <span class="material-symbols-outlined" style="font-size: 14px; color: #6b7280;">schedule</span>
@@ -222,6 +224,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdCategory = document.createElement("td");
         tdCategory.className = "td-general";
+        tdCategory.dataset.label = "Categoría";
         const styles = getActionIcon(item.name || item.actionName, item.category);
 
         tdCategory.innerHTML = `
@@ -229,6 +232,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
                 background-color: ${styles.background}; 
                 color: ${styles.color}; 
                 width: 110px; 
+                max-width: 100%; 
                 padding: 0.25rem 0.625rem; 
                 border-radius: 9999px; 
                 display: inline-flex; 
@@ -244,8 +248,9 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdImpact = document.createElement("td");
         tdImpact.className = "td-general";
+        tdImpact.dataset.label = "Impacto";
         tdImpact.innerHTML = `
-            <div style="color: #1f2c1f; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; width: 100px; box-sizing: border-box; justify-content: center;">
+            <div style="color: #1f2c1f; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; width: 100px; max-width: 100%; box-sizing: border-box; justify-content: center;">
                 <span class="material-symbols-outlined" style="font-size: 14px;">emoji_nature</span>
                 <span>${co2Val}</span>
             </div>
@@ -254,6 +259,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
 
         const tdPoints = document.createElement("td");
         tdPoints.className = "td-right";
+        tdPoints.dataset.label = "Puntos";
         tdPoints.innerHTML = `
             <div style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 0.2rem; font-size: 0.95rem; font-weight: 600; color: #111827;">
                 <span><span class="material-symbols-outlined" style="font-size: 13px; color: #f59e0b; font-variation-settings: 'FILL' 1;">star</span>${pointsVal}</span>

@@ -154,7 +154,6 @@ function renderRecentActionsList(historyData, actionNames) {
   const container = document.getElementById('recent-actions-list');
   if (!container) return;
 
-  container.style.cssText = "width: 100%; display: flex; flex-direction: column; gap: 0.75rem;";
   container.innerHTML = '';
 
   if (!Array.isArray(historyData)) return;
@@ -188,50 +187,36 @@ function renderRecentActionsList(historyData, actionNames) {
     const pointsVal = Number(item.points || item.points_earned || 0);
 
     const card = document.createElement('div');
-    card.style.cssText = `
-      width: 100%;
-      background-color: #ffffff;
-      border-radius: 1rem;
-      padding: 0.875rem 1.25rem;
-      border: 1px solid #E7EFEA;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      cursor: pointer;
-      box-sizing: border-box;
-    `;
+    card.className = 'recent-card';
 
     card.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 0.875rem; min-width: 0;">
-        <div style="width: 44px; height: 44px; border-radius: 0.875rem; background-color: ${styleInfo.background}; color: ${styleInfo.color}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <div class="recent-card__main">
+        <div class="recent-card__icon" style="background-color: ${styleInfo.background}; color: ${styleInfo.color};">
           <span class="material-symbols-outlined" style="font-size: 22px;">${styleInfo.iconName}</span>
         </div>
-        <div style="display: flex; flex-direction: column; overflow: hidden;">
-          <h4 style="margin: 0; font-weight: 600; color: #1f2937; font-size: 0.95rem; line-height: 1.25;">${actionName}</h4>
-          <p style="margin: 0.15rem 0 0 0; font-size: 0.775rem; color: #6b7280; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${description}</p>
+        <div class="recent-card__text">
+          <h4 class="recent-card__title">${actionName}</h4>
+          <p class="recent-card__desc">${description}</p>
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 1rem; flex-shrink: 0;">
-        <div style="display: flex; align-items: center; gap: 0.25rem; font-size: 0.775rem; color: #6b7280;">
+      <div class="recent-card__meta">
+        <div class="recent-card__date">
           <span class="material-symbols-outlined" style="font-size: 14px;">schedule</span>
           <span>${dateStr}</span>
         </div>
 
-        <div style="background-color: #E8F5E9; color: #2E7D32; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; gap: 0.25rem;">
+        <div class="recent-card__co2">
           <span class="material-symbols-outlined" style="font-size: 13px;">emoji_nature</span>
           <span>${co2Val} kg CO₂</span>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 0.2rem; font-size: 0.875rem; font-weight: 600; color: #111827;">
+        <div class="recent-card__points">
           <span><span class="material-symbols-outlined" style="font-size: 13px; color: #f59e0b; font-variation-settings: 'FILL' 1;">star</span>+${pointsVal}</span>
-          <span style="font-size: 0.8rem; font-weight: 500; color: #374151;">pts</span>
+          <span class="recent-card__pts-label">pts</span>
         </div>
 
-        <div style="width: 28px; height: 28px; border-radius: 9999px; background-color: #f9fafb; display: flex; align-items: center; justify-content: center; color: #9ca3af;">
+        <div class="recent-card__chevron">
           <span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
         </div>
       </div>

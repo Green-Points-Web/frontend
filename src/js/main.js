@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (historyData && Array.isArray(historyData)) {
                 
-                const actionNames = window.globalActionNames || new Map(); 
+                const actionNames = window.styleActionNames || new Map(); 
                 
                 if (typeof window.renderRecentActionsList === 'function') {
                     window.renderRecentActionsList(historyData, actionNames);
@@ -57,7 +57,23 @@ async function updateDashboardStats() {
     }
 
 
+    function setActiveNav(hash) {
+        const current = hash || '#dashboard';
+        document.querySelectorAll('.main-nav__link').forEach((link) => {
+            const isActive = link.getAttribute('href') === current;
+            link.classList.toggle('is-active', isActive);
+            if (isActive) {
+                link.setAttribute('aria-current', 'page');
+            } else {
+                link.removeAttribute('aria-current');
+            }
+        });
+    }
+
+
     async function loadPage(hash) {
+        setActiveNav(hash);
+
         if (hash === '#dashboard' || hash === '') {
             if (dashboardSection) dashboardSection.hidden = false;
             if (dynamicContent) dynamicContent.innerHTML = '';
