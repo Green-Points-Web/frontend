@@ -557,10 +557,43 @@
   .history-table {
     min-width: 40rem;
   }
+}
 
-  #modal select,
-  #modal input[type="date"] {
-    font-size: 16px;
-    padding: 0.75rem;
-  }
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #ECF3EF;
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid #D9E4DF;
+  border-radius: 0.625rem;
+  background-color: #FFFFFF;
+  color: #2E3E35;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: #F1F7F4;
+  border-color: #3D915B;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #356B48;
 }
