@@ -1,34 +1,41 @@
+* * *
+
 # 🍃 GreenPoints · Frontend
 
-> Interfaz web para registrar acciones sostenibles, consultar el catálogo de acciones disponibles, revisar el historial y visualizar el impacto ambiental acumulado (puntos obtenidos a través del cálculo de CO₂ ahorrado).
+> Proyecto colaborativo para el desarrollo web de GreenPoints, una aplicación pensada para registrar acciones sostenibles que te permite cuantificar tu impacto ambiental positivo (mediante puntos obtenidos a través del cálculo de CO₂ ahorrado).
 
-<!-- Badges -->
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
-![License](https://img.shields.io/badge/license-ISC-blue)
+---
+
+## ✨ Key Features
+
+*   **📊 Dashboard de impacto:** resumen en tiempo de KPIs —puntos totales, CO₂ ahorrado y acciones registradas— con lista de las acciones más recientes.
+*   **🗂️ Catálogo de acciones:** grid de acciones sostenibles con búsqueda y filtrado por categoría, cada tarjeta codificada por color (Movilidad, Naturaleza, Reciclaje, Participación).
+*   **✅ Registro de acciones:** alta rápida desde el catálogo o mediante un modal dedicado; cada acción guarda fecha, categoría y puntos/CO₂ asociados.
+*   **📜 Historial paginado:** tabla de acciones registradas con paginación (15 por página), iconografía por categoría y acciones de editar/eliminar.
+*   **🌱 Cálculo de impacto:** los puntos se derivan del CO₂ ahorrado según el tipo de acción.
+*   **⚡ SPA sin recargar:** Hash Router propio que inyecta vistas parciales y mantiene la experiencia fluida.
+*   **🔔 Secciones sincronizadas:** un mismo registro se refleja en dashboard e historial en vivo mediante eventos (`action:created` / `action:deleted`), sin refrescar la página.
+*   **🎨 UI ligera y sin dependencias:** Vanilla JS + CSS tradicional e iconografía Material Symbols; sin framework ni bundler.
+*   **🔌 API REST:** consumo del backend con `fetch` nativo, con estados de carga/error y estados vacíos en cada vista.
 
 ---
 
 ## 📷 Vista Previa (Demo)
 
 *   **Link a la aplicación en producción:** *Pendiente de despliegue*
-*   *Logo del proyecto: `src/img/Logo.png`.*
 *   *Opcional: añade un GIF animado o captura de la interfaz principal (dashboard, catálogo e historial) aquí.*
+
+Puedes consultar el diseño preliminar del proyecto en Stitch:[Diseño en Stitch](https://stitch.withgoogle.com/projects/11054811943219877412)
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🚀 Objetivo
 
-*   **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
-*   **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
-*   **Enrutado:** Hash Router propio (`src/js/main.js`).
-*   **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
-*   **Iconografía:** Material Symbols de Google Fonts.
-*   **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
-*   **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
-*   **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
+Crear una aplicación funcional que permita a los usuarios:
+
+* Registrar las acciones sostenibles que lleves a cabo en tu día a día.
+* Consultar estas acciones sostenibles en un catálogo, o visualizar las ya registradas en un historial.
+* Visualizar tu impacto ambiental (puntos obtenidos a través del cálculo de CO₂ ahorrado).
 
 ---
 
@@ -88,6 +95,55 @@ Comandos recomendados (manuales):
 
 ---
 
+## 👥 Equipo
+
+* **Scrum Master**: Alba (Desarrollador 1) -> [albavalentinn](https://github.com/albavalentinn)
+* **Product Owner**: Naomi (Desarrollador 2) -> [naomitudic](https://github.com/naomitudic)
+* **Colaboradores**:
+    * Juliana (Desarrollador 3) -> [julibarguen98-ib](https://github.com/julibarguen98-ib),
+    * Renata (Desarrollador 4) -> [natyybeky2017-netizen](https://github.com/natyybeky2017-netizen),
+    * Ainara (Desarrollador 5) -> [ainaragrcgrc-coder](https://github.com/ainaragrcgrc-coder),
+
+---
+
+## 🗂️ Backlog y Gestión de Tareas
+
+Utilizamos la pestaña de **Projects** en GitHub para gestionar el avance del proyecto. Las tareas estarán organizadas en columnas (modelo tipo Kanban, llamado GreenPoints):
+
+1. **No Status**: Bocetos de tareas desarrollados en los daily's.
+2. **To Do**: Tareas sin empezar pendientes.
+3. **In Progress**: Tareas en desarrollo.
+3. **In Review**: Pull Requests abiertos que deben revisarse y confirmarse por al menos dos personas del equipo.
+4. **Done**: Tareas completadas.
+
+---
+
+## 📂 Estructura de ramas (en GitHub)
+
+* **`main`**: Versión estable del código.
+* **`develop`**: Comúnmente denominada como "dev", la rama principal de desarrollo.
+* **Ramas de tareas**: Cada tarea/issue se desarrollará en su propia rama, siguiendo el formato: `feature/dev(x)-nombre-de-la-tarea`. En caso de tratarse de arreglos, se denominarán de la siguiente manera: `fix/dev(x)-nombre-de-la-tarea`.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+* **GitHub**: Plataforma para la colaboración y gestión del repositorio.
+* **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
+* **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
+* **Enrutado:** Hash Router propio (`src/js/main.js`).
+* **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
+* **Iconografía:** Material Symbols de Google Fonts.
+* **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
+* **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
+* **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
+
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
+![License](https://img.shields.io/badge/license-ISC-blue)
+
 ## 📂 Estructura de Carpetas
 
 Una guía rápida de cómo está organizado el código fuente:
@@ -120,25 +176,7 @@ frontend/
 
 ---
 
-## 🤝 Contribuciones
+¡Gracias por contribuir y formar parte de este proyecto! 💪 Si este proyecto te ha gustado o te ha sido útil, puedes darle una estrella en Github ⭐
 
-1. Mantén actualizada la rama `dev`:
-   ```bash
-   git checkout dev
-   git pull origin dev
-   ```
-2. Crea una nueva rama para tu funcionalidad:
-   ```bash
-   git checkout -b feature/NuevaFuncionalidad
-   ```
-3. Haz un **Commit** con tus cambios siguiendo el estilo del repo:
-   ```bash
-   git commit -m 'Añade nueva funcionalidad'
-   ```
-4. Haz un **Push** a la rama:
-   ```bash
-   git push origin feature/NuevaFuncionalidad
-   ```
-5. Abre un **Pull Request**.
+* * *
 
----

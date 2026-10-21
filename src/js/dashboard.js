@@ -18,37 +18,37 @@ function renderWeeklyEvolution(history) {
   const labelsContainer = $(".chart-labels");
   if (!chart || !labelsContainer) return;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
-  const monday = new Date(today);
-  const dayOfWeek = (today.getDay() + 6) % 7;
-  monday.setDate(today.getDate() - dayOfWeek);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
-  const days = Array.from({ length: 7 }, (_, index) => {
-    const date = new Date(monday);
-    date.setDate(monday.getDate() + index);
-    return date;
-  });
+// Start with Monday of the current week.
+const monday = new Date(today);
+const dayOfWeek = (today.getDay() + 6) % 7;
+monday.setDate(today.getDate() - dayOfWeek);
 
-  const activeHistory = Array.isArray(history) ? history.filter(item => item.cancelled !== true) : [];
+const days = Array.from({ length: 7 }, (_, index) => {
+  const date = new Date(monday);
+  date.setDate(monday.getDate() + index);
+  return date;
+});
 
   const totals = days.map(day => {
     const key = localDateKey(day);
-    return activeHistory.reduce((sum, item) => {
+    return history.reduce((sum, item) => {
       const date = item.action_date || item.date;
       return localDateKey(date) === key ? sum + number(item.points_earned ?? item.points_awarded ?? item.points) : sum;
     }, 0);
   });
-
   const max = Math.max(...totals, 1);
   chart.replaceChildren();
   days.forEach((day, index) => {
     const bar = document.createElement("div");
     bar.className = `bar${localDateKey(day) === localDateKey(today) ? " active" : ""}`;
     const percentage = totals[index] > 0
-      ? (totals[index] / max) * 100
-      : 0;
+  ? (totals[index] / max) * 100
+  : 0;
+
 
     const pointsLabel = document.createElement("span");
     pointsLabel.className = "bar-points";
@@ -60,15 +60,15 @@ function renderWeeklyEvolution(history) {
     bar.setAttribute("aria-label", bar.title);
     bar.appendChild(pointsLabel);
     chart.appendChild(bar);
-  });
 
+  });
   labelsContainer.replaceChildren();
-  days.forEach((day) => {
+  days.forEach((day, index) => {
     const label = document.createElement("span");
     label.textContent = day.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", "").slice(0, 1).toUpperCase();
     if (localDateKey(day) === localDateKey(today)) {
-      label.className = "active";
-    }
+    label.className = "active";
+}
     labelsContainer.appendChild(label);
   });
 }
@@ -93,10 +93,7 @@ function renderRecentActions(history, catalog) {
   const list = $(".actions-list");
   if (!list) return;
   const names = new Map(catalog.map(item => [String(item.id), item.name]));
-  
-  const activeHistory = Array.isArray(history) ? history.filter(item => item.cancelled !== true) : [];
-
-  const recent = [...activeHistory].sort((a, b) => {
+  const recent = [...history].sort((a, b) => {
     const dateA = new Date(a.action_date || a.date || 0).getTime();
     const dateB = new Date(b.action_date || b.date || 0).getTime();
     return dateB - dateA || number(b.id) - number(a.id);
@@ -159,6 +156,7 @@ export async function refreshDashboard() {
       getDashboardSummary(), getRecentHistory(200), getActionCatalog()
     ]);
 
+    // Importamos dinámicamente el componente para pintar los datos y la barra de progreso
     renderDashboard(summary);
     renderLevelProgress(summary);
 
@@ -171,10 +169,11 @@ export async function refreshDashboard() {
     const message = $("#app-error");
     if (message) {
       message.textContent = "No se han podido actualizar los datos. Comprueba que el backend está iniciado.";
-      message.hidden = false;
+      message.hidden = false
     }
   }
 }
+
 
 const loadDashboard = async () => {
     await refreshDashboard();
@@ -185,4 +184,3 @@ initRegistrationModal();
 
 window.addEventListener("action:created", loadDashboard);
 window.addEventListener("action:deleted", loadDashboard);
-window.addEventListener("action:cancelled", loadDashboard);

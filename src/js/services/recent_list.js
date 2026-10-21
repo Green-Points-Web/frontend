@@ -158,11 +158,7 @@ function renderRecentActionsList(historyData, actionNames) {
 
   if (!Array.isArray(historyData)) return;
 
-  const activeRecords = historyData.filter(item => item.cancelled !== true);
-
-  const latestRecords = [...activeRecords]
-    .sort((a, b) => new Date(b.date || b.action_date) - new Date(a.date || a.action_date))
-    .slice(0, 7);
+  const latestRecords = [...historyData].sort((a, b) => new Date(b.date || b.action_date) - new Date(a.date || a.action_date)).slice(0, 7);
 
   latestRecords.forEach(item => {
     let actionName = '';
@@ -227,7 +223,7 @@ function renderRecentActionsList(historyData, actionNames) {
     `;
 
     card.addEventListener('click', () => {
-      showToast(`Detalles: ${actionName} (+${pointsVal} pts, ${co2Val} kg CO₂)`);
+      showToast(`Details: ${actionName} (+${pointsVal} pts, ${co2Val} kg CO₂)`);
     });
 
     container.appendChild(card);
