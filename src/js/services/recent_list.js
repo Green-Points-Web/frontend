@@ -101,43 +101,43 @@ function getActionStyleAndIcon(name = '') {
   }
   if (/walk|pie|caminar|andando/.test(lowerName)) {
     return {
-      background: "#efffee",
-      color: "#219c15",
+      background: "#F4EEF8",
+      color: "#8C52BE",
       iconName: "directions_walk"
     };
   }
   if (/carpool|coche|compartir/.test(lowerName)) {
     return {
-      background: "#dff1fd",
-      color: "#0f6fdd",
+      background: "#E3F2FD",
+      color: "#1565C0",
       iconName: "directions_car"
     };
   }
   if (/tren|bus|metro|publico|transporte/.test(lowerName)) {
     return {
-      background: "#f9e6fc",
-      color: "#9A1B5A",
+      background: "#fee7ee",
+      color: "#b81466",
       iconName: "directions_bus"
     };
   }
   if (/voluntariado|ambiental|voluntario|volunteer|particip/.test(lowerName)) {
     return {
       background: "#fce6e6",
-      color: "#eb1a1a",
+      color: "#d30a0a",
       iconName: "volunteer_activism"
     };
   }
   if (/recycl|recicl/.test(lowerName)) {
     return {
       background: "#dbf9fd",
-      color: "#0fb9be",
+      color: "#1b9da2",
       iconName: "recycling"
     };
   }
   if (/tree|arbol|árbol|plant|planta/.test(lowerName)) {
     return {
-      background: "#e6fcec",
-      color: "#3cf774",
+      background: "#ecfbdb",
+      color: "#85C541",
       iconName: "park"
     };
   }
