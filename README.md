@@ -94,12 +94,12 @@ Una guía rápida de cómo está organizado el código fuente:
 
 ```text
 frontend/
-├── index.html                  # SPA: header, dashboard y scripts globales
+├── index.html                  # SPA: header, dashboard y scripts stylees
 ├── pages/                      # Vistas inyectadas por el router
 │   ├── catalog-section.html    #   #acciones
 │   └── history-section.html    #   #historial
 ├── src/
-│   ├── css/                    # global.css (hoja única de estilos)
+│   ├── css/                    # style.css (hoja única de estilos)
 │   ├── img/                    # Logotipo y recursos estáticos
 │   └── js/
 │       ├── main.js             # Router hash + carga de vistas

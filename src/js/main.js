@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (historyData && Array.isArray(historyData)) {
                 
-                const actionNames = window.globalActionNames || new Map(); 
+                const actionNames = window.styleActionNames || new Map(); 
                 
                 if (typeof window.renderRecentActionsList === 'function') {
                     window.renderRecentActionsList(historyData, actionNames);
