@@ -35,25 +35,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 
-    async function updateDashboardStats() {
+async function updateDashboardStats() {
         try {
-            const response = await fetch('http://127.0.0.1:8000/history');
+            // Cambiamos la ruta para llamar al dashboard del backend
+            const response = await fetch('http://127.0.0.1:8000/dashboard');
             if (!response.ok) return;
-            const historyData = await response.json();
+            const dashboardData = await response.json();
 
-            if (historyData && Array.isArray(historyData)) {
-                const totalActions = historyData.length;
-                const totalPoints = historyData.reduce((acc, curr) => acc + (curr.points_earned || curr.points || 0), 0);
-                const totalCo2 = historyData.reduce((acc, curr) => acc + (curr.co2_saved || 0), 0);
+            const pointsEl = document.querySelector('#stat-points') || document.querySelector('#kpi-points');
+            const actionsEl = document.querySelector('#stat-actions') || document.querySelector('#kpi-actions');
+            const co2El = document.querySelector('#stat-co2') || document.querySelector('#kpi-co2');
 
-                const pointsEl = document.querySelector('#stat-points') || document.querySelector('#kpi-points');
-                const actionsEl = document.querySelector('#stat-actions') || document.querySelector('#kpi-actions');
-                const co2El = document.querySelector('#stat-co2') || document.querySelector('#kpi-co2');
-
-                if (pointsEl) pointsEl.textContent = totalPoints;
-                if (actionsEl) actionsEl.textContent = totalActions;
-                if (co2El) co2El.textContent = `${totalCo2.toFixed(1)} kg`;
-            }
+            // Insertamos directamente los datos que ya vienen sumados desde el backend
+            if (pointsEl) pointsEl.textContent = dashboardData.total_points;
+            if (actionsEl) actionsEl.textContent = dashboardData.total_actions;
+            if (co2El) co2El.textContent = `${dashboardData.total_co2_impact_kg} kg`;
+            
         } catch (error) {
             console.error('Error al actualizar estadísticas:', error);
         }
@@ -157,15 +154,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadPage(initialHash);
     await updateDashboardStats();
     await updateRecentActions();
-
-    window.addEventListener('action:created', async () => {
-        const hash = window.location.hash || '#dashboard';
-        if (hash === '#historial' && typeof window.initializeHistory === 'function') {
-            await window.initializeHistory();
-        } else {
-            await updateDashboardStats();
-        }
-    });
 
     window.addEventListener('action:created', async () => {
         const hash = window.location.hash || '#dashboard';
