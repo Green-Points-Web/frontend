@@ -23,7 +23,6 @@
 ## 📷 Vista Previa (Demo)
 
 *   **Link a la aplicación en producción:** *Pendiente de despliegue*
-*   *Logo del proyecto: `src/img/Logo.png`.*
 *   *Opcional: añade un GIF animado o captura de la interfaz principal (dashboard, catálogo e historial) aquí.*
 
 Puedes consultar el diseño preliminar del proyecto en Stitch:[Diseño en Stitch](https://stitch.withgoogle.com/projects/11054811943219877412)
@@ -119,6 +118,32 @@ Utilizamos la pestaña de **Projects** en GitHub para gestionar el avance del pr
 
 ---
 
+## 📂 Estructura de ramas (en GitHub)
+
+* **`main`**: Versión estable del código.
+* **`develop`**: Comúnmente denominada como "dev", la rama principal de desarrollo.
+* **Ramas de tareas**: Cada tarea/issue se desarrollará en su propia rama, siguiendo el formato: `feature/dev(x)-nombre-de-la-tarea`. En caso de tratarse de arreglos, se denominarán de la siguiente manera: `fix/dev(x)-nombre-de-la-tarea`.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+* **GitHub**: Plataforma para la colaboración y gestión del repositorio.
+* **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
+* **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
+* **Enrutado:** Hash Router propio (`src/js/main.js`).
+* **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
+* **Iconografía:** Material Symbols de Google Fonts.
+* **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
+* **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
+* **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
+
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
+![License](https://img.shields.io/badge/license-ISC-blue)
+
 ## 📂 Estructura de Carpetas
 
 Una guía rápida de cómo está organizado el código fuente:
@@ -151,35 +176,7 @@ frontend/
 
 ---
 
-## 📂 Estructura de Ramas
-
-* **`main`**: Versión estable del código.
-* **`develop`**: Comúnmente denominada como "dev", la rama principal de desarrollo.
-* **Ramas de tareas**: Cada tarea/issue se desarrollará en su propia rama, siguiendo el formato: `feature/dev(x)-nombre-de-la-tarea`. En caso de tratarse de arreglos, se denominarán de la siguiente manera: `fix/dev(x)-nombre-de-la-tarea`.
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-* **GitHub**: Plataforma para la colaboración y gestión del repositorio.
-* **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
-* **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
-* **Enrutado:** Hash Router propio (`src/js/main.js`).
-* **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
-* **Iconografía:** Material Symbols de Google Fonts.
-* **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
-* **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
-* **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
-
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
-![License](https://img.shields.io/badge/license-ISC-blue)
-
----
-
-¡Gracias por contribuir y formar parte de este proyecto! 💪
+¡Gracias por contribuir y formar parte de este proyecto! 💪 Si este proyecto te ha gustado o te ha sido útil, puedes darle una estrella en Github ⭐
 
 * * *
 
