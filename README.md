@@ -1,3 +1,5 @@
+* * *
+
 # 🍃 GreenPoints · Frontend
 
 > Proyecto colaborativo para el desarrollo web de GreenPoints, una aplicación pensada para registrar acciones sostenibles que te permite cuantificar tu impacto ambiental positivo (mediante puntos obtenidos a través del cálculo de CO₂ ahorrado).
@@ -35,112 +37,6 @@ Crear una aplicación funcional que permita a los usuarios:
 * Registrar las acciones sostenibles que lleves a cabo en tu día a día.
 * Consultar estas acciones sostenibles en un catálogo, o visualizar las ya registradas en un historial.
 * Visualizar tu impacto ambiental (puntos obtenidos a través del cálculo de CO₂ ahorrado).
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-* **GitHub**: Plataforma para la colaboración y gestión del repositorio.
-* **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
-* **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
-* **Enrutado:** Hash Router propio (`src/js/main.js`).
-* **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
-* **Iconografía:** Material Symbols de Google Fonts.
-* **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
-* **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
-* **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
-
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
-![License](https://img.shields.io/badge/license-ISC-blue)
-
----
-
-## 👥 Equipo
-
-* **Scrum Master**: Alba (Desarrollador 1) -> [albavalentinn](https://github.com/albavalentinn)
-* **Product Owner**: Naomi (Desarrollador 2) -> [naomitudic](https://github.com/naomitudic)
-* **Colaboradores**:
-    * Juliana (Desarrollador 3) -> [julibarguen98-ib](https://github.com/julibarguen98-ib),
-    * Renata (Desarrollador 4) -> [natyybeky2017-netizen](https://github.com/natyybeky2017-netizen),
-    * Ainara (Desarrollador 5) -> [ainaragrcgrc-coder](https://github.com/ainaragrcgrc-coder),
-
----
-
-## 📂 Estructura de Carpetas
-
-Una guía rápida de cómo está organizado el código fuente:
-
-```text
-frontend/
-├── index.html                  # SPA: header, dashboard y scripts stylees
-├── pages/                      # Vistas inyectadas por el router
-│   ├── catalog-section.html    #   #acciones
-│   └── history-section.html    #   #historial
-├── src/
-│   ├── css/                    # style.css (hoja única de estilos)
-│   ├── img/                    # Logotipo y recursos estáticos
-│   └── js/
-│       ├── main.js             # Router hash + carga de vistas
-│       ├── dashboard.js        # Arranque del dashboard (incluye initRegistrationModal)
-│       ├── services/           # Comunicación con el backend
-│       │   ├── actionService.js       # GET /catalog, POST /actions
-│       │   ├── catalogService.js      # Render del grid de catálogo
-│       │   ├── historyService.js      # Render del historial (CRUD de acciones)
-│       │   ├── dashboardService.js    # GET /dashboard
-│       │   └── modaleditcontroller.js # Editar / eliminar acción del historial
-│       └── components/         # UI
-│           ├── registrationModal.js   # Modal de registro de acción
-│           ├── dashboardComponent.js
-│           ├── historyComponent.js
-│           └── catalogComponent.js    # (stub)
-└── db.json                     # Mock de json-server (opcional)
-```
-
----
-
-## 🗂️ Backlog y Gestión de Tareas
-
-Utilizamos la pestaña de **Projects** en GitHub para gestionar el avance del proyecto. Las tareas estarán organizadas en columnas (modelo tipo Kanban, llamado GreenPoints):
-
-1. **No Status**: Bocetos de tareas desarrollados en los daily's.
-2. **To Do**: Tareas sin empezar pendientes.
-3. **In Progress**: Tareas en desarrollo.
-3. **In Review**: Pull Requests abiertos que deben revisarse y confirmarse por al menos dos personas del equipo.
-4. **Done**: Tareas completadas.
-
----
-
-## 📂 Estructura de Ramas
-
-* **`main`**: Versión estable del código.
-* **`develop`**: Comúnmente denominada como "dev", la rama principal de desarrollo.
-* **Ramas de tareas**: Cada tarea/issue se desarrollará en su propia rama, siguiendo el formato: `feature/dev(x)-nombre-de-la-tarea`. En caso de tratarse de arreglos, se denominarán de la siguiente manera: `fix/dev(x)-nombre-de-la-tarea`.
-
----
-
-## 🤝 Contribuciones
-
-1. Mantén actualizada la rama `dev`:
-   ```bash
-   git checkout dev
-   git pull origin dev
-   ```
-2. Crea una nueva rama para tu funcionalidad:
-   ```bash
-   git checkout -b feature/nueva-funcionalidad
-   ```
-3. Haz un **Commit** con tus cambios siguiendo el estilo del repo:
-   ```bash
-   git commit -m 'Añade nueva funcionalidad'
-   ```
-4. Haz un **Push** a la rama:
-   ```bash
-   git push origin feature/nueva-funcionalidad
-   ```
-5. Abre un **Pull Request**.
 
 ---
 
@@ -197,6 +93,89 @@ Comandos recomendados (manuales):
 
 *   `python3 -m http.server 5500`: sirve el frontend en local.
 *   `npx json-server --watch db.json --port 8000`: mock del backend.
+
+---
+
+## 👥 Equipo
+
+* **Scrum Master**: Alba (Desarrollador 1) -> [albavalentinn](https://github.com/albavalentinn)
+* **Product Owner**: Naomi (Desarrollador 2) -> [naomitudic](https://github.com/naomitudic)
+* **Colaboradores**:
+    * Juliana (Desarrollador 3) -> [julibarguen98-ib](https://github.com/julibarguen98-ib),
+    * Renata (Desarrollador 4) -> [natyybeky2017-netizen](https://github.com/natyybeky2017-netizen),
+    * Ainara (Desarrollador 5) -> [ainaragrcgrc-coder](https://github.com/ainaragrcgrc-coder),
+
+---
+
+## 🗂️ Backlog y Gestión de Tareas
+
+Utilizamos la pestaña de **Projects** en GitHub para gestionar el avance del proyecto. Las tareas estarán organizadas en columnas (modelo tipo Kanban, llamado GreenPoints):
+
+1. **No Status**: Bocetos de tareas desarrollados en los daily's.
+2. **To Do**: Tareas sin empezar pendientes.
+3. **In Progress**: Tareas en desarrollo.
+3. **In Review**: Pull Requests abiertos que deben revisarse y confirmarse por al menos dos personas del equipo.
+4. **Done**: Tareas completadas.
+
+---
+
+## 📂 Estructura de Carpetas
+
+Una guía rápida de cómo está organizado el código fuente:
+
+```text
+frontend/
+├── index.html                  # SPA: header, dashboard y scripts stylees
+├── pages/                      # Vistas inyectadas por el router
+│   ├── catalog-section.html    #   #acciones
+│   └── history-section.html    #   #historial
+├── src/
+│   ├── css/                    # style.css (hoja única de estilos)
+│   ├── img/                    # Logotipo y recursos estáticos
+│   └── js/
+│       ├── main.js             # Router hash + carga de vistas
+│       ├── dashboard.js        # Arranque del dashboard (incluye initRegistrationModal)
+│       ├── services/           # Comunicación con el backend
+│       │   ├── actionService.js       # GET /catalog, POST /actions
+│       │   ├── catalogService.js      # Render del grid de catálogo
+│       │   ├── historyService.js      # Render del historial (CRUD de acciones)
+│       │   ├── dashboardService.js    # GET /dashboard
+│       │   └── modaleditcontroller.js # Editar / eliminar acción del historial
+│       └── components/         # UI
+│           ├── registrationModal.js   # Modal de registro de acción
+│           ├── dashboardComponent.js
+│           ├── historyComponent.js
+│           └── catalogComponent.js    # (stub)
+└── db.json                     # Mock de json-server (opcional)
+```
+
+---
+
+## 📂 Estructura de Ramas
+
+* **`main`**: Versión estable del código.
+* **`develop`**: Comúnmente denominada como "dev", la rama principal de desarrollo.
+* **Ramas de tareas**: Cada tarea/issue se desarrollará en su propia rama, siguiendo el formato: `feature/dev(x)-nombre-de-la-tarea`. En caso de tratarse de arreglos, se denominarán de la siguiente manera: `fix/dev(x)-nombre-de-la-tarea`.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+* **GitHub**: Plataforma para la colaboración y gestión del repositorio.
+* **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
+* **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
+* **Enrutado:** Hash Router propio (`src/js/main.js`).
+* **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
+* **Iconografía:** Material Symbols de Google Fonts.
+* **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
+* **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
+* **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
+
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
+![License](https://img.shields.io/badge/license-ISC-blue)
 
 ---
 
