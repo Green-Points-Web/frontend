@@ -113,9 +113,12 @@
 }
 
 .points {
-    color: #2e7d32;
+    color: #111827;
     font-weight: 600;
+    font-size: 0.95rem;
     display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
 }
 
 .co2 {

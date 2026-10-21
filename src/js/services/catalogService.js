@@ -64,10 +64,10 @@ function getActionIcon(actionName, category) {
     const normCat = normalizeCategory(category);
 
     if (/bike|bici|bicicleta/.test(name)) {
-        return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
+        return { background: "#fff9f4", color: "#ff8a2b", iconName: "directions_bike" };
     }
     if (/walk|pie|caminar|andando/.test(name)) {
-        return { background: "#ffffef", color: "#fcd900", iconName: "directions_walk" };
+        return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_walk" };
     }
     if (/carpool|coche|compartir/.test(name)) {
         return { background: "#E3F2FD", color: "#1565C0", iconName: "directions_car" };
@@ -76,24 +76,20 @@ function getActionIcon(actionName, category) {
         return { background: "#fee7ee", color: "#b81466", iconName: "directions_bus" };
     }
     if (/voluntariado|ambiental|voluntario/.test(name)) {
-        return { background: "#ffddd4", color: "#ff4500", iconName: "volunteer_activism" };
+        return { background: "#fce6e6", color: "#d30a0a", iconName: "volunteer_activism" };
     }
     if (/recycl|recicl/.test(name)) {
-        return { background: "#E1F6F6", color: "#008080", iconName: "recycling" };
+        return { background: "#dbf9fd", color: "#1b9da2", iconName: "recycling" };
     }
     if (/tree|arbol|árbol|plant|planta/.test(name)) {
-        return { background: "#EBF7EE", color: "#358850", iconName: "park" };
-    }
-    /* IMPORTANTE: Sólo hay siete acciones pero aquí aparecen ocho (esta es como la de voluntariado) */
-    if (/volunteer|voluntari|particip/.test(name)) {
-        return { background: "#FDF2EE", color: "#E06D43", iconName: "group" };
+        return { background: "#ecfbdb", color: "#85C541", iconName: "park" };
     }
 
     const iconsByCat = {
-        Movilidad: { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" },
-        Naturaleza: { background: "#EBF7EE", color: "#358850", iconName: "park" },
-        Reciclaje: { background: "#e2eaf4", color: "#2c598d", iconName: "recycling" },
-        Participación: { background: "#edffe5", color: "#8fe043", iconName: "group" }
+        Movilidad: { background: "#E8F4EE", color: "#2F6B50", iconName: "directions_bike" },
+        Naturaleza: { background: "#E8F4EE", color: "#2F6B50", iconName: "park" },
+        Reciclaje: { background: "#E8F4EE", color: "#2F6B50", iconName: "recycling" },
+        Participación: { background: "#E8F4EE", color: "#2F6B50", iconName: "group" }
     };
     return iconsByCat[normCat] || { background: "#E8F4EE", color: "#2F6B50", iconName: "eco" };
 }
@@ -118,16 +114,15 @@ function renderCatalogGrid(catalogData) {
         const category = normalizeCategory(item.category || "Movilidad");
         const icon = getActionIcon(actionName, category);
         const catColors = {
-            Movilidad: { background: "#F4EEF8", color: "#8C52BE" },
-            Naturaleza: { background: "#EBF7EE", color: "#358850" },
-            Reciclaje: { background: "#e2eaf4", color: "#2c598d" },
-            Participación: { background: "#edffe5", color: "#8fe043" }
+            Movilidad: { background: "#E8F4EE", color: "#2F6B50" },
+            Naturaleza: { background: "#E8F4EE", color: "#2F6B50" },
+            Reciclaje: { background: "#E8F4EE", color: "#2F6B50" },
+            Participación: { background: "#E8F4EE", color: "#2F6B50" }
         };
         const catColor = catColors[category] || icon;
         const co2Val = `${Number(item.co2_kg ?? item.co2_impact ?? 0)} kg CO₂`;
         const pointsVal = `+${Number(item.points ?? 0)} puntos`;
 
-        // Creamos la tarjeta (<article>) que requiere el CSS
         const card = document.createElement("article");
         card.className = "action-card";
         card.style.borderColor = catColor.color;
@@ -144,7 +139,7 @@ function renderCatalogGrid(catalogData) {
             </div>
             <h3>${actionName}</h3>
             <div class="card-meta">
-                <span class="points">★ ${pointsVal}</span>
+                <span class="points"><span class="material-symbols-outlined" style="font-size: 13px; color: #f59e0b; font-variation-settings: 'FILL' 1;">star</span>${pointsVal}</span>
                 <span class="co2"><span class="material-symbols-outlined" aria-hidden="true">emoji_nature</span>${co2Val}</span>
             </div>
             <button type="button" class="btn-register" data-id="${item.id}" data-action="${actionName}">
@@ -175,7 +170,6 @@ function renderCatalogGrid(catalogData) {
 }
 
 function updateKpiBar(data) {
-    // Si tienes elementos para KPIs en el HTML, puedes enlazarlos aquí
 }
 
 function setupEventListeners() {
