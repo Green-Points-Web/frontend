@@ -99,7 +99,7 @@ frontend/
 │   ├── catalog-section.html    #   #acciones
 │   └── history-section.html    #   #historial
 ├── src/
-│   ├── css/                    # base, layout, catalog, history, registration
+│   ├── css/                    # global.css (hoja única de estilos)
 │   ├── img/                    # Logotipo y recursos estáticos
 │   └── js/
 │       ├── main.js             # Router hash + carga de vistas

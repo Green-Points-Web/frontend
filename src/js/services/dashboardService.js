@@ -22,6 +22,8 @@ export async function getRecentHistory(limit = 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+
+    
     return response.json();
 }
 
