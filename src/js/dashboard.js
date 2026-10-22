@@ -119,7 +119,7 @@ function renderRecentActions(historyData, catalog) {
   if (!recent.length) {
     const empty = document.createElement("p");
     empty.className = "empty-text";
-    empty.textContent = "Todavía no has registrado acciones. ¡Registra tu primera eco-acción!";
+    empty.textContent = "Todavía no has registrado acciones. ¡Registra tu primera acción!";
     list.appendChild(empty);
     return;
   }

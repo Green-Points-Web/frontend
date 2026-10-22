@@ -114,7 +114,7 @@ export function initRegistrationModal(onSuccessCallBack) {
         if (dateInput.value > today) {
             alert('No puedes registrar una acción en una fecha futura.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Guardar eco-acción';
+            submitBtn.textContent = 'Guardar acción';
             return;
         }
 
@@ -145,7 +145,7 @@ export function initRegistrationModal(onSuccessCallBack) {
 
         finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Guardar eco-acción';
+            submitBtn.textContent = 'Guardar acción';
         }
 
     });
