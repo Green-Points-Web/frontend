@@ -1,7 +1,7 @@
 /* ==========================================================================
    01 · VARIABLES GLOBALES (Design Tokens)
    Paleta, tipografía, radios, sombras y escalas de espaciado responsive.
-   ========================================================================== */
+========================================================================== */
 
 :root {
    --clr-bg: #F4F7F5;
@@ -25,7 +25,7 @@
 
 /* ==========================================================================
    02 · RESET Y BASE
-   ========================================================================== */
+========================================================================== */
 
 * {
    margin: 0;
@@ -42,7 +42,7 @@ body {
    overflow-wrap: break-word
 }
 
-   /* ---- 03 · UTILIDADES --------------------------------------------- */
+/* ---- 03 · UTILIDADES --------------------------------------------- */
 
 .hidden {
    display: none !important
@@ -50,7 +50,7 @@ body {
 
 /* ==========================================================================
    04 · ICONOGRAFÍA · MATERIAL SYMBOLS
-   ========================================================================== */
+========================================================================== */
 
 .material-symbols-outlined {
    font-family: 'Material Symbols Outlined';
@@ -72,7 +72,7 @@ body {
 /* ==========================================================================
    05 · HEADER Y NAVEGACIÓN
    Cabecera del sitio, marca, logotipo, título y lista de enlaces.
-   ========================================================================== */
+========================================================================== */
 
 .site-header {
    display: flex;
@@ -161,7 +161,7 @@ body {
 /* ==========================================================================
    06 · LAYOUT PRINCIPAL Y ESTADOS DE FOCUS
    Contenedor de la vista, paneles y foco visible (accesibilidad).
-   ========================================================================== */
+========================================================================== */
 
 .site-main {
    max-width: 1200px;
@@ -186,7 +186,7 @@ body {
 /* ==========================================================================
    07 · DASHBOARD
    Cabecera, KPIs, tarjetas, progreso, gráfico, acciones y layout.
-   ========================================================================== */
+========================================================================== */
 
 .dashboard-header {
    margin-bottom: 2rem
@@ -221,7 +221,7 @@ body {
    margin: 0
 }
 
-   /* ---- 07.1 · Tarjetas de indicadores (KPIs) ------------------------ */
+/* ---- 07.1 · Tarjetas de indicadores (KPIs) ------------------------ */
 
 .prototype-grid {
    display: grid;
@@ -268,7 +268,7 @@ body {
    font-weight: 500
 }
 
-   /* ---- 07.2 · Tarjeta base ----------------------------------------- */
+/* ---- 07.2 · Tarjeta base ----------------------------------------- */
 
 .card {
    background-color: #FFFFFF;
@@ -303,7 +303,7 @@ body {
    color: var(--clr-primary)
 }
 
-   /* ---- 07.3 · Insignias y enlaces de acción ------------------------ */
+/* ---- 07.3 · Insignias y enlaces de acción ------------------------ */
 
 .badge-level {
    background: #e8f5e9;
@@ -329,7 +329,7 @@ body {
    font-weight: bold
 }
 
-   /* ---- 07.4 · Progreso y avisos ------------------------------------- */
+/* ---- 07.4 · Progreso y avisos ------------------------------------- */
 
 .progress-labels,
 .progress-labels-bottom {
@@ -386,7 +386,7 @@ body {
    background-color: var(--clr-accent)
 }
 
-   /* ---- 07.5 · Gráfico de barras (mock) ----------------------------- */
+/* ---- 07.5 · Gráfico de barras (mock) ----------------------------- */
 
 .mock-chart {
    display: flex;
@@ -593,7 +593,7 @@ body {
    font-size: 1.25rem
 }
 
-   /* ---- 07.8 · Tarjeta de acción reciente --------------------------- */
+/* ---- 07.8 · Tarjeta de acción reciente --------------------------- */
 
 .recent-card {
    display: flex;
@@ -743,7 +743,7 @@ body {
    position: relative;
    flex: 1 1 0;
    min-width: 0;
-   background-color: #85C541;
+   background-color: #85c541c3;
    border-radius: 7px 7px 0 0
 }
 
@@ -823,7 +823,7 @@ body {
 /* ==========================================================================
    09 · FORMULARIOS
    Contenedor de formulario, campos, etiquetas y controles.
-   ========================================================================== */
+========================================================================== */
 
 .action-form {
    background: var(--clr-surface);
@@ -863,7 +863,7 @@ body {
 
 /* ==========================================================================
    10 · CATÁLOGO DE ACCIONES SOSTENIBLES
-   ========================================================================== */
+========================================================================== */
 
 .sustainable-catalog {
    padding: var(--pad-y) var(--pad-x);
