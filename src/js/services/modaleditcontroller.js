@@ -137,6 +137,8 @@ function setupModalListeners() {
             showToast("Cambios guardados correctamente");
             closeModal();
 
+            window.dispatchEvent(new Event("action:updated"));
+
             if (typeof window.initializeHistory === "function") {
                 await window.initializeHistory();
             }

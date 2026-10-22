@@ -138,9 +138,7 @@ function renderRecentActions(history, catalog) {
         history.pushState(null, "", "#historial");
         window.dispatchEvent(new PopStateEvent("popstate"));
       } else {
-        window.initializeHistory?.().then(() => {
-          document.querySelector(`.btn-edit-item[data-id="${CSS.escape(String(item.id))}"]`)?.click();
-        });
+        window.initializeHistory?.();
       }
     });
     list.appendChild(row);
@@ -184,5 +182,5 @@ loadDashboard();
 initRegistrationModal();
 
 window.addEventListener("action:created", loadDashboard);
+window.addEventListener("action:updated", loadDashboard);
 window.addEventListener("action:deleted", loadDashboard);
-window.addEventListener("action:cancelled", loadDashboard);

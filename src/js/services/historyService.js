@@ -164,6 +164,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     if (!Array.isArray(historyData) || historyData.length === 0) {
         if (emptyState) emptyState.hidden = false;
         updatePagination(0);
+        openPendingEdit();
         return;
     }
 
@@ -266,6 +267,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         `;
 
         const editBtn = tdEdit.querySelector(".btn-edit-item");
+        editBtn.dataset.id = String(item.id);
 
         if (isCancelled) {
             editBtn.disabled = true;
@@ -303,6 +305,17 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     });
 
     renderPage();
+    openPendingEdit();
+}
+
+function openPendingEdit() {
+    const pendingId = sessionStorage.getItem("greenpoints-edit-action-id");
+    if (!pendingId) return;
+
+    sessionStorage.removeItem("greenpoints-edit-action-id");
+
+    const editBtn = document.querySelector(`.btn-edit-item[data-id="${CSS.escape(pendingId)}"]`);
+    editBtn?.click();
 }
 
 function formatDate(value) {
