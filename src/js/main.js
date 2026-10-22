@@ -15,47 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         '#historial': 'history-section'
     };
 
-    async function updateRecentActions() {
-        try {
-            // Cambio a Axios
-            const response = await axios.get('http://127.0.0.1:8000/history');
-            const historyData = response.data;
-
-            if (historyData && Array.isArray(historyData)) {
-                
-                const actionNames = window.styleActionNames || new Map(); 
-                
-                if (typeof window.renderRecentActionsList === 'function') {
-                    window.renderRecentActionsList(historyData, actionNames);
-                }
-            }
-        } catch (error) {
-            console.error('Error al actualizar las últimas acciones recientes:', error);
-        }
-    }
-
-
-    async function updateDashboardStats() {
-        try {
-            // Cambio a Axios
-            const response = await axios.get('http://127.0.0.1:8000/dashboard');
-            const dashboardData = response.data;
-
-            const pointsEl = document.querySelector('#stat-points') || document.querySelector('#kpi-points');
-            const actionsEl = document.querySelector('#stat-actions') || document.querySelector('#kpi-actions');
-            const co2El = document.querySelector('#stat-co2') || document.querySelector('#kpi-co2');
-
-            // Insertamos directamente los datos que ya vienen sumados desde el backend
-            if (pointsEl) pointsEl.textContent = dashboardData.total_points;
-            if (actionsEl) actionsEl.textContent = dashboardData.total_actions;
-            if (co2El) co2El.textContent = `${dashboardData.total_co2_impact_kg} kg`;
-            
-        } catch (error) {
-            console.error('Error al actualizar estadísticas:', error);
-        }
-    }
-
-
     function setActiveNav(hash) {
         const current = hash || '#dashboard';
         document.querySelectorAll('.main-nav__link').forEach((link) => {
@@ -76,8 +35,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (hash === '#dashboard' || hash === '') {
             if (dashboardSection) dashboardSection.hidden = false;
             if (dynamicContent) dynamicContent.innerHTML = '';
-            await updateDashboardStats();
-            await updateRecentActions();
             return;
         }
 
@@ -164,16 +121,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const initialHash = window.location.hash || '#dashboard';
     loadPage(initialHash);
-    await updateDashboardStats();
-    await updateRecentActions();
 
     window.addEventListener('action:created', async () => {
         const hash = window.location.hash || '#dashboard';
         if (hash === '#historial' && typeof window.initializeHistory === 'function') {
             await window.initializeHistory();
-        } else {
-            await updateDashboardStats();
-            await updateRecentActions(); 
         }
     });
 
