@@ -17,5 +17,3 @@ export async function createAction(actionData) {
         throw new Error(detail);
     }
 }
-
-window.createAction = createAction;

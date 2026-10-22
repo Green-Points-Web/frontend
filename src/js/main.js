@@ -1,3 +1,5 @@
+import { initializeCatalog } from "./services/catalogService.js";
+
 document.addEventListener('DOMContentLoaded', async () => {
     const mainContainer = document.querySelector('.site-main');
     const dashboardSection = document.querySelector('#dashboard');
@@ -52,26 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dynamicContent.innerHTML = html;
             }
 
-            if (hash === '#acciones') { 
-                const loadCatalogScript = () => {
-                    return new Promise((resolve, reject) => {
-                        if (typeof window.initializeCatalog === "function") return resolve();
-                        const script = document.createElement('script');
-                        script.src = "./src/js/services/catalogService.js";
-                        script.onload = resolve;
-                        script.onerror = reject;
-                        document.head.appendChild(script);
-                    });
-                };
-                try {
-                    await loadCatalogScript();
-                    await window.initializeCatalog();
-                    if (typeof window.setupCatalogEventListeners === "function") {
-                        window.setupCatalogEventListeners();
-                    }
-                } catch (err) {
-                    console.error("No se ha cargado el script del catálogo (catalogService.js) correctamente.", err);
-                }
+            if (hash === '#acciones') {
+                await initializeCatalog();
             }
 
             if (hash === '#historial') {
