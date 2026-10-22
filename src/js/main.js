@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function updateRecentActions() {
         try {
-            const response = await fetch('http://127.0.0.1:8000/history');
-            if (!response.ok) return;
-            const historyData = await response.json();
+            // Cambio a Axios
+            const response = await axios.get('http://127.0.0.1:8000/history');
+            const historyData = response.data;
 
             if (historyData && Array.isArray(historyData)) {
                 
@@ -35,12 +35,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
 
-async function updateDashboardStats() {
+    async function updateDashboardStats() {
         try {
-            // Cambiamos la ruta para llamar al dashboard del backend
-            const response = await fetch('http://127.0.0.1:8000/dashboard');
-            if (!response.ok) return;
-            const dashboardData = await response.json();
+            // Cambio a Axios
+            const response = await axios.get('http://127.0.0.1:8000/dashboard');
+            const dashboardData = response.data;
 
             const pointsEl = document.querySelector('#stat-points') || document.querySelector('#kpi-points');
             const actionsEl = document.querySelector('#stat-actions') || document.querySelector('#kpi-actions');
@@ -86,17 +85,14 @@ async function updateDashboardStats() {
         if (!fileName) return;
 
         try {
-            const response = await fetch(`./pages/${fileName}.html`);
-            if (!response.ok) throw new Error('Archivo no encontrado');
-
-            const html = await response.text();
+            // Cambio a Axios para cargar el HTML de las vistas
+            const response = await axios.get(`./pages/${fileName}.html`);
+            const html = response.data;
 
             if (dashboardSection) dashboardSection.hidden = true;
             if (dynamicContent) {
                 dynamicContent.hidden = false;
                 dynamicContent.innerHTML = html;
-
-                
             }
 
             if (hash === '#acciones') { 
@@ -182,5 +178,3 @@ async function updateDashboardStats() {
     });
 
 });
-
-

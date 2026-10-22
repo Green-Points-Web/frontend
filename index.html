@@ -165,127 +165,20 @@
     </section>
   </main>
 
-  <div id="modal-registration" class="modal-registration">
-    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-registration-title">
-      <header class="modal-header">
-        <h2 id="modal-registration-title">Registro de acción</h2>
-        <button type="button" id="close-modal-btn" class="icon-btn" aria-label="Cerrar">
-          <span class="material-symbols-outlined" aria-hidden="true">close</span>
-        </button>
-      </header>
-      <form id="modal-action-form">
-        <div class="form-field">
-          <label for="modal-action-type-select">Eco-acción</label>
-          <select id="modal-action-type-select" name="action_type_id" required>
-            <option value="" disabled selected>
-              Selecciona una eco-acción...
-            </option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label for="modal-action-date">Fecha</label>
-          <input type="date" id="modal-action-date" name="action_date" required />
-        </div>
-        <div class="form-field">
-          <label for="modal-action-description">Descripción / Comentarios</label>
-          <textarea id="modal-action-description" name="description" rows="3" maxlength="255"
-            placeholder="Cuéntanos brevemente los detalles..."></textarea>
-        </div>
-        <div class="impact-box">
-          <span class="impact-label">Impacto estimado:</span>
-          <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
-        </div>
-        <div id="form-feedback" class="feedback-message" hidden></div>
-        <footer class="modal-footer">
-          <div class="modal-footer-right">
-            <button type="button" id="cancel-btn" class="btn btn-secondary">
-              Cancelar
-            </button>
-            <button type="submit" id="submit-btn" class="btn btn-primary">
-              Guardar eco-acción
-            </button>
-          </div>
-        </footer>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modal" hidden aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <header class="modal-header">
-        <h2 id="modal-title">
-          <span class="material-symbols-outlined icon-bright-green" aria-hidden="true">compost</span>Editar acción
-        </h2>
-        <button type="button" class="icon-btn" id="btn-close" aria-label="Cerrar">
-          <span class="material-symbols-outlined" aria-hidden="true">close_small</span>
-        </button>
-      </header>
-
-      <form id="action-form" novalidate>
-        <div class="form-field">
-          <label for="f-action-type">Tipo de acción</label>
-          <select id="f-action-type" required></select>
-        </div>
-
-        <div class="form-field">
-          <label for="f-desc">Descripción</label>
-          <input type="text" id="f-desc" required maxlength="100" placeholder="Ej. Jornada de reforestación">
-        </div>
-
-        <div class="form-row">
-          <div class="form-field">
-            <label for="f-date">Fecha</label>
-            <input type="date" id="f-date" required>
-          </div>
-          <div class="form-field">
-            <label for="f-category">Categoría</label>
-            <input type="text" id="f-category" class="readonly-field green-badge" readonly>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label for="f-kg">CO₂ (kg)</label>
-            <input type="number" id="f-kg" min="0" step="0.1" readonly class="readonly-field green-badge">
-          </div>
-          <div class="form-field">
-            <label for="f-points">Puntos</label>
-            <input type="number" id="f-points" min="0" step="1" readonly class="readonly-field green-badge">
-          </div>
-        </div>
-        <footer class="modal-footer">
-          <button type="button" class="btn btn-danger" id="btn-delete">
-            <span class="delete-icon icon-element" aria-hidden="true"></span>
-            Anular
-          </button>
-          <div class="modal-footer-right">
-            <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </footer>
-      </form>
-    </div>
-  </div>
-
-  <div class="toast" id="toast" role="status" hidden></div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script src="./src/js/components/registrationModal.js" type="module"></script>
-
   <script src="./src/js/components/dashboardComponent.js" type="module"></script>
   <script src="./src/js/services/dashboardService.js" type="module"></script>
-
   <script src="./src/js/services/actionService.js" type="module"></script>
-
+  <script src="./src/js/components/historyComponent.js"></script>
   <script src="./src/js/services/historyService.js"></script>
   <script src="./src/js/services/modaleditcontroller.js"></script>
-
   <script src="./src/js/services/catalogService.js" type="module"></script>
-
   <script src="./src/js/services/recent_list.js"></script>
 
   <script src="./src/js/dashboard.js" type="module"></script>
-
   <script src="./src/js/main.js" type="module"></script>
 
 </body>
-
 </html>
