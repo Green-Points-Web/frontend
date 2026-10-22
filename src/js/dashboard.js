@@ -134,14 +134,28 @@ function renderRecentActions(historyData, catalog) {
     row.dataset.id = String(item.id);
     row.setAttribute("aria-label", `Editar ${name}`);
     row.innerHTML = `
-      <span class="action-info">
-        <span class="action-icon" style="background-color: ${catStyles.background}; color: ${catStyles.color};"><span class="material-symbols-outlined" aria-hidden="true">${catStyles.iconName}</span></span>
-        <span><strong>${escapeHTML(name)}</strong><span class="action-description">${escapeHTML(item.description || "Acción sostenible registrada")}</span></span>
+      <span class="action-info" style="display:flex; align-items:center; gap:0.75rem; flex:1 1 auto; min-width:0;">
+        <span class="row-icon-box" style="background-color:${catStyles.background}; color:${catStyles.color}; flex-shrink:0;">
+          <span class="material-symbols-outlined" aria-hidden="true">${catStyles.iconName}</span>
+        </span>
+        <span style="display:flex; flex-direction:column; min-width:0; align-items:flex-start; text-align:left;">
+          <span class="row-main-title">${escapeHTML(name)}</span>
+          <span class="row-sub-desc">${escapeHTML(item.description || "Acción sostenible registrada")}</span>
+        </span>
       </span>
-      <span class="action-meta">
-        <span><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span> ${escapeHTML(formatDate(date))}</span>
-        <span><span class="material-symbols-outlined" aria-hidden="true">eco</span> ${number(item.co2_saved ?? item.co2_awarded).toFixed(1)} kg CO₂</span>
-        <span class="points">+${number(item.points_earned ?? item.points_awarded ?? item.points)} pts</span>
+      <span class="action-meta" style="display:flex; align-items:center; gap:1rem; flex-wrap:nowrap;">
+        <span style="display:inline-flex; align-items:center; gap:0.3rem; color:var(--clr-text-muted); font-size:0.8rem;">
+          <span class="material-symbols-outlined" style="font-size:16px;">schedule</span>
+          ${escapeHTML(formatDate(date))}
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:0.25rem; background:#E8F5E9; color:#2E7D32; padding:0.25rem 0.625rem; border-radius:9999px; font-size:0.75rem; font-weight:500;">
+          <span class="material-symbols-outlined" style="font-size:16px;">emoji_nature</span>
+          ${number(item.co2_saved ?? item.co2_awarded).toFixed(1)} kg
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:0.2rem; font-size:0.95rem; font-weight:600; color:#111827;">
+          <span class="material-symbols-outlined" style="font-size:16px; color:#f59e0b; font-variation-settings:'FILL' 1;">star</span>
+          +${number(item.points_earned ?? item.points_awarded ?? item.points)} pts
+        </span>
         <span class="material-symbols-outlined arrow" aria-hidden="true">chevron_right</span>
       </span>`;
     row.addEventListener("click", () => {

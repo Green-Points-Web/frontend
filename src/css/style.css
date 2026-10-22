@@ -435,10 +435,20 @@ body {
    color: var(--clr-primary)
 }
 
+.action-info {
+    align-items: center;
+}
+
+.action-info .row-main-title,
+.action-info .row-sub-desc {
+    text-align: left;
+    align-self: flex-start;
+}
+
 .action-info > span:not(.action-icon) {
     display: flex;
-    flex-direction: row;
-    gap: 2rem;
+    flex-direction: column;
+    gap: 0.2rem;
     min-width: 0;
 }
 
