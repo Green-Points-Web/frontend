@@ -89,12 +89,12 @@ function categoryIcon(category) {
   return { background: "#E8F4EE", color: "#2F6B50", iconName: "eco" };
 }
 
-function renderRecentActions(history, catalog) {
+function renderRecentActions(historyData, catalog) {
   const list = $(".actions-list");
   if (!list) return;
   const names = new Map(catalog.map(item => [String(item.id), item.name]));
   
-  const activeHistory = Array.isArray(history) ? history.filter(item => item.cancelled !== true) : [];
+  const activeHistory = Array.isArray(historyData) ? historyData.filter(item => item.cancelled !== true) : [];
 
   const recent = [...activeHistory].sort((a, b) => {
     const dateA = new Date(a.action_date || a.date || 0).getTime();
@@ -135,12 +135,10 @@ function renderRecentActions(history, catalog) {
     row.addEventListener("click", () => {
       sessionStorage.setItem("greenpoints-edit-action-id", String(item.id));
       if (window.location.hash !== "#historial") {
-        history.pushState(null, "", "#historial");
+        window.history.pushState(null, "", "#historial");
         window.dispatchEvent(new PopStateEvent("popstate"));
       } else {
-        window.initializeHistory?.().then(() => {
-          document.querySelector(`.btn-edit-item[data-id="${CSS.escape(String(item.id))}"]`)?.click();
-        });
+        window.initializeHistory?.();
       }
     });
     list.appendChild(row);
@@ -184,5 +182,5 @@ loadDashboard();
 initRegistrationModal();
 
 window.addEventListener("action:created", loadDashboard);
+window.addEventListener("action:updated", loadDashboard);
 window.addEventListener("action:deleted", loadDashboard);
-window.addEventListener("action:cancelled", loadDashboard);

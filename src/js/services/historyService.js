@@ -1,5 +1,7 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 const PAGE_SIZE = 15;
+const EMPTY_STATE_TITLE = "No se encontraron acciones";
+const EMPTY_STATE_TEXT = "Prueba con otra búsqueda o selecciona otra categoría.";
 let currentPage = 1;
 let allRows = [];
 async function initializeHistory() {
@@ -32,18 +34,35 @@ async function initializeHistory() {
     }
 }
 
+function setEmptyState(title = EMPTY_STATE_TITLE, text = EMPTY_STATE_TEXT) {
+    const emptyState = document.getElementById("history-empty-state");
+    if (!emptyState) return;
+
+    const titleElement = emptyState.querySelector(".empty-title");
+    const textElement = emptyState.querySelector(".empty-text");
+
+    if (titleElement) titleElement.textContent = title;
+    if (textElement) textElement.textContent = text;
+
+    emptyState.hidden = false;
+}
+
+function hideEmptyState() {
+    const emptyState = document.getElementById("history-empty-state");
+    if (emptyState) emptyState.hidden = true;
+}
+
 function showHistoryError() {
     const tableBody = document.getElementById("table-body");
-    const emptyState = document.getElementById("empty-state");
 
     if (tableBody) {
         tableBody.replaceChildren();
     }
 
-    if (emptyState) {
-        emptyState.hidden = false;
-        emptyState.textContent = "No se pudo cargar el historial.";
-    }
+    setEmptyState(
+        "No se pudo cargar el historial",
+        "Comprueba que el servidor está iniciado y vuelve a intentarlo."
+    );
 }
 
 function normalizeCategory(category = "") {
@@ -149,7 +168,6 @@ function getActionIcon(actionName, category) {
 
 function renderHistoryTable(historyData, actionNames = new Map()) {
     const tableBody = document.getElementById("table-body");
-    const emptyState = document.getElementById("empty-state");
 
     if (!tableBody) return;
 
@@ -162,12 +180,13 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     currentPage = 1;
 
     if (!Array.isArray(historyData) || historyData.length === 0) {
-        if (emptyState) emptyState.hidden = false;
+        setEmptyState();
         updatePagination(0);
+        openPendingEdit();
         return;
     }
 
-    if (emptyState) emptyState.hidden = true;
+    hideEmptyState();
 
     historyData.forEach(item => {
         const actionName = actionNames.get(item.action_type_id) || item.action_name || item.name || item.title || `Acción #${item.action_type_id || 'general'}`;
@@ -266,6 +285,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         `;
 
         const editBtn = tdEdit.querySelector(".btn-edit-item");
+        editBtn.dataset.id = String(item.id);
 
         if (isCancelled) {
             editBtn.disabled = true;
@@ -303,6 +323,17 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
     });
 
     renderPage();
+    openPendingEdit();
+}
+
+function openPendingEdit() {
+    const pendingId = sessionStorage.getItem("greenpoints-edit-action-id");
+    if (!pendingId) return;
+
+    sessionStorage.removeItem("greenpoints-edit-action-id");
+
+    const editBtn = document.querySelector(`.btn-edit-item[data-id="${CSS.escape(pendingId)}"]`);
+    editBtn?.click();
 }
 
 function formatDate(value) {
@@ -340,7 +371,6 @@ function setupEventListeners() {
 function filterHistoryTable() {
     const searchInput = document.getElementById("search-input");
     const filterSelect = document.getElementById("filter-select");
-    const emptyState = document.getElementById("empty-state");
 
     const query = (searchInput?.value || "").toLowerCase().trim();
     const selectedCategory = filterSelect?.value || "Todas";
@@ -368,8 +398,10 @@ function filterHistoryTable() {
         row.style.display = (pos >= start && pos < start + PAGE_SIZE) ? "" : "none";
     });
 
-    if (emptyState) {
-        emptyState.hidden = visibleCount > 0;
+    if (visibleCount > 0) {
+        hideEmptyState();
+    } else {
+        setEmptyState();
     }
 
     updatePagination(visibleCount);

@@ -1,18 +1,14 @@
+import { createAction } from "./actionService.js";
+
 const CATALOG_API = "http://127.0.0.1:8000";
 
 async function initializeCatalog() {
     try {
-        const [catalogResponse, dashboardResponse] = await Promise.all([
-            axios.get(`${CATALOG_API}/catalog`),
-            axios.get(`${CATALOG_API}/dashboard`).catch(() => ({ data: {} }))
-        ]);
+        const catalogResponse = await axios.get(`${CATALOG_API}/catalog`);
 
         const catalogData = catalogResponse.data;
-        const dashboardData = dashboardResponse.data;
 
         renderCatalogGrid(catalogData);
-        updateKpiBar(dashboardData);
-        setupEventListeners();
 
     } catch (error) {
         console.error("Error al inicializar el catálogo:", error);
@@ -22,7 +18,7 @@ async function initializeCatalog() {
 
 function showCatalogError() {
     const catalogGrid = document.getElementById("catalog-grid");
-    const emptyState = document.getElementById("empty-state");
+    const emptyState = document.getElementById("catalog-empty-state");
 
     if (catalogGrid) {
         catalogGrid.replaceChildren();
@@ -92,7 +88,7 @@ function getActionIcon(actionName, category) {
 
 function renderCatalogGrid(catalogData) {
     const catalogGrid = document.getElementById("catalog-grid");
-    const emptyState = document.getElementById("empty-state");
+    const emptyState = document.getElementById("catalog-empty-state");
 
     if (!catalogGrid) return;
 
@@ -124,7 +120,6 @@ function renderCatalogGrid(catalogData) {
         card.style.borderColor = catColor.color;
         card.dataset.id = item.id;
         card.dataset.category = category;
-        card.dataset.searchable = `${actionName} ${category} ${pointsVal} ${co2Val}`.toLowerCase();
 
         card.innerHTML = `
             <div class="card-top">
@@ -147,7 +142,7 @@ function renderCatalogGrid(catalogData) {
         registerBtn.addEventListener("click", async () => {
             registerBtn.disabled = true;
             try {
-                await window.createAction({
+                await createAction({
                     user_id: 1,
                     action_type_id: item.id,
                     action_date: new Date().toISOString().slice(0, 10),
@@ -165,51 +160,4 @@ function renderCatalogGrid(catalogData) {
     });
 }
 
-function updateKpiBar(data) {
-}
-
-function setupEventListeners() {
-    const searchInput = document.getElementById("search-input");
-    const filterSelect = document.getElementById("filter-select");
-
-    if (searchInput) {
-        searchInput.addEventListener("input", filterCategoryGrid);
-    }
-    if (filterSelect) {
-        filterSelect.addEventListener("change", filterCategoryGrid);
-    }
-}
-
-function filterCategoryGrid() {
-    const searchInput = document.getElementById("search-input");
-    const filterSelect = document.getElementById("filter-select");
-    const emptyState = document.getElementById("empty-state");
-
-    const query = (searchInput?.value || "").toLowerCase().trim();
-    const selectedCategory = filterSelect?.value || "Todas";
-
-    const cards = document.querySelectorAll("#catalog-grid .action-card");
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-        const searchText = card.dataset.searchable || "";
-        const cardCategory = card.dataset.category || "";
-
-        const matchesSearch = searchText.includes(query);
-        const matchesCategory = selectedCategory === "Todas" || cardCategory.toLowerCase() === selectedCategory.toLowerCase();
-
-        if (matchesSearch && matchesCategory) {
-            card.style.display = "";
-            visibleCount++;
-        } else {
-            card.style.display = "none";
-        }
-    });
-
-    if (emptyState) {
-        emptyState.hidden = visibleCount > 0;
-    }
-}
-
-window.initializeCatalog = initializeCatalog;
-window.setupCatalogEventListeners = setupEventListeners;
+export { initializeCatalog };

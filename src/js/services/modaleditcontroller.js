@@ -1,7 +1,31 @@
 const API_URL = "http://127.0.0.1:8000";
 
 let currentEditingId = null;
+let lastFocusedElement = null;
 const initializedModals = new WeakSet();
+
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function trapFocus(event, container) {
+
+    if (event.key !== "Tab") return;
+
+    const focusable = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    }
+
+    else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+    }
+}
 
 // CATÁLOGO DE ACCIONES
 const ACTIONS_CATALOG_DETAILS = {
@@ -137,6 +161,8 @@ function setupModalListeners() {
             showToast("Cambios guardados correctamente");
             closeModal();
 
+            window.dispatchEvent(new Event("action:updated"));
+
             if (typeof window.initializeHistory === "function") {
                 await window.initializeHistory();
             }
@@ -162,6 +188,7 @@ function openEditModal(item) {
     }
 
     currentEditingId = item.id;
+    lastFocusedElement = document.activeElement;
 
     let matchedId = item.action_type_id;
     if (!matchedId) {
@@ -218,6 +245,8 @@ function closeModal() {
     }
 
     currentEditingId = null;
+    lastFocusedElement?.focus();
+    lastFocusedElement = null;
 }
 
 function showToast(message) {
@@ -234,3 +263,16 @@ function showToast(message) {
 
 window.setupModalListeners = setupModalListeners;
 window.openEditModal = openEditModal;
+
+document.addEventListener("keydown", (event) => {
+
+    const modal = document.getElementById("modal");
+    if (!modal || !modal.classList.contains("is-active")) return;
+
+    if (event.key === "Escape") {
+        closeModal();
+        return;
+    }
+
+    trapFocus(event, modal);
+});

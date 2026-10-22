@@ -152,20 +152,6 @@ body {
    background: transparent
 }
 
-.site-footer {
-   margin-top: 3rem;
-   padding: 1.5rem 2rem;
-   background-color: var(--clr-surface);
-   border-top: 1px solid var(--clr-border);
-   color: var(--clr-text-muted);
-   text-align: center;
-   font-size: 0.9rem
-}
-
-.site-footer p {
-   margin: 0
-}
-
 .site-title a:focus-visible,
 .main-nav__link:focus-visible {
    outline: 3px solid var(--clr-accent);
@@ -944,10 +930,6 @@ body {
    backdrop-filter: blur(4px)
 }
 
-.modal-registration.active {
-   display: flex
-}
-
 .modal-registration.is-active {
    display: flex
 }
@@ -1074,16 +1056,6 @@ body {
 .feedback-message.error {
    background-color: lightpink;
    color: darkred
-}
-
-.close-btn {
-   display: none
-}
-
-.main-container {
-   flex: 1;
-   width: 100%;
-   padding-bottom: 4rem
 }
 
 .view-section {

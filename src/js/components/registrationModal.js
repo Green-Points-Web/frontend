@@ -1,5 +1,28 @@
 import { getActionTypes, createAction } from "../services/actionService.js";
 
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function trapFocus(event, container) {
+
+    if (event.key !== 'Tab') return;
+
+    const focusable = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+    }
+
+    else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+    }
+}
+
 export function initRegistrationModal(onSuccessCallBack) {
 
     const modal = document.getElementById('modal-registration');
@@ -18,7 +41,10 @@ export function initRegistrationModal(onSuccessCallBack) {
 
     if (!modal || !form) return;
 
+    modal.setAttribute('aria-hidden', 'true');
+
     let catalogData = [];
+    let lastFocusedElement = null;
 
     async function loadCatalog() {
 
@@ -38,12 +64,39 @@ export function initRegistrationModal(onSuccessCallBack) {
         }
     }
 
-    const openModal = () => modal.classList.add('is-active');
-    const closeModal = () => modal.classList.remove('is-active');
+    const openModal = () => {
+        lastFocusedElement = document.activeElement;
+        modal.classList.add('is-active');
+        modal.setAttribute('aria-hidden', 'false');
+        actionSelect?.focus();
+    };
+
+    const closeModal = () => {
+        modal.classList.remove('is-active');
+        modal.setAttribute('aria-hidden', 'true');
+        lastFocusedElement?.focus();
+        lastFocusedElement = null;
+    };
 
     openBtn?.addEventListener('click', openModal);
-    closeBtn.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+
+        if (!modal.classList.contains('is-active')) return;
+
+        if (event.key === 'Escape') {
+            closeModal();
+            return;
+        }
+
+        trapFocus(event, modal);
+    });
 
     actionSelect.addEventListener('change', (e) => {
 

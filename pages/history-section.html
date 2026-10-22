@@ -52,7 +52,7 @@
       </table>
     </div>
 
-    <div class="empty-state" id="empty-state" hidden>
+    <div class="empty-state" id="history-empty-state" hidden>
       <p class="empty-title">No se encontraron acciones</p>
       <p class="empty-text">Prueba con otra búsqueda o selecciona otra categoría.</p>
     </div>
@@ -67,4 +67,62 @@
       </button>
     </nav>
   </div>
+
+  <div class="modal-overlay" id="modal" hidden aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <header class="modal-header">
+        <h2 id="modal-title">
+          <span class="material-symbols-outlined icon-bright-green" aria-hidden="true">compost</span>Editar acción
+        </h2>
+        <button type="button" class="icon-btn" id="btn-close" aria-label="Cerrar">
+          <span class="material-symbols-outlined" aria-hidden="true">close_small</span>
+        </button>
+      </header>
+
+      <form id="action-form" novalidate>
+        <div class="form-field">
+          <label for="f-action-type">Tipo de acción</label>
+          <select id="f-action-type" required></select>
+        </div>
+
+        <div class="form-field">
+          <label for="f-desc">Descripción</label>
+          <input type="text" id="f-desc" required maxlength="100" placeholder="Ej. Jornada de reforestación">
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="f-date">Fecha</label>
+            <input type="date" id="f-date" required>
+          </div>
+          <div class="form-field">
+            <label for="f-category">Categoría</label>
+            <input type="text" id="f-category" class="readonly-field green-badge" readonly>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label for="f-kg">CO₂ (kg)</label>
+            <input type="number" id="f-kg" min="0" step="0.1" readonly class="readonly-field green-badge">
+          </div>
+          <div class="form-field">
+            <label for="f-points">Puntos</label>
+            <input type="number" id="f-points" min="0" step="1" readonly class="readonly-field green-badge">
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" class="btn btn-danger" id="btn-delete">
+            <span class="delete-icon icon-element" aria-hidden="true"></span>
+            Anular
+          </button>
+          <div class="modal-footer-right">
+            <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
 </section>
