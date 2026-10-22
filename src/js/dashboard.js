@@ -80,12 +80,25 @@ function localDateKey(value) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-function categoryIcon(category) {
-  const value = String(category || "").toLowerCase();
-  if (value.includes("movil")) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_bike" };
-  if (value.includes("natur")) return { background: "#EBF7EE", color: "#358850", iconName: "park" };
-  if (value.includes("recicl")) return { background: "#e2eaf4", color: "#2c598d", iconName: "recycling" };
-  if (value.includes("particip")) return { background: "#edffe5", color: "#8fe043", iconName: "group" };
+function categoryIcon(category, actionName = "") {
+  const name = String(actionName || "").toLowerCase();
+  const value = String(category || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  if (/bike|bici|bicicleta/.test(name)) return { background: "#fff9f4", color: "#ff8a2b", iconName: "directions_bike" };
+  if (/walk|pie|caminar|andando/.test(name)) return { background: "#F4EEF8", color: "#8C52BE", iconName: "directions_walk" };
+  if (/carpool|coche|compartir/.test(name)) return { background: "#E3F2FD", color: "#1565C0", iconName: "directions_car" };
+  if (/tren|bus|metro|publico|transporte/.test(name)) return { background: "#fee7ee", color: "#b81466", iconName: "directions_bus" };
+  if (/voluntariado|ambiental|voluntario|particip/.test(name)) return { background: "#fce6e6", color: "#d30a0a", iconName: "volunteer_activism" };
+  if (/recycl|recicl/.test(name)) return { background: "#dbf9fd", color: "#1b9da2", iconName: "recycling" };
+  if (/tree|arbol|árbol|plant|planta/.test(name)) return { background: "#ecfbdb", color: "#85C541", iconName: "park" };
+
+  if (value.includes("movil") || value.includes("transp")) return { background: "#E8F4EE", color: "#2F6B50", iconName: "directions_bike" };
+  if (value.includes("natur")) return { background: "#E8F4EE", color: "#2F6B50", iconName: "park" };
+  if (value.includes("recicl")) return { background: "#E8F4EE", color: "#2F6B50", iconName: "recycling" };
+  if (value.includes("particip")) return { background: "#E8F4EE", color: "#2F6B50", iconName: "group" };
   return { background: "#E8F4EE", color: "#2F6B50", iconName: "eco" };
 }
 
@@ -114,11 +127,10 @@ function renderRecentActions(historyData, catalog) {
   recent.forEach(item => {
     const name = names.get(String(item.action_type_id)) || item.action_name || item.name || `Acción #${item.action_type_id ?? item.id}`;
     const date = item.action_date || item.date;
-    const catStyles = categoryIcon(item.category);
+    const catStyles = categoryIcon(item.category, name);
     const row = document.createElement("button");
     row.type = "button";
     row.className = "action-item action-item--button";
-    row.style.borderColor = catStyles.color;
     row.dataset.id = String(item.id);
     row.setAttribute("aria-label", `Editar ${name}`);
     row.innerHTML = `
