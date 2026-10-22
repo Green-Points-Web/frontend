@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="src/img/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
         rel="stylesheet" />
@@ -28,79 +28,32 @@
       <ul class="main-nav__list">
         <li>
           <a class="main-nav__link" href="#dashboard">
-            <span class="material-symbols-outlined">home</span>
+            <span class="material-symbols-outlined" aria-hidden="true">home</span>
             <span>Resumen</span>
           </a>
         </li>
 
         <li>
           <a class="main-nav__link" href="#acciones">
-            <span class="material-symbols-outlined">eco</span>
+            <span class="material-symbols-outlined" aria-hidden="true">eco</span>
             <span>Acciones</span>
           </a>
         </li>
 
         <li>
           <a class="main-nav__link" href="#historial">
-            <span class="material-symbols-outlined">history</span>
+            <span class="material-symbols-outlined" aria-hidden="true">history</span>
             <span>Historial</span>
           </a>
         </li>
       </ul>
     </nav>
 
-<button type="button" id="open-modal-btn" class="btn btn--primary">
-    <span class="btn-text">Registrar acción</span>
-    <span class="btn-icon" aria-hidden="true">+</span>
-</button>
+    <button type="button" id="open-modal-btn" class="btn btn-primary">
+      <span class="btn-text">Registrar acción</span>
+      <span class="btn-icon" aria-hidden="true">+</span>
+    </button>
 
-
-    <!--Modal Registration-->
-
-    <section id="modal-registration" class="modal-registration">
-      <div class="modal-container">
-        <button type="button" id="close-modal-btn" class="close-btn" aria-label="Cerrar">
-          &times;
-        </button>
-        <div class="modal-header">
-          <h2>Registro de acción</h2>
-        </div>
-        <form id="modal-action-form">
-          <div class="form-field">
-            <label for="modal-action-type-select">Eco-acción</label>
-            <select id="modal-action-type-select" name="action_type_id" required>
-              <option value="" disabled selected>
-                Selecciona una eco-acción...
-              </option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="modal-action-date">Fecha</label>
-            <input type="date" id="modal-action-date" name="action_date" required />
-          </div>
-          <div class="form-field">
-            <label for="modal-action-description">Descripción / Comentarios</label>
-            <textarea id="modal-action-description" name="description" rows="3" maxlength="255"
-              placeholder="Cuéntanos brevemente los detalles..."></textarea>
-          </div>
-          <div class="impact-box">
-            <span class="impact-label">Impacto estimado:</span>
-            <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
-          </div>
-          <div id="form-feedback" class="feedback-message" hidden></div>
-          <div class="modal-footer">
-            <div class="modal-footer-right">
-              <button type="button" id="cancel-btn" class="btn btn-secondary">
-                Cancelar
-              </button>
-              <button type="submit" id="submit-btn" class="btn btn-primary">
-                Guardar eco-acción
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </section>
   </header>
 
   <main class="site-main">
@@ -110,7 +63,7 @@
 
       <!-- Header -->
       <div class="dashboard-header">
-        <span class="material-symbols-outlined">star_shine</span>
+        <span class="material-symbols-outlined" aria-hidden="true">star_shine</span>
         <span class="badge-super">TU IMPACTO IMPORTA</span>
         <h2 id="dashboard-title">Resumen de actividad</h2>
         <p class="subtitle">
@@ -120,7 +73,7 @@
       </div>
 
       <!-- Stats grid -->
-      <div class="stats-grid prototype-grid">
+      <dl class="stats-grid prototype-grid">
         <div class="stat-card card-dark">
           <dt>Puntos acumulados</dt>
           <dd id="stat-points">0</dd>
@@ -138,10 +91,10 @@
         </div>
         <div class="stat-card">
           <dt>Acciones realizadas</dt>
-          <dd><span class="material-symbols-outlined">timer</span> <span id="stat-actions">0</span></dd>
+          <dd><span class="material-symbols-outlined" aria-hidden="true">timer</span> <span id="stat-actions">0</span></dd>
           <span class="stat-sub">Pequeños grandes cambios</span>
         </div>
-      </div>
+      </dl>
 
       <!-- Central section: Progress & Graphics -->
       <div class="dashboard-middle">
@@ -223,7 +176,7 @@
   <script src="./src/js/services/modaleditcontroller.js"></script>
   <script src="./src/js/services/catalogService.js" type="module"></script>
   <script src="./src/js/services/recent_list.js"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
   <script src="./src/js/dashboard.js" type="module"></script>
   <script src="./src/js/main.js" type="module"></script>
 
