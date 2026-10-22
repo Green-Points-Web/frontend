@@ -263,7 +263,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         tdImpact.innerHTML = `
             <div style="color: #1f2c1f; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; width: 100px; max-width: 100%; box-sizing: border-box; justify-content: center;">
                 <span class="material-symbols-outlined" style="font-size: 14px;">emoji_nature</span>
-                <span>${co2Val}</span>
+                <span>${co2Val} CO₂</span>
             </div>
         `;
 

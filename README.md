@@ -1,143 +1,511 @@
+***
+
 # 🍃 GreenPoints · Frontend
 
-> Interfaz web para registrar acciones sostenibles, consultar el catálogo de acciones disponibles, revisar el historial y visualizar el impacto ambiental acumulado (puntos obtenidos a través del cálculo de CO₂ ahorrado).
-
-<!-- Badges -->
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
-![Vanilla JS](https://img.shields.io/badge/Vanilla_JS-Sin_framework-informational)
-![License](https://img.shields.io/badge/license-ISC-blue)
+> Proyecto colaborativo para el desarrollo web de GreenPoints, una aplicación pensada para registrar acciones sostenibles que te permite cuantificar tu impacto ambiental positivo (mediante puntos obtenidos a través del cálculo de CO₂ ahorrado).
 
 ---
 
-## 📷 Vista Previa (Demo)
+## 📑 Índice
 
-*   **Link a la aplicación en producción:** *Pendiente de despliegue*
-*   *Logo del proyecto: `src/img/Logo.png`.*
-*   *Opcional: añade un GIF animado o captura de la interfaz principal (dashboard, catálogo e historial) aquí.*
+1. [Descripción](#-descripción)
+2. [Características principales](#-características-principales)
+3. [Stack tecnológico](#-stack-tecnológico)
+4. [Estructura del proyecto](#-estructura-del-proyecto)
+5. [Vista previa (demo)](#-vista-previa-demo)
+6. [Objetivo](#-objetivo)
+7. [Requisitos previos](#-requisitos-previos)
+8. [Instalación](#-instalación)
+9. [Configuración](#-configuración)
+10. [Ejecución](#-ejecución)
+11. [Scripts disponibles](#-scripts-disponibles)
+12. [Integración con la API](#-integración-con-la-api)
+13. [Tests y QA](#-tests-y-qa)
+14. [Accesibilidad y responsive](#-accesibilidad-y-responsive)
+15. [Despliegue](#-despliegue)
+16. [Equipo y roles](#-equipo-y-roles)
+17. [Reparto de trabajo](#-reparto-de-trabajo)
+18. [Estado del proyecto](#-estado-del-proyecto)
+19. [Backlog y gestión de tareas](#-backlog-y-gestión-de-tareas)
+20. [Ramas y flujo de trabajo con Git](#-ramas-y-flujo-de-trabajo-con-git)
+21. [Convención de commits](#-convención-de-commits)
+22. [Uso de herramientas de IA](#-uso-de-herramientas-de-ia)
+23. [Limitaciones conocidas](#-limitaciones-conocidas)
+24. [Licencia](#-licencia)
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 📖 Descripción
 
-*   **Lenguaje:** JavaScript (ES Modules) — sin framework ni bundler.
-*   **Interfaz:** HTML5 + CSS3 (cascada tradicional, sin preprocesadores).
-*   **Enrutado:** Hash Router propio (`src/js/main.js`).
-*   **Peticiones HTTP:** `fetch` nativo (API REST en `http://127.0.0.1:8000`).
-*   **Iconografía:** Material Symbols de Google Fonts.
-*   **Estado/Reactividad:** `CustomEvent` + `window` (actualizaciones sin recargar).
-*   **Dependencias:** `sortablejs` (runtime) y `json-server` (dev, mock opcional).
-*   **Servidor local:** `python3 -m http.server` (o cualquier servidor estático).
+GreenPoints es una **SPA** desarrollada con JavaScript vanilla, HTML5 y CSS3 que permite registrar acciones sostenibles, consultar un catálogo de acciones y visualizar el impacto ambiental acumulado.
+
+El frontend consume una API REST propia y no utiliza framework, bundler ni sistema de build: el navegador carga directamente los módulos ES.
 
 ---
 
-## ⚙️ Configuración Local
+## ✨ Características principales
 
-Sigue estos pasos para ejecutar el proyecto en tu entorno local.
+* **📊 Dashboard de impacto:** resumen en tiempo real de KPIs —puntos totales, CO₂ ahorrado y acciones registradas— con lista de las acciones más recientes.
+* **🗂️ Catálogo de acciones:** grid de acciones sostenibles con búsqueda y filtrado por categoría, cada tarjeta codificada por color (Movilidad, Naturaleza, Reciclaje, Participación).
+* **✅ Registro de acciones:** alta rápida desde el catálogo o mediante un modal dedicado; cada acción guarda fecha, categoría y puntos/CO₂ asociados.
+* **📜 Historial paginado:** tabla de acciones registradas con paginación (15 por página), iconografía por categoría y acciones de editar/eliminar.
+* **🌱 Cálculo de impacto:** los puntos se derivan del CO₂ ahorrado según el tipo de acción.
+* **⚡ SPA sin recargar:** Hash Router propio que inyecta vistas parciales y mantiene la experiencia fluida.
+* **🔔 Secciones sincronizadas:** un mismo registro se refleja en dashboard e historial en vivo mediante eventos (`action:created` / `action:updated` / `action:deleted`), sin refrescar la página.
+* **🎨 UI ligera:** Vanilla JS + CSS tradicional e iconografía Material Symbols; sin framework ni bundler.
+* **🔌 API REST:** consumo del backend con Axios, con estados de carga/error y estados vacíos en cada vista.
 
-### Requisitos Previos
+---
 
-*   **Python 3** (para servir archivos estáticos) o cualquier servidor HTTP local.
-*   **Node.js** (opcional, solo para `json-server` como mock).
-*   Un **backend** escuchando en `http://127.0.0.1:8000` que exponga `/catalog`, `/history`, `/dashboard` y `/actions`. Sin él, las vistas muestran estados de error o vacíos.
+## 🧱 Stack tecnológico
 
-### Instalación
+| Capa | Tecnología |
+| --- | --- |
+| Lenguaje | JavaScript (ES Modules) |
+| Estructura | HTML5 |
+| Estilos | CSS3 tradicional, variables CSS, Flexbox, Grid y media queries |
+| Enrutado | Hash Router propio (`src/js/main.js`) |
+| Peticiones HTTP | Axios cargado vía CDN (`index.html`) |
+| Iconografía | Material Symbols Outlined de Google Fonts |
+| Reactividad | `CustomEvent` + `window` |
+| Dependencia runtime declarada | `sortablejs` (actualmente sin uso en el código) |
+| Dependencia de desarrollo | `json-server` (mock opcional) |
+| Servidor local | `python3 -m http.server` o cualquier servidor estático |
+
+> El proyecto **no usa bundler ni transpilador**. Los módulos se cargan directamente en el navegador.
+
+---
+
+## 📂 Estructura del proyecto
+
+```text
+frontend/
+├── index.html                        # SPA: header, dashboard y scripts
+├── pages/                            # Vistas inyectadas por el router
+│   ├── catalog-section.html          #   #acciones
+│   └── history-section.html          #   #historial
+├── src/
+│   ├── css/
+│   │   └── style.css                 # Hoja única de estilos
+│   ├── img/
+│   │   └── Logo.png                  # Logotipo
+│   └── js/
+│       ├── main.js                   # Router hash + carga de vistas
+│       ├── dashboard.js              # Arranque del dashboard
+│       ├── components/
+│       │   ├── dashboardComponent.js # Render de KPIs y progreso de nivel
+│       │   └── registrationModal.js  # Modal de registro de acción
+│       └── services/
+│           ├── actionService.js      # GET /catalog, POST /actions
+│           ├── catalogService.js     # Render del grid de catálogo
+│           ├── dashboardService.js   # GET /dashboard y /history recientes
+│           ├── historyService.js     # Render del historial y paginación
+│           └── modaleditcontroller.js# Editar / anular acción del historial
+├── .gitignore
+├── package.json
+├── package-lock.json
+├── pnpm-lock.yaml
+└── README.md
+```
+
+> No existe un archivo `db.json` en el repositorio. La sección de `json-server` se conserva únicamente como referencia histórica.
+
+---
+
+## 📷 Vista previa (demo)
+
+* **Aplicación en producción:** *Pendiente de despliegue.*
+* **Diseño preliminar:** [Stitch](https://stitch.withgoogle.com/projects/11054811943219877412)
+
+**Capturas pendientes:** añadir aquí imágenes del dashboard, del catálogo y del historial.
+
+---
+
+## 🚀 Objetivo
+
+Crear una aplicación funcional que permita a las personas usuarias:
+
+* Registrar las acciones sostenibles que llevan a cabo en su día a día.
+* Consultar estas acciones en un catálogo o visualizar las ya registradas en un historial.
+* Visualizar su impacto ambiental (puntos obtenidos a través del cálculo de CO₂ ahorrado).
+
+---
+
+## 📋 Requisitos previos
+
+* **Python 3** (para servir archivos estáticos) o cualquier servidor HTTP local.
+* **Node.js** (opcional, solo para `npm install` y el mock con `json-server`).
+* Un **backend** escuchando en `http://127.0.0.1:8000` que exponga `/catalog`, `/history`, `/dashboard` y `/actions`.
+* Conexión a internet para cargar Axios y Material Symbols desde CDN.
+
+> Sin backend, las vistas muestran sus estados de error o vacíos.
+
+---
+
+## ⚙️ Instalación
 
 1. Clona el repositorio:
+
    ```bash
    git clone https://github.com/Green-Points-Web/frontend.git
    cd frontend
    ```
 
 2. (Opcional) Instala las dependencias:
+
    ```bash
    npm install
    ```
 
-3. Configura el backend:
-   El proyecto **no usa archivo `.env`**: la URL de la API (`http://127.0.0.1:8000`) está definida en los servicios (`src/js/services/*.js`). Debe estar corriendo antes de abrir la web.
+3. Arranca el backend en `http://127.0.0.1:8000`. Puedes consultar las instrucciones en el repositorio del backend.
 
 4. Inicia el servidor de desarrollo:
+
    ```bash
    python3 -m http.server 5500
    ```
-   La aplicación debe estar corriendo en `http://localhost:5500/index.html`.
 
-> **Importante:** no abras `index.html` con `file://`; el router hace `fetch()` de las vistas y fallará por CORS.
+5. Abre `http://localhost:5500/index.html` en el navegador.
 
-### Ejecución opcional con json-server (mock)
-
-```bash
-npx json-server --watch db.json --port 8000
-```
-> `db.json` contiene `actionTypes` de ejemplo, pero **no coincide con los endpoints** que consume el front (`/catalog`, `/history`, `/dashboard`); habría que adaptar su estructura.
+> **Importante:** no abras `index.html` con `file://`; el router carga las vistas con peticiones HTTP y fallará por CORS.
 
 ---
 
-## 📦 Scripts Disponibles
+## 🔧 Configuración
 
-El proyecto no usa bundler, por lo que no hay scripts de build. En `package.json`:
+El proyecto **no usa archivo `.env`**. La URL de la API está definida directamente en los servicios:
 
-*   `npm run test`: reservado.
+* `src/js/services/actionService.js`
+* `src/js/services/catalogService.js`
+* `src/js/services/dashboardService.js`
+* `src/js/services/historyService.js`
+* `src/js/services/modaleditcontroller.js`
+
+Valor actual:
+
+```js
+const API_URL = "http://127.0.0.1:8000";
+```
+
+Para localizar todas las apariciones:
+
+```bash
+grep -rn "127.0.0.1:8000" src/js
+```
+
+Si cambias la URL del backend, actualiza **todas** las referencias y asegúrate de que el backend permite el origen desde el que sirves el frontend (**CORS**).
+
+Axios se carga desde CDN en `index.html`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+```
+
+---
+
+## ▶️ Ejecución
+
+### Backend
+
+El frontend espera la API en `http://127.0.0.1:8000`. Arranca el backend antes de abrir la aplicación.
+
+### Frontend
+
+```bash
+python3 -m http.server 5500
+```
+
+Abre `http://localhost:5500/index.html`.
+
+### Mock con json-server (opcional, no recomendado)
+
+`json-server` está declarado como dependencia de desarrollo, pero **no existe `db.json`** y sus endpoints por defecto no coinciden con los que consume el frontend (`/catalog`, `/history`, `/dashboard`, `/actions`). Para usarlo habría que crear el archivo y adaptar las rutas y la estructura de datos.
+
+---
+
+## 📦 Scripts disponibles
+
+El proyecto no usa bundler, por lo que no hay scripts de build.
+
+En `package.json`:
+
+* `npm run test`: reservado; actualmente termina con error porque no hay tests configurados.
 
 Comandos recomendados (manuales):
 
-*   `python3 -m http.server 5500`: sirve el frontend en local.
-*   `npx json-server --watch db.json --port 8000`: mock del backend.
+* `python3 -m http.server 5500`: sirve el frontend en local.
+* `npx json-server --watch db.json --port 8000`: mock opcional (requiere crear `db.json` y adaptar los endpoints).
 
 ---
 
-## 📂 Estructura de Carpetas
+## 🔌 Integración con la API
 
-Una guía rápida de cómo está organizado el código fuente:
+### Endpoints consumidos
 
-```text
-frontend/
-├── index.html                  # SPA: header, dashboard y scripts stylees
-├── pages/                      # Vistas inyectadas por el router
-│   ├── catalog-section.html    #   #acciones
-│   └── history-section.html    #   #historial
-├── src/
-│   ├── css/                    # style.css (hoja única de estilos)
-│   ├── img/                    # Logotipo y recursos estáticos
-│   └── js/
-│       ├── main.js             # Router hash + carga de vistas
-│       ├── dashboard.js        # Arranque del dashboard (incluye initRegistrationModal)
-│       ├── services/           # Comunicación con el backend
-│       │   ├── actionService.js       # GET /catalog, POST /actions
-│       │   ├── catalogService.js      # Render del grid de catálogo
-│       │   ├── historyService.js      # Render del historial (CRUD de acciones)
-│       │   ├── dashboardService.js    # GET /dashboard
-│       │   └── modaleditcontroller.js # Editar / eliminar acción del historial
-│       └── components/         # UI
-│           ├── registrationModal.js   # Modal de registro de acción
-│           ├── dashboardComponent.js
-│           └── catalogComponent.js    # (stub)
-└── db.json                     # Mock de json-server (opcional)
+| Método | Ruta | Uso en el frontend |
+| --- | --- | --- |
+| `GET` | `/catalog` | Catálogo, nombres de acciones y datos de impacto |
+| `GET` | `/dashboard` | KPIs del dashboard y barra de resumen del historial |
+| `GET` | `/history` | Historial y acciones recientes del dashboard |
+| `POST` | `/actions` | Registro de una nueva acción |
+| `PUT` | `/history/{action_id}` | Edición de una acción del historial |
+| `DELETE` | `/history/{action_id}` | Anulación de una acción del historial |
+
+### Payload de `POST /actions`
+
+```json
+{
+  "user_id": 1,
+  "action_type_id": 3,
+  "action_date": "2026-10-22",
+  "description": "Texto opcional o null"
+}
 ```
 
+### Payload de `PUT /history/{action_id}`
+
+```json
+{
+  "action_type_id": 3,
+  "name": "Ir en bicicleta",
+  "description": "Texto opcional",
+  "date": "2026-10-22",
+  "category": "Movilidad",
+  "co2_saved": 2,
+  "points": 15
+}
+```
+
+### Campos esperados en las respuestas
+
+**`GET /catalog`**
+
+```json
+[
+  {
+    "id": 3,
+    "name": "Ir en bicicleta",
+    "category": "Movilidad",
+    "points": 15,
+    "co2_kg": 2,
+    "active": true
+  }
+]
+```
+
+**`GET /dashboard`**
+
+Campos utilizados: `total_points`, `current_level`, `total_actions`, `total_co2_impact_kg`, `points_to_next`, `next_level`, `progress_percent`, `next_level_min`.
+
+**`GET /history`**
+
+Campos utilizados: `id`, `action_type_id`, `action_date`/`date`, `description`, `category`, `points_earned`/`points_awarded`/`points`, `co2_saved`/`co2_awarded`, `cancelled`.
+
+### Eventos internos
+
+| Evento | Se dispara cuando |
+| --- | --- |
+| `action:created` | Se registra una acción desde el catálogo o el modal |
+| `action:updated` | Se guardan cambios en una acción del historial |
+| `action:deleted` | Se anula una acción del historial |
+
+El dashboard escucha los tres eventos y se recarga automáticamente.
+
 ---
 
-## 🤝 Contribuciones
+## 🧪 Tests y QA
 
-1. Mantén actualizada la rama `dev`:
+Actualmente **no hay tests automatizados**. `npm run test` es un placeholder.
+
+### Checklist de pruebas manuales
+
+- [ ] El dashboard carga KPIs y acciones recientes.
+- [ ] El catálogo carga las tarjetas y el filtrado por categoría.
+- [ ] La búsqueda del catálogo filtra correctamente.
+- [ ] El registro desde una tarjeta del catálogo actualiza dashboard e historial.
+- [ ] El modal de registro valida que la fecha no sea futura.
+- [ ] El modal de edición carga los datos de la acción seleccionada.
+- [ ] Guardar una edición actualiza el historial y el dashboard.
+- [ ] Anular una acción la retira del historial y actualiza los KPIs.
+- [ ] La paginación del historial muestra 15 registros por página.
+- [ ] Los estados vacíos y de error se muestran si la API falla.
+- [ ] La navegación por hash (`#dashboard`, `#acciones`, `#historial`) funciona sin recargar.
+- [ ] La interfaz es usable en móvil, tablet y escritorio.
+
+---
+
+## ♿ Accesibilidad y responsive
+
+* Navegación principal con `aria-label` y enlace activo marcado con `aria-current="page"`.
+* Iconos decorativos con `aria-hidden="true"`.
+* Modales con `role="dialog"`, `aria-modal="true"` y `aria-labelledby`.
+* Cierre de modales con `Escape` y trampa de foco mientras están abiertos.
+* Mensajes de error con `role="alert"` y notificaciones con `role="status"`.
+* Breakpoints definidos en `src/css/style.css`: `1280px`, `1024px`, `768px` (mínimo), `767px`, `600px`, `480px` y `400px`.
+* Uso de `clamp()` para tipografía y espaciados fluidos.
+
+---
+
+## 🚀 Despliegue
+
+El frontend es completamente estático y puede publicarse en GitHub Pages, Netlify, Vercel o cualquier hosting de archivos estáticos.
+
+1. Sirve el proyecto desde la raíz del repositorio (deben ser accesibles `index.html`, `pages/` y `src/`).
+2. Actualiza la URL de la API en los servicios para apuntar al backend de producción.
+3. Configura CORS en el backend para permitir el dominio del frontend.
+4. No se necesitan rewrites del servidor: el enrutado usa hash (`#acciones`, `#historial`).
+
+> El sitio debe servirse por HTTP/HTTPS; abrirlo con `file://` no funciona.
+
+---
+
+## 👥 Equipo y roles
+
+* **Scrum Master**: Alba (Desarrollador 1) → [albavalentinn](https://github.com/albavalentinn)
+* **Product Owner**: Naomi (Desarrollador 2) → [naomitudic](https://github.com/naomitudic)
+* **Colaboradores**:
+  * Juliana (Desarrollador 3) → [julibarguen98-ib](https://github.com/julibarguen98-ib)
+  * Renata (Desarrollador 4) → [natyybeky2017-netizen](https://github.com/natyybeky2017-netizen)
+  * Ainara (Desarrollador 5) → [ainaragrcgrc-coder](https://github.com/ainaragrcgrc-coder)
+
+---
+
+## 🗂️ Reparto de trabajo
+
+| Dev | Área principal | Ramas representativas |
+| --- | --- | --- |
+| Dev 1 | Base CSS, HTML y catálogo | `feature/dev1-frontend-css-base`, `feature/dev1-frontend-html`, `feature/dev1-js-catalog-service`, `feature/dev1-ui-catalog-component` |
+| Dev 2 | Catálogo, formulario de registro y `actionService` | `feature/dev2-catalog-*`, `feature/dev2-frontend-registration-html`, `feature/dev2-frontend-form-css`, `feature/dev2-js-action-service`, `feature/dev2-readme-edition` |
+| Dev 3 | Historial y tabla | `feature/dev3-frontend-history-html`, `feature/dev3-frontend-table-css`, `feature/dev3-js-history-service`, `feature/dev3-ui-history-component` |
+| Dev 4 | Responsive, refactor y modales | `feature/dev4-init-responsive-page`, `feature/dev4-refactor-html`, `feature/dev4-review-js`, `feature/dev4-update-logo-and-favicon` |
+| Dev 5 | Layout y conexión de componentes | `feature/dev5-frontend-layout-html`, `feature/dev5-frontend-layout-css`, `feature/dev5-js-components-wiring`, `feature/dev5-json-server-setup` |
+
+**Trabajo transversal:** dashboard, gráfico semanal, progreso de nivel y sincronización de vistas (`feature/dashboard-bar-chart`, `feature/dashboard-level-progress`, `feature/frontend-dashboard-sync`).
+
+---
+
+## 📌 Estado del proyecto
+
+| Área | Estado |
+| --- | --- |
+| Dashboard e indicadores | ✅ Completado |
+| Catálogo y filtros | ✅ Completado |
+| Registro de acciones | ✅ Completado |
+| Historial, edición y anulación | ✅ Completado |
+| Responsive y accesibilidad básica | ✅ Completado |
+
+---
+
+## 🗂️ Backlog y gestión de tareas
+
+Utilizamos la pestaña de **Projects** en GitHub para gestionar el avance del proyecto. Las tareas están organizadas en columnas (modelo tipo Kanban, llamado GreenPoints):
+
+1. **No Status**: bocetos de tareas desarrollados en los dailies.
+2. **To Do**: tareas pendientes sin empezar.
+3. **In Progress**: tareas en desarrollo.
+4. **In Review**: Pull Requests abiertos que deben revisarse y confirmarse por al menos dos personas del equipo.
+5. **Done**: tareas completadas.
+
+---
+
+## 🌿 Ramas y flujo de trabajo con Git
+
+### Ramas
+
+* **`main`**: versión estable del código.
+* **`dev`**: rama principal de desarrollo e integración.
+* **Ramas de tareas**: `feature/devN-nombre-de-la-tarea` para funcionalidades y `fix/devN-nombre-del-arreglo` para correcciones.
+
+### Convención de nombres
+
+| Prefijo | Uso | Ejemplo |
+| --- | --- | --- |
+| `main` | Versión estable | `main` |
+| `dev` | Integración | `dev` |
+| `feature/devN-...` | Nueva funcionalidad | `feature/dev2-catalog-js` |
+| `fix/...` | Corrección de errores | `fix/dev2-registration-modal` |
+| `refactor/...` | Refactor sin cambio funcional | `refactor/axios-migration` |
+| `revert/...` | Reversión de cambios | `revert-72-dev` |
+
+### Flujo de trabajo
+
+1. Actualiza la rama de integración:
+
    ```bash
    git checkout dev
    git pull origin dev
    ```
-2. Crea una nueva rama para tu funcionalidad:
+
+2. Crea una rama para tu tarea:
+
    ```bash
-   git checkout -b feature/NuevaFuncionalidad
+   git checkout -b feature/devN-mi-funcionalidad
    ```
-3. Haz un **Commit** con tus cambios siguiendo el estilo del repo:
+
+3. Desarrolla y prueba los cambios en local.
+
+4. Haz commits siguiendo la convención:
+
    ```bash
-   git commit -m 'Añade nueva funcionalidad'
+   git add .
+   git commit -m "feat: descripción breve del cambio"
    ```
-4. Haz un **Push** a la rama:
+
+5. Sube la rama:
+
    ```bash
-   git push origin feature/NuevaFuncionalidad
+   git push -u origin feature/devN-mi-funcionalidad
    ```
-5. Abre un **Pull Request**.
+
+6. Abre un **Pull Request** hacia `dev`, solicita revisión y resuelve los comentarios.
+
+7. Tras el merge, elimina la rama.
+
+### Reglas
+
+* No se hace push directo a `main` ni a `dev`.
+* Todo cambio entra por Pull Request revisado por al menos otro miembro.
+* Un PR debe probarse antes de fusionarse.
 
 ---
+
+## 📝 Convención de commits
+
+| Prefijo | Uso |
+| --- | --- |
+| `feat:` | Nueva funcionalidad |
+| `fix:` | Corrección de errores |
+| `refactor:` | Refactorización sin cambio de comportamiento |
+| `test:` | Añadir o corregir tests |
+| `docs:` | Documentación |
+| `chore:` | Tareas de mantenimiento |
+| `style:` | Cambios de formato o estilos sin alterar la lógica |
+| `revert:` | Reversión |
+
+---
+
+## 🤖 Uso de herramientas de IA
+
+Las herramientas de Inteligencia Artificial se utilizaron como apoyo durante el desarrollo de GreenPoints para comprender conceptos técnicos, resolver problemas de programación y mejorar la documentación.
+
+* **Orientación técnica:** HTML, CSS, JavaScript, Git y consumo de APIs.
+* **Resolución de problemas:** investigación de errores y exploración de alternativas.
+* **Documentación:** organización de la información técnica y claridad del README.
+* **Revisión de código:** sugerencias usadas como referencia para posibles mejoras.
+
+Las respuestas generadas por IA fueron revisadas y adaptadas a los requisitos del proyecto. El equipo sigue siendo responsable de la implementación final, las decisiones técnicas y la verificación del funcionamiento. No se comparte información sensible (contraseñas, claves de API ni credenciales).
+
+---
+
+## ⚠️ Limitaciones conocidas
+
+* El `user_id` está fijado a `1`; no hay autenticación ni gestión de usuarios.
+* La URL de la API está repetida en varios servicios y debe actualizarse manualmente.
+* El frontend depende de dos CDN (Axios y Google Fonts); sin conexión pueden fallar las peticiones y los iconos.
+* No hay tests automatizados ni pipeline de CI.
+* `sortablejs` figura en `package.json` pero no se utiliza actualmente.
+* El mock con `json-server` no funciona tal cual: falta `db.json` y los endpoints no coinciden con los del backend real.
+* El modal de edición usa un catálogo de acciones definido en el propio frontend (`ACTIONS_CATALOG_DETAILS`), por lo que debe mantenerse sincronizado con el backend.
+* La demo en producción aún no está desplegada.
+
+***
