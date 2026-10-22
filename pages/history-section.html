@@ -77,7 +77,7 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <header class="modal-header">
       <h2 id="modal-title">
-        <span class ="material-symbols-outlined">compost</span>Editar acción
+        <span class ="material-symbols-outlined icon-bright-green">compost</span>Editar acción
       </h2>
       <button type="button" class="icon-btn" id="btn-close" aria-label="Cerrar">
         <span class="material-symbols-outlined" aria-hidden="true">close_small</span>
@@ -102,24 +102,19 @@
         </div>
         <div class="form-field">
           <label for="f-category">Categoría</label>
-          <select id="f-category" required disabled>
-            <option value="Movilidad">Movilidad</option>
-            <option value="Naturaleza">Naturaleza</option>
-            <option value="Participación">Participación</option>
-            <option value="Reciclaje">Reciclaje</option>
-          </select>
+          <input type="text" id="f-category" class="readonly-field green-badge" readonly>
         </div>
       </div>
-
       <div class="form-row">
         <div class="form-field">
-          <input type="number" id="f-kg" min="0" step="0.1" readonly>
+          <label for="f-kg">CO₂ (kg)</label>
+          <input type="number" id="f-kg" min="0" step="0.1" readonly class="readonly-field green-badge">
         </div>
         <div class="form-field">
-          <input type="number" id="f-points" min="0" step="1" readonly>
+          <label for="f-points">Puntos</label>
+          <input type="number" id="f-points" min="0" step="1" readonly class="readonly-field green-badge">
         </div>
       </div>
-
       <footer class="modal-footer">
         <button type="button" class="btn btn-danger" id="btn-delete">
           <span class="delete-icon icon-element" aria-hidden="true"></span>

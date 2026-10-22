@@ -124,26 +124,22 @@ function getActionIcon(actionName, category) {
         };
     }
 
-
     const iconsByCat = {
         Movilidad: {
             background: "#E8F4EE",
             color: "#2F6B50",
             iconName: "directions_bike"
         },
-
         Naturaleza: {
             background: "#E8F4EE",
             color: "#2F6B50",
             iconName: "park"
         },
-
         Reciclaje: {
             background: "#E8F4EE",
             color: "#2F6B50",
             iconName: "recycling"
         },
-
         Participación: {
             background: "#E8F4EE",
             color: "#2F6B50",
@@ -187,6 +183,7 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         const dateStr = formatDate(item.date || item.action_date);
         const co2Val = `${Number(item.co2_saved || item.impact || 0)} kg`;
         const pointsVal = `+${Number(item.points || item.points_earned || 0)} pts`;
+        const isCancelled = item.cancelled === true || item.status === "cancelled" || item.annulled === true;
 
         const row = document.createElement("tr");
         row.className = "history-row";
@@ -194,6 +191,10 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         row.dataset.searchable = `${actionName} ${description} ${dateStr} ${category} ${co2Val} ${pointsVal}`.toLowerCase();
         row.dataset.category = category;
 
+        if (isCancelled) {
+            row.style.opacity = "0.5";
+            row.style.backgroundColor = "#f9fafb";
+        }
 
         const tdAction = document.createElement("td");
         tdAction.className = "td-left";
@@ -204,12 +205,11 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
                     <span class="material-symbols-outlined" aria-hidden="true">${icon.iconName}</span>
                 </div>
                 <div>
-                    <div class="row-main-title">${actionName}</div>
+                    <div class="row-main-title">${actionName} ${isCancelled ? '<span style="font-size: 0.75rem; color: #dc2626; font-weight: 600; margin-left: 0.5rem;">(Anulada)</span>' : ''}</div>
                     <div class="row-sub-desc">${description}</div>
                 </div>
             </div>
         `;
-
 
         const tdDate = document.createElement("td");
         tdDate.className = "td-general";
@@ -220,7 +220,6 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
                 <span>${dateStr}</span>
             </div>
         `;
-
 
         const tdCategory = document.createElement("td");
         tdCategory.className = "td-general";
@@ -245,7 +244,6 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
             ">${item.category}</span>
         `;
 
-
         const tdImpact = document.createElement("td");
         tdImpact.className = "td-general";
         tdImpact.dataset.label = "Impacto";
@@ -256,17 +254,14 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
             </div>
         `;
 
-
         const tdPoints = document.createElement("td");
         tdPoints.className = "td-right";
         tdPoints.dataset.label = "Puntos";
         tdPoints.innerHTML = `
             <div style="display: inline-flex; align-items: center; justify-content: flex-end; gap: 0.2rem; font-size: 0.95rem; font-weight: 600; color: #111827;">
                 <span><span class="material-symbols-outlined" style="font-size: 13px; color: #f59e0b; font-variation-settings: 'FILL' 1;">star</span>${pointsVal}</span>
-                
             </div>
         `;
-
 
         const tdEdit = document.createElement("td");
         tdEdit.className = "td-general";
@@ -277,29 +272,32 @@ function renderHistoryTable(historyData, actionNames = new Map()) {
         `;
 
         const editBtn = tdEdit.querySelector(".btn-edit-item");
-        editBtn.addEventListener("click", () => {
-            console.log("Botón Editar pulsado");
-            console.log("Datos de la acción:", item);
 
-            if (typeof window.openEditModal !== "function") {
-                console.error(
-                    "No se ha cargado modaleditcontroller.js"
-                );
-                return;
-            }
+        if (isCancelled) {
+            editBtn.disabled = true;
+            editBtn.style.opacity = "0.3";
+            editBtn.style.cursor = "not-allowed";
+            editBtn.title = "Acción anulada (no se puede editar)";
+        } else {
+            editBtn.addEventListener("click", () => {
+                if (typeof window.openEditModal !== "function") {
+                    console.error("No se ha cargado modaleditcontroller.js");
+                    return;
+                }
 
-            const actionToEdit = {
-                ...item,
-                action_name: actionName,
-                category: category,
-                description: description
-            };
+                const actionToEdit = {
+                    ...item,
+                    action_name: actionName,
+                    category: category,
+                    description: description
+                };
 
-            window.openEditModal(actionToEdit);
-        });
-
-
-        row.append(tdAction,
+                window.openEditModal(actionToEdit);
+            });
+        }
+        
+        row.append(
+            tdAction,
             tdDate,
             tdCategory,
             tdImpact,
