@@ -3,16 +3,12 @@ const CATALOG_API = "http://127.0.0.1:8000";
 async function initializeCatalog() {
     try {
         const [catalogResponse, dashboardResponse] = await Promise.all([
-            fetch(`${CATALOG_API}/catalog`),
-            fetch(`${CATALOG_API}/dashboard`).catch(() => null)
+            axios.get(`${CATALOG_API}/catalog`),
+            axios.get(`${CATALOG_API}/dashboard`).catch(() => ({ data: {} }))
         ]);
 
-        if (!catalogResponse.ok) {
-            throw new Error("No se pudo cargar el catálogo del servidor.");
-        }
-
-        const catalogData = await catalogResponse.json();
-        const dashboardData = dashboardResponse && dashboardResponse.ok ? await dashboardResponse.json() : {};
+        const catalogData = catalogResponse.data;
+        const dashboardData = dashboardResponse.data;
 
         renderCatalogGrid(catalogData);
         updateKpiBar(dashboardData);

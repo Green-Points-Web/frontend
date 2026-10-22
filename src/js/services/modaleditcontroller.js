@@ -81,14 +81,8 @@ function setupModalListeners() {
         if (!confirm("¿Deseas anular esta acción?")) return;
 
         try {
-            const response = await fetch(
-                `${API_URL}/history/${currentEditingId}`,
-                { method: "DELETE" }
-            );
-
-            if (!response.ok) {
-                throw new Error(`Error al anular: ${response.status}`);
-            }
+            // Nasimsimple nga axios.delete, awanen ti response.ok check
+            await axios.delete(`${API_URL}/history/${currentEditingId}`);
 
             showToast("Acción anulada correctamente");
             closeModal();
@@ -137,21 +131,8 @@ function setupModalListeners() {
         }
 
         try {
-            const response = await fetch(
-                `${API_URL}/history/${currentEditingId}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(updatedData)
-                }
-            );
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Error ${response.status}: ${errorText}`);
-            }
+            // Nasimsimple nga axios.put
+            await axios.put(`${API_URL}/history/${currentEditingId}`, updatedData);
 
             showToast("Cambios guardados correctamente");
             closeModal();

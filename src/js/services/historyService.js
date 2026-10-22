@@ -1,25 +1,15 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
-
-const PAGE_SIZE = 15;
-let currentPage = 1;
-let allRows = [];
-
 async function initializeHistory() {
     try {
         const [historyResponse, dashboardResponse, catalogResponse] =
             await Promise.all([
-                fetch(`${API_BASE_URL}/history`),
-                fetch(`${API_BASE_URL}/dashboard`),
-                fetch(`${API_BASE_URL}/catalog`)
+                axios.get(`${API_BASE_URL}/history`),
+                axios.get(`${API_BASE_URL}/dashboard`),
+                axios.get(`${API_BASE_URL}/catalog`).catch(() => ({ data: [] }))
             ]);
 
-        if (!historyResponse.ok || !dashboardResponse.ok) {
-            throw new Error("No se pudieron cargar los datos del servidor.");
-        }
-
-        const historyData = await historyResponse.json();
-        const dashboardData = await dashboardResponse.json();
-        const catalogData = catalogResponse.ok ? await catalogResponse.json() : [];
+        const historyData = historyResponse.data;
+        const dashboardData = dashboardResponse.data;
+        const catalogData = catalogResponse.data;
 
         const actionNames = new Map(
             catalogData.flatMap(action => [
