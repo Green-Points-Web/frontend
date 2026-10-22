@@ -27,7 +27,7 @@
 body {
    background-color: var(--clr-bg);
    color: var(--clr-text-main);
-   font-family: "roboto", sans-serif;
+   font-family: "Roboto", sans-serif;
    line-height: 1.5;
    min-height: 100vh;
    overflow-wrap: break-word
@@ -783,7 +783,7 @@ body {
 .sustainable-catalog {
    padding: var(--pad-y) var(--pad-x);
    background-color: #f8faf9;
-   font-family: 'Inter', sans-serif;
+   width: 100%;
    max-width: 1200px;
    margin: 0 auto;
    border-radius: var(--radius-md)
@@ -1091,6 +1091,7 @@ body {
    width: 100%;
    margin: 0 auto;
    padding: 0 var(--pad-x);
+   padding-bottom: 4rem;
    margin-top: var(--gap-block);
    display: flex;
    flex-direction: column;

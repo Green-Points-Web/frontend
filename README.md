@@ -113,7 +113,6 @@ frontend/
 │       └── components/         # UI
 │           ├── registrationModal.js   # Modal de registro de acción
 │           ├── dashboardComponent.js
-│           ├── historyComponent.js
 │           └── catalogComponent.js    # (stub)
 └── db.json                     # Mock de json-server (opcional)
 ```
