@@ -459,7 +459,7 @@ body {
     font-weight: 400;
 }
 
-   /* ---- 07.6 · Botón secundario de contorno ------------------------ */
+/* ---- 07.6 · Botón secundario de contorno ------------------------ */
 
 .btn-outline {
    border: 1px solid var(--clr-border);
@@ -471,7 +471,7 @@ body {
    font-weight: bold
 }
 
-   /* ---- 07.7 · Lista de acciones pendientes ------------------------- */
+/* ---- 07.7 · Lista de acciones pendientes ------------------------- */
 
 .actions-list {
    display: flex;
@@ -708,7 +708,7 @@ body {
    color: #9ca3af
 }
 
-   /* ---- 07.9 · Distribución en dos columnas ------------------------- */
+/* ---- 07.9 · Distribución en dos columnas ------------------------- */
 
 .dashboard-middle {
    display: grid;
@@ -760,7 +760,7 @@ body {
 /* ==========================================================================
    08 · BOTONES
    Variantes base, primaria, secundaria y de peligro.
-   ========================================================================== */
+========================================================================== */
 
 .btn-primary {
    display: inline-flex;
@@ -907,7 +907,7 @@ body {
    font-size: clamp(0.9375rem, 3vw, 1.05rem)
 }
 
-   /* ---- 10.1 · Rejilla y tarjetas de acción ------------------------- */
+/* ---- 10.1 · Rejilla y tarjetas de acción ------------------------- */
 
 .actions-grid {
    display: grid;
@@ -995,7 +995,7 @@ body {
    font-size: 1.1em
 }
 
-   /* ---- 10.2 · Botón de registro ------------------------------------- */
+/* ---- 10.2 · Botón de registro ------------------------------------- */
 
 .btn-register {
    background-color: #f4f7f6;
@@ -1022,7 +1022,7 @@ body {
 
 /* ==========================================================================
    11 · MODAL DE REGISTRO DE ACCIÓN
-   ========================================================================== */
+========================================================================== */
 
 .modal-registration {
    position: fixed;
@@ -1062,7 +1062,7 @@ body {
    gap: 1.25rem
 }
 
-   /* ---- 11.1 · Cabecera e iconografía del modal ---------------------- */
+/* ---- 11.1 · Cabecera e iconografía del modal ---------------------- */
 
 .icon-bright-green {
    color: #166534;
@@ -1094,7 +1094,7 @@ h2#modal-title {
    color: #0B2217
 }
 
-   /* ---- 11.2 · Campos de solo lectura e insignias -------------------- */
+/* ---- 11.2 · Campos de solo lectura e insignias -------------------- */
 
 .readonly-field {
    background-color: #f4f4f5;
@@ -1115,7 +1115,7 @@ h2#modal-title {
    box-shadow: none;
 }
 
-   /* ---- 11.3 · Pie del modal ----------------------------------------- */
+/* ---- 11.3 · Pie del modal ----------------------------------------- */
 
 .modal-footer {
    display: flex;
@@ -1138,7 +1138,7 @@ h2#modal-title {
    justify-content: flex-end
 }
 
-   /* ---- 11.4 · Resumen de impacto (puntos / CO₂) --------------------- */
+/* ---- 11.4 · Resumen de impacto (puntos / CO₂) --------------------- */
 
 .impact-box {
    background-color: #f0fdf4;
@@ -1165,7 +1165,7 @@ h2#modal-title {
    color: green
 }
 
-   /* ---- 11.5 · Mensajes de éxito y error ---------------------------- */
+/* ---- 11.5 · Mensajes de éxito y error ---------------------------- */
 
 .feedback-message {
    padding: 10px;
@@ -1188,7 +1188,7 @@ h2#modal-title {
 /* ==========================================================================
    12 · HISTORIAL DE ACCIONES
    Cabecera de vista, KPIs, filtros, tabla, filas y paginación.
-   ========================================================================== */
+========================================================================== */
 
 .view-section {
    max-width: 72rem;
@@ -1237,7 +1237,7 @@ h2#modal-title {
    height: 1rem
 }
 
-   /* ---- 12.1 · Barra de KPIs ----------------------------------------- */
+/* ---- 12.1 · Barra de KPIs ----------------------------------------- */
 
 .history-kpi-bar {
    background: linear-gradient(135deg, #F0F7F3 0%, #E6F2EC 100%);
@@ -1263,7 +1263,7 @@ h2#modal-title {
    background-color: #CBDCD2
 }
 
-   /* ---- 12.2 · Filtros y búsqueda ------------------------------------ */
+/* ---- 12.2 · Filtros y búsqueda ------------------------------------ */
 
 .filter-bar {
    display: flex;
@@ -1331,16 +1331,29 @@ h2#modal-title {
 
 .filter .material-symbols-outlined {
    position: absolute;
-   left: 12px;
+   left: 0.6rem;
    top: 50%;
    transform: translateY(-50%);
    pointer-events: none;
-   color: #666666
+   color: #2E3E35;
+   font-size: 1.125rem
+}
+
+.filter::after {
+   content: "▾";
+   position: absolute;
+   top: 50%;
+   right: 1rem;
+   transform: translateY(-50%);
+   color: #64746B;
+   font-size: 0.6rem;
+   line-height: 1;
+   pointer-events: none
 }
 
 .select-filter {
    width: 100%;
-   padding: 0.75rem 1rem;
+   padding: 0.75rem 2.5rem 0.75rem 2.75rem;
    background-color: #FFFFFF;
    border: 1px solid #D9E4DF;
    border-radius: 0.655rem;
@@ -1351,7 +1364,8 @@ h2#modal-title {
    outline: none;
    cursor: pointer;
    transition: all 0.2s ease;
-   padding-left: 30px
+   -webkit-appearance: none;
+   appearance: none
 }
 
 .select-filter:focus {
@@ -1359,7 +1373,7 @@ h2#modal-title {
    box-shadow: 0 0 0 3px rgba(61, 145, 91, 0.12)
 }
 
-   /* ---- 12.3 · Tabla de historial ------------------------------------ */
+/* ---- 12.3 · Tabla de historial ------------------------------------ */
 
 .table-card {
    padding: 0;
@@ -1436,7 +1450,7 @@ h2#modal-title {
    color: #1C5A3C
 }
 
-   /* ---- 12.4 · Contenido de fila y estados vacíos -------------------- */
+/* ---- 12.4 · Contenido de fila y estados vacíos -------------------- */
 
 .row-icon-box {
    width: 2.5rem;
@@ -1488,7 +1502,7 @@ h2#modal-title {
    border: 1px solid #D1E5DC
 }
 
-   /* ---- 12.5 · Campos de formulario del historial -------------------- */
+/* ---- 12.5 · Campos de formulario del historial -------------------- */
 
 .form-field label {
    font-size: 0.8125rem;
@@ -1527,7 +1541,7 @@ h2#modal-title {
    gap: 1rem
 }
 
-   /* ---- 12.6 · Adaptación a partir de 768px ------------------------- */
+/* ---- 12.6 · Adaptación a partir de 768px ------------------------- */
 
 @media (min-width:768px) {
    .filter-bar {
@@ -1536,11 +1550,11 @@ h2#modal-title {
    }
 
    .select-filter {
-      width: 13rem
+      width: 14rem
    }
 }
 
-   /* ---- 12.7 · Paginación -------------------------------------------- */
+/* ---- 12.7 · Paginación -------------------------------------------- */
 
 .pagination {
    display: flex;
@@ -1584,7 +1598,7 @@ h2#modal-title {
 
 /* ==========================================================================
    13 · MODAL DE EDICIÓN / ELIMINACIÓN
-   ========================================================================== */
+========================================================================== */
 
 .modal-overlay {
    position: fixed;
@@ -1628,7 +1642,7 @@ h2#modal-title {
    display: flex
 }
 
-   /* ---- 13.1 · Cabecera y campos del modal --------------------------- */
+/* ---- 13.1 · Cabecera y campos del modal --------------------------- */
 
 .modal-header h2 {
    font-size: 1.25rem;
@@ -1659,7 +1673,31 @@ h2#modal-title {
    box-shadow: 0 0 0 3px rgba(53, 136, 80, 0.12)
 }
 
-   /* ---- 13.2 · Botón de icono (cerrar) ------------------------------- */
+.select-wrap {
+   position: relative;
+   display: block;
+}
+
+.select-wrap select,
+#modal .select-wrap select {
+   -webkit-appearance: none;
+   appearance: none;
+   padding-right: 2.75rem;
+}
+
+.select-wrap::after {
+   content: "▾";
+   position: absolute;
+   top: 50%;
+   right: 1.25rem;
+   transform: translateY(-50%);
+   color: #64746B;
+   font-size: 0.875rem;
+   line-height: 1;
+   pointer-events: none;
+}
+
+/* ---- 13.2 · Botón de icono (cerrar) ------------------------------- */
 
 .icon-btn {
    background: transparent;
@@ -1681,7 +1719,7 @@ h2#modal-title {
 
 /* ==========================================================================
    14 · NOTIFICACIONES (TOAST)
-   ========================================================================== */
+========================================================================== */
 
 .toast {
    position: fixed;
@@ -1699,7 +1737,7 @@ h2#modal-title {
 
 /* ==========================================================================
    15 · NORMALIZACIONES DE ELEMENTOS
-   ========================================================================== */
+========================================================================== */
 
 html {
    -webkit-text-size-adjust: 100%;
@@ -1728,7 +1766,7 @@ textarea {
 /* ==========================================================================
    16 · RESPONSIVE
    Puntos de corte: 1280px, 1024px, 767px, 600px, 480px y 400px.
-   ========================================================================== */
+========================================================================== */
 
 @media (max-width:1280px) {
    .dashboard-middle {
@@ -1736,7 +1774,7 @@ textarea {
    }
 }
 
-   /* ---- 16.1 · ≤ 1280px · Monitor y laptop -------------------------- */
+/* ---- 16.1 · ≤ 1280px · Monitor y laptop -------------------------- */
 
 @media (max-width:1024px) {
    .site-header {
@@ -1788,7 +1826,7 @@ textarea {
    }
 }
 
-   /* ---- 16.2 · ≤ 1024px · Tablet horizontal / vertical y móvil ------------------------- */
+/* ---- 16.2 · ≤ 1024px · Tablet horizontal / vertical y móvil ------------------------- */
 
 @media (max-width:767px) {
    .site-header {
@@ -1921,7 +1959,7 @@ textarea {
    }
 }
 
-   /* ---- 16.4 · ≤ 600px · Móvil -------------------------------------- */
+/* ---- 16.4 · ≤ 600px · Móvil -------------------------------------- */
 
 @media (max-width:600px) {
    .site-header {
@@ -2026,7 +2064,7 @@ textarea {
    }
 }
 
-   /* ---- 16.5 · ≤ 400px · Móvil pequeño ----------------------------- */
+/* ---- 16.5 · ≤ 400px · Móvil pequeño ----------------------------- */
 
 @media (max-width:400px) {
    .dashboard-header h2 {
@@ -2067,7 +2105,7 @@ textarea {
    }
 }
 
-   /* ---- 16.6 · ≤ 767px · Navegación inferior fija (barra) ------------ */
+/* ---- 16.6 · ≤ 767px · Navegación inferior fija (barra) ------------ */
 
 @media (max-width:767px) {
 
@@ -2148,7 +2186,7 @@ textarea {
 
 /* ==========================================================================
    BOTÓN DE REGISTRO · TEXTOS E ICONO
-   ========================================================================== */
+========================================================================== */
 
 #open-modal-btn .btn-text {
    display: inline;
@@ -2158,7 +2196,7 @@ textarea {
    display: none;
 }
 
-   /* ---- 16.7 · ≤ 480px · Botón de registro solo icono --------------- */
+/* ---- 16.7 · ≤ 480px · Botón de registro solo icono --------------- */
 
 @media (max-width: 480px) {
    #open-modal-btn .btn-text {
