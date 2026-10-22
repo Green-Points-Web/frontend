@@ -165,20 +165,71 @@
     </section>
   </main>
 
+  <div id="modal-registration" class="modal-registration">
+    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-registration-title">
+      <header class="modal-header">
+        <h2 id="modal-registration-title">Registro de acción</h2>
+        <button type="button" id="close-modal-btn" class="icon-btn" aria-label="Cerrar">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+      <form id="modal-action-form">
+        <div class="form-field">
+          <label for="modal-action-type-select">Eco-acción</label>
+          <select id="modal-action-type-select" name="action_type_id" required>
+            <option value="" disabled selected>
+              Selecciona una eco-acción...
+            </option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="modal-action-date">Fecha</label>
+          <input type="date" id="modal-action-date" name="action_date" required />
+        </div>
+        <div class="form-field">
+          <label for="modal-action-description">Descripción / Comentarios</label>
+          <textarea id="modal-action-description" name="description" rows="3" maxlength="255"
+            placeholder="Cuéntanos brevemente los detalles..."></textarea>
+        </div>
+        <div class="impact-box">
+          <span class="impact-label">Impacto estimado:</span>
+          <span id="modal-impact-value" class="impact-value">+0 pts · 0 kg CO₂</span>
+        </div>
+        <div id="form-feedback" class="feedback-message" hidden></div>
+        <footer class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="cancel-btn" class="btn btn-secondary">
+              Cancelar
+            </button>
+            <button type="submit" id="submit-btn" class="btn btn-primary">
+              Guardar eco-acción
+            </button>
+          </div>
+        </footer>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
   <script src="./src/js/components/registrationModal.js" type="module"></script>
+
   <script src="./src/js/components/dashboardComponent.js" type="module"></script>
   <script src="./src/js/services/dashboardService.js" type="module"></script>
+
   <script src="./src/js/services/actionService.js" type="module"></script>
-  <script src="./src/js/components/historyComponent.js"></script>
+
   <script src="./src/js/services/historyService.js"></script>
   <script src="./src/js/services/modaleditcontroller.js"></script>
+
   <script src="./src/js/services/catalogService.js" type="module"></script>
+
   <script src="./src/js/services/recent_list.js"></script>
 
   <script src="./src/js/dashboard.js" type="module"></script>
+
   <script src="./src/js/main.js" type="module"></script>
 
 </body>
+
 </html>
