@@ -150,7 +150,7 @@ function renderRecentActions(historyData, catalog) {
         </span>
         <span style="display:inline-flex; align-items:center; gap:0.25rem; background:#E8F5E9; color:#2E7D32; padding:0.25rem 0.625rem; border-radius:9999px; font-size:0.75rem; font-weight:500;">
           <span class="material-symbols-outlined" style="font-size:16px;">emoji_nature</span>
-          ${number(item.co2_saved ?? item.co2_awarded).toFixed(1)} kg
+          ${number(item.co2_saved ?? item.co2_awarded).toFixed(1)} kg CO₂
         </span>
         <span style="display:inline-flex; align-items:center; gap:0.2rem; font-size:0.95rem; font-weight:600; color:#111827;">
           <span class="material-symbols-outlined" style="font-size:16px; color:#f59e0b; font-variation-settings:'FILL' 1;">star</span>
