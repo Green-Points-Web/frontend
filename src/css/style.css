@@ -27,7 +27,7 @@
 body {
    background-color: var(--clr-bg);
    color: var(--clr-text-main);
-   font-family: var(--font-base);
+   font-family: "roboto", sans-serif;
    line-height: 1.5;
    min-height: 100vh;
    overflow-wrap: break-word
@@ -2003,7 +2003,6 @@ textarea {
    }
 }
 
-/* Computador: mostrar a frase */
 #open-modal-btn .btn-text {
    display: inline;
 }
@@ -2012,7 +2011,6 @@ textarea {
    display: none;
 }
 
-/* Celular: mostrar apenas o + */
 @media (max-width: 480px) {
    #open-modal-btn .btn-text {
       display: none !important;
