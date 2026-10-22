@@ -18,7 +18,7 @@ async function initializeCatalog() {
 
 function showCatalogError() {
     const catalogGrid = document.getElementById("catalog-grid");
-    const emptyState = document.getElementById("empty-state");
+    const emptyState = document.getElementById("catalog-empty-state");
 
     if (catalogGrid) {
         catalogGrid.replaceChildren();
@@ -88,7 +88,7 @@ function getActionIcon(actionName, category) {
 
 function renderCatalogGrid(catalogData) {
     const catalogGrid = document.getElementById("catalog-grid");
-    const emptyState = document.getElementById("empty-state");
+    const emptyState = document.getElementById("catalog-empty-state");
 
     if (!catalogGrid) return;
 

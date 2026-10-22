@@ -59,6 +59,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (hash === '#historial') {
+                if (typeof window.setupModalListeners === "function") {
+                    window.setupModalListeners();
+                } else {
+                    console.error("No se ha cargado modalcontroller.js");
+                }
+
                 if (typeof window.initializeHistory === "function") {
                     await window.initializeHistory();
                 } else {
@@ -67,12 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 if (typeof window.setupHistoryEventListeners === "function") {
                     window.setupHistoryEventListeners();
-                }
-
-                if (typeof window.setupModalListeners === "function") {
-                    window.setupModalListeners();
-                } else {
-                    console.error("No se ha cargado modalcontroller.js");
                 }
             }
 
