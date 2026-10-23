@@ -1,0 +1,27 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "frontend para GreenPoints",
+  "main": "src/js/main.js",
+  "dependencies": {
+    "sortablejs": "^1.15.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Green-Points-Web/frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Green-Points-Web/frontend/issues"
+  },
+  "homepage": "https://github.com/Green-Points-Web/frontend#readme",
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.15"
+  }
+}
